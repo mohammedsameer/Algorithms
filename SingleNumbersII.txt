@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Solution {
+  
+   public static int singleNumber(int[] A) {
+		if (A == null || A.length == 0) {
+			return -1;
+		}
+     
+    //Controls the number of iterations
+		int[] bits = new int[16];
+		int result = 0;
+		for (int i = 0; i < 16; i++) 
+    {
+			for (int j = 0; j < A.length; j++) 
+      {
+        //System.out.println("Before Bits:"+ bits[i] + " A[j]:"+ A[j]+ " i:"+ i);
+				bits[i] += A[j] >> i & 1;
+				bits[i] %= 3;
+        //System.out.println("After Bits:"+ bits[i] + " A[j]:"+ A[j]+ " i:"+ i);
+			}
+      
+      //System.out.println("Before Result:"+ result + " Before Bits"+ bits[i]);
+			result |= (bits[i] << i);
+      //System.out.println("After Result:"+ result + " After Bits"+ bits[i]);
+		}
+		return result;
+	}
+  
+  public static void main(String[] args) {
+    int[] arr = {3,4,3,3};
+   System.out.println("Single Number:"+ singleNumber(arr));
+    
+    //int res = 1 << 1;
+    //res|=1;
+    //System.out.println(res);
+  }
+}

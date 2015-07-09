@@ -1,0 +1,40 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+  
+public static boolean isInterleave(String s1, String s2, String s3) {
+      
+  if(s3.length()!=s1.length()+s2.length())
+    return false;
+  
+  int rows = s1.length();
+  int cols = s2.length();
+  boolean[][] result = new boolean[rows+1][cols+1];
+  
+  result[0][0] = true;
+  
+  for(int i=0;i<=rows;i++)
+  {
+     for(int j=0;j<=cols;j++)
+     {
+       if(i>0)
+         result[i][j] = result[i-1][j] && s1.charAt(i-1)==s3.charAt(i+j-1);
+       if(j>0)
+         result[i][j] = result[i][j] || (result[i][j-1] && s2.charAt(j-1)==s3.charAt(i+j-1));
+     }
+  }
+  
+  return result[rows][cols];
+    
+}
+
+  public static void main(String[] args)
+  {
+       System.out.println("Are the strings interleaved: "+ isInterleave("bb","b","bcb"));
+  }
+}
+
+
+
+

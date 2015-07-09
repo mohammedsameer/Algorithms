@@ -1,0 +1,35 @@
+import java.io.*;
+import java.util.*;
+
+
+class Solution {
+  
+   public static void maxSubArray(int[] arr)
+   {
+     if(arr.length==0)
+       return;
+     
+     int max=arr[0];
+     int nmax=arr[0];
+     
+     for(int i=1;i<arr.length;i++)
+     {
+       nmax = Math.max(arr[i], nmax+arr[i]);
+       max = Math.max(max,nmax);
+     }
+     
+     System.out.println(max);
+   }
+  
+  public static void main(String[] args) {
+    int[] arr = new int[5];
+    arr[0]=4;
+    arr[1]=-1;
+    arr[2]=2;
+    arr[3]=-5;
+    arr[4]=1;
+    
+    System.out.println("Maximum subarray");
+    maxSubArray(arr);
+  }
+}

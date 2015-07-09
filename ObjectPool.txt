@@ -1,0 +1,42 @@
+public class SamplePool{
+
+	private static List<SamplePool> poolObjects;
+
+	private static int maxPoolSize = 5;
+
+	private static int counter = 0;
+
+	private SamplePool(){
+
+	}
+
+	public static SamplePool getInstance(){
+		SamplePool sampleObj = null;
+		counter =(counter+1)%5;
+
+		if(poolObjects!=null)
+		{	
+			if(spoolObjects.size()< maxPoolSize)
+			{
+				SamplePool poolObj = new SamplePool();
+				poolObjects.add(poolObj);
+				sampleObj  = poolObj;
+			}
+			else
+			{
+				sampleObj = poolObjects.get(counter);
+			}
+		}
+		else
+		{
+			poolObjects = new ArrayList<SamplePool>();
+			SamplePool poolObj = new SamplePool();
+			poolObjects.add(poolObj);
+			sampleObj  = poolObj;
+			counter =(counter+1)%5;
+		}
+
+		return sampleObj;
+		
+	}
+} 

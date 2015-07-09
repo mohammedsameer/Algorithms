@@ -1,0 +1,62 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  public static Stack<Integer> primaryStack = new Stack<>();
+  
+  public static Stack<Integer> secondaryStack = new Stack<>();
+  
+  public static void push(int val)
+  {
+    //Always add on primary stack
+    primaryStack.push(val);
+    
+    if(secondaryStack.empty())
+    {
+      secondaryStack.push(val);
+    }
+    else
+    {
+      if(secondaryStack.peek()>val)
+        secondaryStack.push(val);
+    }
+  }
+  
+  public static int pop()
+  {
+      int result = -1;
+      if(!primaryStack.empty())
+      {
+        result = primaryStack.pop();
+        if(!secondaryStack.empty() && secondaryStack.peek()==result)
+        {
+          secondaryStack.pop();
+        }
+      }
+      
+    return result;
+  }
+  
+  public static int getMin()
+  {
+    int result = -1;
+    if(!secondaryStack.empty())
+    {
+         result = secondaryStack.peek();
+    }
+    
+    return result;
+  }
+  
+  
+  public static void main(String[] args) {
+    
+    //Add ontop of stack
+    Solution.push(10);
+    Solution.push(20);
+    Solution.push(-30);
+    System.out.println("The min element:"+ Solution.getMin());
+  
+  }
+}

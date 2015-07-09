@@ -1,0 +1,36 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Solution {
+  
+  public static int bestTimeToBuyII(int[] stockPrices) {
+    
+    if(stockPrices.length==0)
+      return 0;
+    
+    int[] profit = new int[stockPrices.length];
+    profit[0] = 0;
+    
+    for(int i=1;i<stockPrices.length;i++)
+    {
+      //If diff>0, then sell
+      int diff = stockPrices[i] - stockPrices[i-1];
+      profit[i] = Math.max(profit[i-1], profit[i-1]+diff);
+    }
+    
+   return profit[stockPrices.length-1];
+  }
+  
+  public static void main(String[] args) {
+    int [] stockPrices = {10,20,30,40,90,50};    
+   System.out.println("Maximum Profit: "+ bestTimeToBuyII(stockPrices));
+  }
+  
+}

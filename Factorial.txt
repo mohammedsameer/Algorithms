@@ -1,0 +1,84 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  public static int factorialDynamic(int n)
+  {
+    if(n<=1)
+      return 1;
+    
+    int[] fact = new int[n+1];
+    fact[0]=1;
+    fact[1]=1;
+    for(int i=2;i<=n;i++)
+    {
+       fact[i]=fact[i-1]*i;
+    }
+     
+    return fact[n];
+    
+      
+  }
+  
+  public static int factorialIterative(int n)
+  {
+    if(n<=1)
+       return 1;
+    
+    int result = 1;
+    for(int i=n;i>=1;i--)
+    {
+       result = result*i;
+    }
+     
+    return result;
+  }
+  
+  public static int factorialRecursive(int n)
+  {
+    if(n<=1)
+       return 1;
+    
+    return n*factorialRecursive(n-1);
+  }
+  
+  public static void main(String[] args) {
+    System.out.println("Factorial Recursive:"+factorialRecursive(4));
+    System.out.println("Factorial Iterative:"+factorialIterative(4));
+    System.out.println("Factorial Dynamic:"+factorialDynamic(4));
+  }
+  
+}
+
+//Dynamic programming
+import java.io.*;
+import java.util.*;
+
+
+
+class Solution {
+  
+  public static int factorial(int n){
+    
+    if(n<=1)
+      return 1;
+    
+    int[] fact = new int[n+1];
+    fact[0]=1;
+    fact[1]=1;
+    
+    for(int i=2;i<=n;i++)
+    {
+      fact[i]=i*fact[i-1];
+    }
+   
+    return fact[n];
+  }
+  
+  public static void main(String[] args) {
+    System.out.println("Factorial of n:"+ factorial(4));
+  }
+
+}
+

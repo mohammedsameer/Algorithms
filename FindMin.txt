@@ -1,0 +1,39 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo:
+//Start with index 0 & check if all subsequent elements are >, if so //continue else thats the min element
+
+class Solution {
+  
+  public static int findMin(int[] num)
+  {
+    if(num.length==0)
+      return -1;
+    
+    int min = num[0];
+    for(int i=1;i<num.length;i++)
+    {
+      if(min<num[i])
+        continue;
+      else
+        {
+          min = num[i];
+          break;
+        }
+    }
+    
+    return min;
+  }
+  
+  public static void main(String[] args) {
+    int[] num = {4,5,6,1,2,3};
+    System.out.println("Find Min:"+findMin(num));
+  }
+}

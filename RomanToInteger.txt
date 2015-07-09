@@ -1,0 +1,54 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo
+//Loop through string 
+//a)If the next element is greater then num=-num
+//b)If the next element is smaller then num=+num;
+class Solution {
+  
+  public static int romanToInt(String roman, HashMap<Character, Integer> romanMap)
+  {
+   int result = 0;
+    
+   if(roman==null)
+     return result;
+    
+   for(int i=0;i<roman.length();i++)
+   {
+     char c = roman.charAt(i);
+     int currNum = romanMap.get(c);
+     if(i<roman.length()-1)
+     {
+       char nc = roman.charAt(i+1);
+       int nextNum = romanMap.get(nc);
+       if(currNum<nextNum)
+         currNum = -currNum;
+     }
+     
+     result+=currNum;
+   }
+    
+   return result;
+    
+  }
+  
+  public static void main(String[] args) {
+   HashMap<Character, Integer> romanMap = new HashMap<>();
+   romanMap.put('M',1000);
+   romanMap.put('D',500);
+   romanMap.put('C',100);
+   romanMap.put('L',50);
+   romanMap.put('X',10);
+   romanMap.put('V',5);
+   romanMap.put('I',1);
+   String roman="LXXXIV";
+   System.out.println("Roman to Integer: "+ romanToInt(roman,romanMap));
+  }
+}

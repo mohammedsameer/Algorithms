@@ -1,0 +1,59 @@
+import java.io.*;
+import java.util.*;
+
+
+/*Edit Distance*/
+class Solution {
+  
+  public static int editDistance(String s1, String s2)
+  {
+    if(s1==null && s2==null)
+      return -1;
+    
+    if(s1.length()==0 || s2.length()==0)
+      return 0;
+    
+    int m = s1.length();
+    int n = s2.length();
+    int[][] result = new int[m+1][n+1];
+    
+    for(int i=0;i<m;i++)
+      result[i][0]= i;
+    
+    for(int i=0;i<n;i++)
+      result[0][i]=i;
+    
+    for(int r=0;r<m;r++)
+    {
+      for(int c=0;c<n;c++)
+      {
+        if(s1.charAt(r)==s2.charAt(c))
+           result[r+1][c+1] = result[r][c];
+        else
+         {
+           int delete = result[r+1][c];
+           int insert = result[r][c+1];
+           int replace = result[r][c];
+          
+           int min = Min(delete, insert, replace);
+           result[r+1][c+1] = min+1;
+         }
+      }
+    }
+    
+    return result[m][n];
+  }
+  
+  //Min
+  public static int Min(int a, int b, int c)
+  {
+    int[] min = {a,b,c};
+    Arrays.sort(min);
+    
+    return min[0];
+  }
+  
+  public static void main(String[] args) {
+    System.out.println("Edit distance of two strings is: "+ editDistance("sameer","pamaer"));
+  }
+}

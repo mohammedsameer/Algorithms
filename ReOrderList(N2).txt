@@ -1,0 +1,46 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+//Algo:At each iteration find the next node. The next node is the end node.
+//Note: O(n2)
+public class Solution {
+    public void reorderList(ListNode head) {
+        
+        if(head==null || head.next==null || head.next.next==null)
+        {
+           return;
+        }
+        
+        ListNode curr = head;
+        ListNode next = curr.next;
+    
+        while(curr!=null && next!=null)
+        {
+            ListNode prev = curr;
+            
+            while(next.next!=null)
+            {
+                prev = next;
+                next = next.next;
+            }
+            
+            //Reset next connections
+            prev.next = null;
+            next.next = curr.next;
+            curr.next = next;
+            
+            //Prepare for next iteration
+            curr = next.next;
+            if(curr!=null)
+                 next = curr.next;
+        }
+   }
+}

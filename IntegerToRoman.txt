@@ -1,0 +1,63 @@
+package learning.main;
+
+/**
+ * The Class Solution.
+ */
+public class Solution {
+
+	
+	public static String intToRoman(int num) {
+
+		StringBuilder sb = new StringBuilder();
+		String[] romanArray = {"M", "CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+		int[] numArray = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+		
+		if(num<=0)
+			return sb.toString();
+		
+		while(num!=0)
+		{
+			//Iterate & check if num lesser than given element 
+			for(int i=0;i<numArray.length;i++)
+			{
+				if(num<numArray[i])
+				{
+					//Lower
+					continue;
+				}
+				else if(num==numArray[i])
+				{
+					//Match
+					sb.append(romanArray[i]);
+					num -= numArray[i];
+					break;
+				}
+				else
+				{
+					//Greater
+					int multiplier = num/numArray[i];
+					while(multiplier!=0)
+					{
+						sb.append(romanArray[i]);
+						multiplier--;
+					}
+					
+					num = num%numArray[i];
+				}
+			}
+		}
+		
+		return sb.toString();
+	}
+
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(String[] args) {
+		System.out.println("Integer to Roman :" + intToRoman(49));
+
+	}
+}

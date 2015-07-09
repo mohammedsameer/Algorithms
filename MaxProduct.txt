@@ -1,0 +1,35 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo:
+//Start with index 0 & check if all subsequent elements are >, if so //continue else thats the min element
+
+class Solution {
+  
+  public static int maxProduct(int[] num)
+  {
+    if(num.length==0)
+      return -1;
+    
+    int max = num[0];
+    int curr = num[0];
+    for(int i=1;i<num.length;i++)
+    {
+      curr = Math.max(curr*num[i], num[i]);
+      max = Math.max(curr,max);
+    }
+    
+    return max;
+  }
+  
+  public static void main(String[] args) {
+    int[] num = {2,3,4,-5,-6};
+    System.out.println("Max Product:"+maxProduct(num));
+  }
+}

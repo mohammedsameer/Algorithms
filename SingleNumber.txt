@@ -1,0 +1,35 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//XOR rules
+//1^1=0
+//0^0=0
+//1^0=1
+//0^1=1
+//1^0^1=0
+//1^1^1=1
+class Solution {
+  
+  public static int singleElement(int[] arr) {
+    int x=0;
+    int index = 0;
+    while(index<arr.length)
+    {
+      x = x^arr[index];
+      index++;
+    }
+         
+    return x;
+  }
+  
+  public static void main(String[] args) {
+    int[] arr = {1,1,2,2,3,4,4};
+    System.out.println("Single Element: "+singleElement(arr));
+  }
+}

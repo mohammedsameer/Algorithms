@@ -1,0 +1,58 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  public static boolean balancedParanthesis(String input, HashMap<Character,Character> relationships, HashMap<Character,Character> beginClosure, HashMap<Character,Character> endClosure )
+  {
+      Stack<Character> stack = new Stack<>();
+      char[] inArr = input.toCharArray();
+    
+      for(int i=0;i<inArr.length;i++)
+      {
+        //Skip other characters
+        if(beginClosure.containsKey(inArr[i]) || endClosure.containsKey(inArr[i]))
+        {
+          if(beginClosure.containsKey(inArr[i]))
+           {
+              stack.push(inArr[i]);
+           } 
+          else
+           {
+            if(!stack.empty())
+            {
+              Character c = stack.peek();
+              if(endClosure.get(inArr[i]).equals(c))
+                stack.pop();
+              else
+                return false;
+            }
+             else
+             {
+               return false;
+             }
+           }
+        }
+      }
+    
+    if(stack.empty())
+      return true;
+    else
+      return false;
+  }
+  
+  public static void main(String[] args) {
+   HashMap<Character, Character> relationships = new HashMap<>();
+   HashMap<Character, Character> beginClosure = new HashMap<>();
+   HashMap<Character, Character> endClosure = new HashMap<>();
+   beginClosure.put('(', ')');
+   beginClosure.put('[', ']');
+   beginClosure.put('{', '}');
+   endClosure.put(')', '(');
+   endClosure.put('}', '{');
+   endClosure.put(']', '[');
+   
+   
+    System.out.println("Testing balanced parenthesis : "+ balancedParanthesis("((){}{})", relationships, beginClosure, endClosure));
+  }
+}

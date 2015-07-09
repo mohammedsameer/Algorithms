@@ -1,0 +1,87 @@
+package learning.main;
+
+/**
+ * The Class Solution.
+ */
+public class Solution {
+
+	/**
+	 * Search range.
+	 * 
+	 * @param A
+	 *            the a
+	 * @param target
+	 *            the target
+	 * @return the int[]
+	 */
+	public static int multiply(String n1, String n2) {
+
+		int result = 0;
+
+		if (n1 == null && n2 == null)
+			return 0;
+
+		if (n1 == null || n1.length() == 0)
+			return Integer.valueOf(n2);
+
+		if (n2 == null || n2.length() == 0)
+			return Integer.valueOf(n1);
+
+		int carry = 0;
+		int multiplier = 0;
+		
+		for (int i = n1.length() - 1; i >= 0; i--) {
+			StringBuilder currResult = new StringBuilder();
+			carry = 0;
+			int currN1 = Integer.valueOf(n1.charAt(i) - '0');
+			for (int j = n2.length() - 1; j >= 0; j--) {
+				int currN2 = Integer.valueOf(n2.charAt(j) - '0');
+				int curr = currN1 * currN2 + carry;
+
+				// Handle carry
+				if (curr > 10) {
+					carry = curr % 10;
+					curr = curr / 10;
+				} else {
+					carry = 0;
+				}
+
+				// Compute current row
+				currResult.insert(0, curr);
+			}
+			
+			if(multiplier==0)
+			{
+				//first time no multiplier
+				result = Integer.valueOf(currResult.toString()) + result;
+				multiplier = 1;
+			}
+			else
+			{
+				result = Integer.valueOf(currResult.toString()) * multiplier + result;
+			}
+			
+			//Update multiplier
+			multiplier*=10;
+		}
+
+		// Handle carry
+		if(carry>0)
+		{
+			result+= carry*multiplier;
+		}
+		
+		return result;
+	}
+
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(String[] args) {
+		System.out.println("Mutiplication :" + multiply("12", "12"));
+
+	}
+}

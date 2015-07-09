@@ -1,0 +1,59 @@
+package learning.main;
+
+import java.util.ArrayList;
+
+/**
+ * The Class Solution.
+ */
+public class Solution {
+
+	/**
+	 * Letter combinations.
+	 *
+	 * @param digits the digits
+	 * @return the array list
+	 */
+	public static ArrayList<String> letterCombinations(String digits) {
+
+		ArrayList<String> result = new ArrayList<>();
+		ArrayList<String> currResult = new ArrayList<>();
+		String[] digitToAlpha = { "", "", "abc", "def", "ghi", "jkl", "mno",
+				"pqrs", "tuv", "wxyz" };
+
+		if (digits == null || digits.length() == 0)
+			return result;
+
+		// Initialize empty string
+		result.add("");
+		int index = 0;
+		while (index < digits.length()) 
+		{
+			String curr = digitToAlpha[digits.charAt(index)-'0'];
+			currResult = new ArrayList<>();
+			
+			for(String currVal : result) 
+			{
+				for(int i=0;i<curr.length();i++)
+				{
+					currResult.add(currVal+curr.charAt(i));
+				}
+			}
+
+			index++;
+			result = currResult;
+		}
+		
+		return result;
+	}
+
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(String[] args) {
+		System.out.println("Letter Combinations :" + letterCombinations("23"));
+
+	}
+}

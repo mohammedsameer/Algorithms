@@ -1,0 +1,36 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Solution {
+  
+  public static int pow(int x, int n){
+    
+    if(x==0 || n==0)
+      return 1;
+    
+    if(n==1)
+     return x;
+      
+    int curr = x;
+    int prev = x;
+    for(int i=2;i<=n;i++)
+    {
+      curr = x * prev;
+      prev = curr;
+    }
+    
+    return curr;
+    
+  }
+  public static void main(String[] args) {
+    int n=7;
+    int x=2;
+    System.out.println("Pow of n:"+ pow(x,n));
+}

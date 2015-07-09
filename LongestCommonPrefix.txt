@@ -1,0 +1,55 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo:
+//1. Use first element in array as index string
+//2. Match a given character against all other strings in array
+class Solution {
+  public static String longestCommonPrefix(String[] strArr)
+  {
+    if(strArr.length==0)
+      return "";
+    
+    StringBuilder sb = new StringBuilder();
+    int index=0;
+    char c;
+    
+    while(true)
+    {
+      if(index<strArr[0].length())
+      {
+        //new index character
+        c = strArr[0].charAt(index);
+      }
+      else
+      {
+        //length exceeded
+        return sb.toString();
+      }
+      
+      for(int i=1;i<strArr.length;i++)
+      {
+        //character mismatch or length exceeded
+        if(!(index<strArr[i].length() && strArr[i].charAt(index)==c))
+        {
+          return sb.toString();
+        }
+      }
+     
+      sb.append(c);
+      index++;
+    }
+    
+  }
+  
+  public static void main(String[] args) {
+  String[] strArr = {"sameer","samrah","samar","sadath"};
+  System.out.println("Longest Common Prefix: "+ longestCommonPrefix(strArr));
+  }
+}

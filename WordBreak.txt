@@ -1,0 +1,48 @@
+import java.io.*;
+import java.util.*;
+
+
+class Solution {
+  
+  public static boolean wordBreak(Set<String> mySet, String s)
+  {
+    if(s==null|| s.length()==0|| mySet==null|| mySet.size()==0)
+      return false;
+    
+    return wordBreakHelper(mySet,s,0);
+  }
+  
+  public static boolean wordBreakHelper(Set<String> mySet, String s1, int start)
+  {
+     if(start==s1.length())
+       return true;
+    
+    for(String dictWord:mySet)
+    {
+      int len = dictWord.length();
+      int end = start+len;
+      
+      if(end > s1.length())
+        continue;
+      
+      if(s1.substring(start,end).equals(dictWord))
+       {
+          if(wordBreakHelper(mySet,s1,end))
+            return true;
+       }
+    }
+    
+    return false;
+  }
+  
+  public static void main(String[] args) {
+    Set<String> mySet= new HashSet<String>();
+    mySet.add("sam");
+    mySet.add("eer");
+    mySet.add("add");
+    
+    System.out.println("Word Break sameer: "+ wordBreak(mySet,"sameer"));
+    //System.out.println("Word Break samantha: "+ wordBreak(mySet,"samantha"));
+    
+  }
+}

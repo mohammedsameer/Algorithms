@@ -1,0 +1,33 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo
+//Loop through num and Use % & /
+class Solution {
+  
+  public static int reverseNumber(int num)
+  {
+   int result = 0;
+   
+   while(num>0)
+   {
+     int rem = num%10;
+     num=num/10;
+     result= result*10+rem;
+   }
+    
+   return result;
+    
+  }
+  
+  public static void main(String[] args) {
+  
+   System.out.println("Reverse of Integer: "+ reverseNumber(6908));
+  }
+}

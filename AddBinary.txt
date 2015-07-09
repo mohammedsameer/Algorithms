@@ -1,0 +1,72 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo:
+//1+0=1
+//1+1=10
+//1+1+1=11
+//0+0=0
+//0+1=1
+
+class Solution {
+  public static String addBinary(String s1, String s2){
+    
+    if(s1==null && s2==null)
+      return null;
+    if(s1==null)
+      return s2;
+    if(s2==null)
+      return s1;
+    
+    StringBuilder sb = new StringBuilder();
+    int s1Index = s1.length()-1;
+    int s2Index = s2.length()-1;
+    int carry = 0;
+    
+    while( s1Index >= 0 || s2Index >= 0)
+    {
+      int curr = 0;
+      
+      if(s1Index >= 0)
+      {
+        curr += Character.getNumericValue(s1.charAt(s1Index));
+        s1Index--;
+      }
+      
+      if(s2Index >= 0)
+      {
+        curr += Character.getNumericValue(s2.charAt(s2Index));
+        s2Index--;
+      }
+      
+      if(carry>0)
+      {
+       curr +=1;  
+      }
+      
+      sb.insert(0,curr%2);
+      carry = curr/2;
+      
+    }
+    
+    //Handle carry after all addition
+    if(carry > 0)
+    {
+     sb.insert(0,1);
+    }
+    
+    return sb.toString();
+  }
+  
+  public static void main(String[] args) {
+    String s1 = "110";
+    String s2 = "111";
+    System.out.println("Add Binary Numbers:"+addBinary(s1,s2));
+  }
+}

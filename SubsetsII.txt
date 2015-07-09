@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo
+//1. For every iteration loop through all elements from previous and insert the new element
+class Solution {
+  public static ArrayList<ArrayList<Integer>> subsets(int[] numarr){
+    
+    HashSet<ArrayList<Integer>> currResult = new HashSet<ArrayList<Integer>>();
+    ArrayList<ArrayList<Integer>> prevResult = new ArrayList<ArrayList<Integer>>();
+    
+    prevResult.add(new ArrayList<Integer>());
+    
+    if(numarr.length==0)
+      return prevResult;
+    
+    for(int i=0;i<numarr.length;i++)
+    {
+      int n = numarr[i];
+      //Initialize currResult with prevResult & loop through to add new element across all elements
+      currResult = new HashSet<ArrayList<Integer>>(prevResult);
+      for(ArrayList<Integer> prevEntry: prevResult)
+      {
+        ArrayList<Integer> currEntry = new ArrayList<Integer>(prevEntry);
+        currEntry.add(n);
+        currResult.add(currEntry);
+      }
+      
+      //At the end of iteration reset prevResult with currResult
+      prevResult = new ArrayList<ArrayList<Integer>>(currResult);
+    }
+    
+    return prevResult;
+  }
+  
+  public static void main(String[] args) {
+    int[] numarr= {1,2,2};
+    System.out.println("Subsets"+ subsets(numarr));
+  }
+}

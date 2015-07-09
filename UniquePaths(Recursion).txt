@@ -1,0 +1,20 @@
+public class Solution {
+    public int uniquePaths(int m, int n) {
+        
+        if(m<=0 || n<=0)
+         return 0;
+        
+        return uniquePathsHelper(m, n, 1, 1);
+    }
+    
+    public int uniquePathsHelper(int m, int n, int r, int c)
+    {
+        if(r>m || c>n)
+         return 0;
+        
+        if(r==m && c==n)
+         return 1;
+         
+        return uniquePathsHelper(m, n, r+1 , c) + uniquePathsHelper(m, n, r, c+1) ;
+    }
+}

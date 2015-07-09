@@ -1,0 +1,105 @@
+0, 1, 1, 2, 3, 5, 8
+
+//Display
+public void displayFibonacci(final int maxValue)
+{
+  int fib1 = 0;
+  int fib2 = 1;
+  
+  if(maxValue<fib1)
+  {
+    //No series
+  }
+  else if(maxValue>=fib1 && maxValue<fib2)
+  {
+      System.out.println(fib1);
+  }
+  else
+  {
+   System.out.println(fib1+ ","+ fib2);
+   for(int x = fib1; x<=maxValue; x++)
+   {
+     int newFib2=fib1+fib2;
+     fib1 = fib2;
+     fib2 = newFib2;
+     
+     if(fib2 > maxValue)
+     {
+        break;
+     }
+     else
+     {
+       System.out.println(fib2);
+     }
+   }
+ 
+  } 
+}
+
+
+
+// Fibonacci number
+import java.io.*;
+import java.util.*;
+
+//1,1,2,3,5,8,13,21
+class Solution {
+  
+  public static int fibonacciIterative(int n)
+  {
+    if(n<=2)
+      return 1;
+    
+    int fib1 = 1;
+    int fib2 = 1;
+    int oldFib2 = 0;
+    for(int i=3;i<=n;i++)
+     {
+        oldFib2 = fib2;
+        fib2 = fib1+fib2;
+        fib1=oldFib2;
+     }
+    
+    return fib2;
+  }
+  
+  public static int fibonacciRecursive(int n)
+  {
+    if(n<=2)
+      return 1;
+    
+    return fibonacciRecursive(n-1)+fibonacciRecursive(n-2);
+  }
+  
+  public static void main(String[] args) {
+   System.out.println("Fibonacci element:"+ fibonacciIterative(6));
+   System.out.println("Fibonacci element:"+ fibonacciRecursive(6));
+  }
+}
+
+
+Dynamic Programming
+import java.io.*;
+import java.util.*;
+
+//1,1,2,3,5,8,13,21,34
+class Solution {
+  
+  public static int fibonacci(int n){
+    int[] fib= new int[n+1];
+    fib[0] = 0;
+    fib[1] = 1;
+    fib[2] = 1;
+    
+    for(int i=3;i<=n;i++)
+    {
+      fib[i]= fib[i-1]+fib[i-2];
+    }
+    
+    return fib[n];
+  }
+  
+  public static void main(String[] args) {
+   System.out.println("Fibonacci number:9 is "+ fibonacci(9));
+  }
+}

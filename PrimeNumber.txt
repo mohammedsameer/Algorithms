@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  //displayPrime:Displays all prime numbers upto n
+  public static void displayPrimes(int n)
+  {
+    for(int i=1;i<=n;i++)
+    {
+      if(isPrime(i))
+        System.out.println(i);
+    }
+    
+  }
+  
+  
+  //IsPrime:Checks if n is prime or not
+  public static boolean isPrime(int n)
+  {
+    if(n<=1)
+      return false;
+    
+    if(n==2)
+      return true;
+    
+    for(int i=2;i<=n/2;i++)
+    {
+      //If n divisible then not prime
+      if(n%i==0)
+        return false;
+    }
+    
+    //if n not divisible then prime
+    return true;
+  }
+  
+  public static void main(String[] args) {
+    System.out.println("Display primes");
+    displayPrimes(31);
+  }
+  
+}

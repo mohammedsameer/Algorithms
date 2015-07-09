@@ -1,0 +1,63 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Palindrome Partition
+//Algo:
+//For every length substring check if palindrome
+class Solution {
+  
+  public static ArrayList<ArrayList<String>> palindromePartition(String input) {
+    
+    ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+    
+    if(input==null || input.length()==0)
+      return result;
+    
+    int currLen = 1;
+    while(currLen<=input.length())
+    {
+      ArrayList<String> curr = new ArrayList<>();
+      for(int i=0;i<=input.length()-currLen;i++)
+      {
+        String sub = input.substring(i,i+currLen);
+        if(isPalindrome(sub))
+        {
+          curr.add(sub);
+        }
+      }
+      
+      if(curr.size()>0)
+      {
+        result.add(curr);
+      }
+      
+      currLen++;
+    }
+    
+    return result;
+  }
+  
+  public static boolean isPalindrome(String input)
+  {
+    int len = input.length();
+    int mid = len/2;
+    for(int i = 0;i <mid; i++)
+    {
+      if(input.charAt(i)!=input.charAt(len-1-i))
+        return false;
+    }
+    
+    return true;
+  }
+  
+  public static void main(String[] args) {
+    String input ="aabbccc";
+    System.out.println("Palindrom Partition:"+ palindromePartition(input));
+  }
+}

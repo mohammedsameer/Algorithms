@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo:
+//Given 1...mid...n, sqrt will be <=mid
+class Solution {
+  public static int sqrt(int num)
+  {
+    if(num<=0)
+      return 0;
+    
+    if(num==1)
+      return 1;
+    
+    int mid=num/2;
+    int low = 1;
+    int high = mid+1;
+   
+    while(low<=high)
+    {
+      int sq = mid*mid;
+      
+      if(sq==num)
+        return mid;
+      
+      if(sq<num)
+        low = mid+1;
+      else
+        high = mid-1;
+    
+      mid = (low+high)/2;
+    }
+    
+    return high;
+  }
+  public static void main(String[] args) {
+   int num  = 5;
+  System.out.println("Sqrt of num:"+ num+" is:"+ sqrt(num));
+  }
+}

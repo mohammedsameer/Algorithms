@@ -1,0 +1,35 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+//Algo:
+//Start with index 1 & compare with only its predecissor
+
+class Solution {
+  
+  public static int findPeak(int[] num)
+  {
+    if(num.length==0)
+      return -1;
+    
+    int peakIndex =0;
+    
+    for(int i=1;i<num.length;i++)
+    {
+      if(num[i]>num[i-1])
+        peakIndex=i;
+    }
+    
+    return peakIndex;
+  }
+  
+  public static void main(String[] args) {
+    int[] arr = {2,3,5,1,6,4};
+    System.out.println("Find Peak Index:"+findPeak(arr));
+  }
+}

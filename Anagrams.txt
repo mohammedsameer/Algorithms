@@ -1,0 +1,39 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  public static boolean areAnagrams(String w1, String w2)
+  {
+    if(w1==null && w2==null)
+      return true;
+    
+    if(w1==null || w2==null)
+      return false;
+    
+    if(w1.length()==0 && w2.length()==0)
+      return true;
+    
+    if(w1.length()!=w2.length())
+      return false;
+    
+    char[] w1Arr = w1.toCharArray();
+    char[] w2Arr = w2.toCharArray();
+    Arrays.sort(w1Arr);
+    Arrays.sort(w2Arr);
+    int len  = w1Arr.length;
+    
+    for(int i=0;i<len;i++)
+    {
+     if(w1Arr[i]!=w2Arr[i]) 
+       return false;
+    }
+    
+    return true;
+  }
+  
+  public static void main(String[] args) {
+   System.out.println("Testing Anagrams sam & mas: "+ areAnagrams("sam","mas"));
+   System.out.println("Testing Anagrams same & mouse: "+ areAnagrams("same","mouse"));
+  }
+}

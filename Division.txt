@@ -1,0 +1,134 @@
+
+//Solution1
+package learning.main;
+
+/**
+ * The Class Solution.
+ */
+public class Solution {
+
+	/**
+	 * Divide.
+	 * 
+	 * @param num
+	 *            the num
+	 * @param deno
+	 *            the deno
+	 * @return the int
+	 */
+	public static int divide(int num, int deno) {
+
+		int result = 0;
+
+		if (num == 0)
+			return result;
+
+		if (deno == 0)
+			return Integer.MAX_VALUE;
+
+		int nnum = num;
+		int ndeno = deno;
+
+		if (num < 0)
+			nnum = -nnum;
+
+		if (deno < 0)
+			ndeno = -ndeno;
+
+		while (nnum > 0) {
+			nnum = nnum - ndeno;
+			result += 1;
+		}
+
+		//One of the num or deno is negative
+		if (!(num < 0 && deno < 0) && (num < 0 || deno < 0)) {
+			return -(result);
+		}
+		
+		return result;
+	}
+
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(String[] args) {
+		System.out.println("Division :" + divide(24, 3));
+
+	}
+}
+
+
+//Solution2
+package learning.main;
+
+/**
+ * The Class Solution.
+ */
+public class Solution {
+
+	/**
+	 * Divide.
+	 * 
+	 * @param dividend
+	 *            the dividend
+	 * @param divisor
+	 *            the divisor
+	 * @return the int
+	 */
+	public static long divide(int dividend, int divisor) {
+
+		long result = 0;
+
+		if (dividend == 0)
+			return (int)result;
+
+		if (divisor == 0)
+			return Integer.MAX_VALUE;
+
+		long num = Math.abs((long)dividend);
+		long deno = Math.abs((long)divisor);
+
+		while (num >= deno) {
+			int i = 0;
+			long ndeno = deno;
+			while (num >= ndeno) {
+				num = num - ndeno;
+				ndeno = ndeno << 1;
+				result += 1 << i;
+				i++;
+			}
+		}
+
+		if ((dividend < 0 && divisor < 0) || (dividend > 0 && divisor > 0))
+		{
+			//Result positive
+			if(Math.abs(result)>Integer.MAX_VALUE)
+			 result = Integer.MAX_VALUE;
+			 
+			return result;
+		}
+		else
+		{
+			//Result negative
+			if(Math.abs(result)<Integer.MIN_VALUE)
+			 result = Integer.MIN_VALUE;
+			return -result;
+		}
+			
+	}
+
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(String[] args) {
+		System.out.println("Division :" + divide(-2147483648, -1));
+
+	}
+}
+

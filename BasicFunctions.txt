@@ -1,0 +1,88 @@
+import java.io.*;
+import java.util.*;
+
+
+class Solution {
+  
+  public static void testSpecial(){
+    
+    System.out.println();
+    System.out.println("Test Strings");
+    String s = "sameer";
+    char[] cArr = s.toCharArray();
+    Arrays.sort(cArr);
+    StringBuilder sb = new StringBuilder();
+    sb.append("ameer");
+    sb.insert(0,"s");
+    
+    System.out.println("CharAt: "+ s.charAt(1));
+    System.out.println("CharArray");
+    for(char c : cArr)
+    {
+      System.out.println(Character.getNumericValue(c));
+    }
+    System.out.println("StringBuilder: "+sb.toString());
+    
+    
+    System.out.println();
+    System.out.println("Test Arrays");
+    String[] sarr = {"1","2","3"};
+    List<String> sarrList = new ArrayList<>();
+    sarrList.addAll(Arrays.asList(sarr));
+    String[] nsarr = new String[sarrList.size()+1];
+    nsarr = sarrList.toArray(nsarr);
+    nsarr[sarrList.size()]="5";
+    int[][] m = new int[2][3];
+    
+    
+    System.out.println("Array Length: "+sarr.length);
+    System.out.println("Converted List Length: "+ sarrList.size());
+    System.out.println("Converted Array Length: "+ nsarr.length);
+    System.out.println("Rows length: "+ m.length);
+    System.out.println("Cols length: "+ m[0].length);
+    
+    System.out.println();
+    System.out.println("Test Lists");
+    LinkedList<String> myLList = new LinkedList<>();
+    ArrayList<String> myAList1 = new ArrayList<>();
+    ArrayList<String> myAList2 = new ArrayList<>();
+    List<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+    
+    myLList.push("1");
+    myLList.push("2");
+    myLList.push("3");
+    myLList.pop();
+    System.out.println("LinkedList Length: "+ myLList.size());
+    myAList1.add("5");
+    System.out.println("ArrayList Length: "+ myAList1.size());
+    myAList2.add("6");
+    myAList1.addAll(myAList2);
+    System.out.println("ArrayList Length: "+ myAList1.size());
+    
+    result.add(myAList1);
+    result.add(myAList2);
+    System.out.println("Nested ArrayList Length: "+ result.size());
+    
+    
+    System.out.println();
+    System.out.println("Test Maps");
+    Map<Integer, Integer> myMap = new HashMap<Integer, Integer>();
+    myMap.put(1, 1);
+    myMap.put(2, 2);
+    myMap.put(3, 3);
+    System.out.println("MyMap keyset: "+ myMap.keySet());
+    Iterator<Integer> myMapIterator = myMap.keySet().iterator();
+    if(myMap.containsKey(1))
+    {
+        while(myMapIterator.hasNext())
+        {
+          System.out.println(myMapIterator.next());
+        }
+    }
+      
+  }
+  
+  public static void main(String[] args) {
+   testSpecial();
+  }
+}

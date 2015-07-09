@@ -1,0 +1,26 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  public static Solution obj;
+  
+  private Solution(){
+    super(); 
+  }
+  
+  public static Solution getInstance(){
+    if(obj==null)
+      obj = new Solution();
+    
+    return obj;  
+  }
+  
+   public static void main(String[] args) {
+    Solution obj1 = Solution.getInstance();
+    Solution obj2 = Solution.getInstance();
+    System.out.println("Singleton object: "+ obj1.equals(obj2));
+  }
+  
+}
+

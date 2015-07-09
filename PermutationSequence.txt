@@ -1,0 +1,61 @@
+package learning.main;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The Class Solution.
+ */
+public class Solution {
+
+	/**
+	 * Gets the permutation.
+	 *
+	 * @param n the n
+	 * @param k the k
+	 * @return the permutation
+	 */
+	public static String getPermutation(int n, int k) {
+		int t =1;
+		List<Integer> num = new ArrayList<>();
+		for(int i=1;i<=n;i++)
+		{
+			t = t*i;
+			num.add(i);
+		}
+		
+		//t=number of possible permutations for n, Note: t/n=number of permutations for n-1
+		t/=n;
+		//k indexed from 0 onwards hence --
+		k--;
+		
+		StringBuilder sb = new StringBuilder();
+		for(int i=n-1;i>=1;i--)
+		{
+			int p = k/t;//k/(n-1)!
+			int np = num.get(p);
+			sb.append(String.valueOf(np));
+			
+			//remove the given number as it appears only once in iteration
+			num.remove(p);
+			
+			System.out.println("T:"+t+" K:"+k);
+			
+			k%=t;
+			t/=i;
+		}
+		
+		sb.append(String.valueOf(num.get(0)));
+		return sb.toString();
+		
+	}
+
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main(String[] args) {
+		System.out.println("Permutation Sequence:"+ getPermutation(3,4));
+	}
+}

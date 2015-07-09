@@ -1,0 +1,31 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+  
+  public static String removeDuplicates(final String input)
+  {
+    
+    if(input==null||input.length()==0)
+      return input;
+    
+    StringBuilder sb = new StringBuilder();
+    char[] inputChars = input.toCharArray();
+    HashMap<Integer, Boolean> inputCharsMap = new HashMap<>();
+    
+    for(char c : inputChars)
+    {
+      if(!inputCharsMap.containsKey(Character.getNumericValue(c)))
+      {
+        sb.append(c);
+        inputCharsMap.put(Character.getNumericValue(c),true);
+      }
+    }
+    
+    return sb.toString();
+  }
+  
+  public static void main(String[] args) {
+    System.out.println("Remove duplicates: "+ removeDuplicates("saaas"));
+  }
+}

@@ -1,0 +1,59 @@
+import java.io.*;
+import java.util.*;
+
+
+class Solution {
+  
+  public static int wordLadderLength(String start, String end, HashSet<String> dict)
+  {
+    if(start.equals(end))
+      return 0;
+    
+    if(dict==null)
+      return -1;
+    
+    LinkedList<String> wordQueue = new LinkedList<>();
+    LinkedList<Integer> distanceQueue = new LinkedList<>();
+    wordQueue.add(start);
+    distanceQueue.add(1);
+    
+    while(!wordQueue.isEmpty())
+    {
+      String currWord = wordQueue.pop();
+      int currDistance = distanceQueue.pop();
+      
+      for(int i=0;i<currWord.length();i++)
+      {
+        char[] charArr = currWord.toCharArray();
+        for(char c='a';c<='z';c++)
+        {
+          charArr[i]=c;
+          String nWord = new String(charArr);
+          if(nWord.equals(end))
+          {
+            return currDistance+1;
+          }
+          
+          if(dict.contains(nWord))
+          {
+            dict.remove(nWord);
+            wordQueue.add(nWord);
+            distanceQueue.add(currDistance+1);
+          }
+        }
+      }
+    }
+    
+    return -1;
+  }
+  
+  public static void main(String[] args) {
+    HashSet<String> mySet= new HashSet<String>();
+    mySet.add("hot");
+    mySet.add("dot");
+    mySet.add("dog");
+    mySet.add("lot");
+    mySet.add("log");
+    System.out.println("Word Ladder Length:"+ wordLadderLength("hit","cog", mySet));
+  }
+}

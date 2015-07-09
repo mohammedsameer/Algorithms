@@ -1,0 +1,100 @@
+package learning.main;
+
+/**
+ * The Class Solution.
+ */
+public class Solution {
+
+	/**
+	 * Search range.
+	 * 
+	 * @param A
+	 *            the a
+	 * @param target
+	 *            the target
+	 * @return the int[]
+	 */
+	public static int[] searchRange(int[] A, int target) {
+
+		int[] result = new int[2];
+		if (A == null || A.length == 0) {
+			result[0] = -1;
+			result[1] = -1;
+			return result;
+		}
+
+		int start = 0;
+		int end = A.length - 1;
+		return binarySearch(A, target, start, end, result);
+	}
+
+	/**
+	 * Binary search.
+	 * 
+	 * @param A
+	 *            the a
+	 * @param target
+	 *            the target
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
+	 * @param result
+	 *            the result
+	 * @return the int[]
+	 */
+	public static int[] binarySearch(int[] A, int target, int start, int end,
+			int[] result) {
+
+		if (start > end) {
+			System.out.println("start"+ start +" end"+ end);
+			result[0] = -1;
+			result[1] = -1;
+			return result;
+		}
+
+		int mid = (start + end) / 2;
+
+		if (A[mid] == target) {
+			int left = 0, right = 0;
+
+			// left boundry
+			while (mid >= 0 && A[mid] == target) {
+				left = mid;
+				mid = mid - 1;
+			}
+
+			mid = (start + end) / 2;
+
+			// right boundry
+			while (mid <= A.length - 1 && A[mid] == target) {
+				right = mid;
+				mid = mid + 1;
+			}
+
+			result[0] = left;
+			result[1] = right;
+			return result;
+		} else if (target < A[mid]) {
+			binarySearch(A, target, start, mid - 1, result);
+		} else {
+			binarySearch(A, target, mid + 1, end, result);
+		}
+
+		return result;
+	}
+
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
+	public static void main(String[] args) {
+		int[] input = {1,4};
+		System.out.println("Search Range");
+		int [] result = searchRange(input,4);
+		System.out.println(result[0] + " " + result[1]);
+		
+	}
+}
