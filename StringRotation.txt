@@ -1,0 +1,27 @@
+package com.leetcode;
+
+/**
+ * Assume you have a method isSubstring which checks if one word is a substring of another Giventwostrings,
+ * s1 and s2,writecode to check if s2 is a rotation of s1 using only one call to isSubstring (i e , “waterbottle” is a rotation of “erbottlewat”)
+ */
+public class Program {
+
+    /**
+     * Checks if s2 is rotation of s1
+     * @param s1
+     * @param s2
+     * @return
+     */
+    private static boolean isRotation(String s1, String s2) {
+        if((s1 == null && s2 != null) || (s2 == null && s1 != null) || (s1.length() != s2.length()))
+            return false;
+        String s1s1 = s1 + s1;
+        return s2.isSubString(s1s1);
+    }
+
+    public static void main(String[] args) {
+        String s1 = "hello";
+        String s2 = "llohe";
+        System.out.print("s2 is a rotation of s1" + isRotation(s1, s2));
+    }
+}

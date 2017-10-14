@@ -1,0 +1,62 @@
+package com.leetcode;
+
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column is set to 0
+ Steps:
+ 1. Identify all row/col with 0 and maintain in array
+ 2. Loop through matrix again and reset values depending on previously captured array
+ */
+public class Program {
+
+    /**
+     * Reset matrix
+     *
+     * @param input input matrix
+     * @return
+     */
+    private static int[][] resetMatrix(int[][] input) {
+        int rowSize = input.length;
+        int colSize = input[0].length;
+
+        int[] rIndex = new int[rowSize];
+        int[] cIndex = new int[colSize];
+        for (int r = 0; r < rowSize; r++) {
+            for (int c = 0; c < colSize; c++) {
+                if(input[r][c] == 0) {
+                    rIndex[r] = 1;
+                    cIndex[c] = 1;
+                }
+            }
+        }
+
+        for(int r = 0; r < rowSize; r++) {
+            for(int c = 0; c < colSize; c++) {
+                if(rIndex[r] == 1 || cIndex[c] == 1)
+                    input[r][c] = 0;
+            }
+        }
+        return input;
+    }
+
+    public static void main(String[] args) {
+        int[][] input = new int[2][2];
+
+        for (int r = 0; r < input.length; r++) {
+            for (int c = 0; c < input[0].length; c++) {
+                input[r][c] = 1;
+            }
+        }
+
+        int[][] result = resetMatrix(input);
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[0].length; j++) {
+                    System.out.print(result[i][j] + "\t");
+                }
+                System.out.println();
+            }
+        }
+}

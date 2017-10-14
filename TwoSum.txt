@@ -1,0 +1,49 @@
+package com.leetcode;
+
+import java.util.Arrays;
+
+public class Program {
+
+    private static int[] twoSum(int[] inputArr, int target) {
+        int[] result = new int[2];
+
+        if(inputArr.length < 2)
+            return result;
+
+        Arrays.sort(inputArr);
+        for(int index=0; index<inputArr.length-1; index++) {
+            int i = index;
+            int j = inputArr.length -1;
+            boolean isMatch = false;
+            int sum;
+
+            while (i<j) {
+                sum = inputArr[i] + inputArr[j];
+                if(sum == target) {
+                    isMatch = true;
+                    result[0] = inputArr[i];
+                    result[1] = inputArr[j];
+                    break;
+                } else if(sum > target) {
+                    j--;
+                } else {
+                    i++;
+                }
+            }
+
+            if(isMatch)
+                break;
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] inputArr = {0, 5, 3, 8, 9};
+        int target = 5;
+        int[] result = twoSum(inputArr, target);
+        for(int entity: result) {
+            System.out.print(entity + " ");
+        }
+    }
+}
