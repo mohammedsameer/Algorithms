@@ -1,0 +1,48 @@
+package com.leetcode;
+
+/**
+ * Write code to remove duplicates from an unsorted linked list without using additional buffer
+ * //Algo:
+ * 1. Two pointers p1 and p2 to the head
+ * 2. Move p2 n-1 times so there is a gap of n b/w p1 and p2
+ * 3. Move both p1 and p2 until p2.next is null, then p1 will be the nth element from end
+ */
+public class Program {
+
+    class Node {
+        int data;
+        Node next;
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    /**
+     * Remove duplicates
+     * @param head
+     * @return
+     */
+    private static int nthNodeFromLast(Node head, int n) {
+        if(head == null) {
+            return -1;
+        }
+
+        Node p1 = head;
+        Node p2 = head;
+        int index = 0;
+        while(p2.next != null && index<n-1) {
+            p2 = p2.next;
+            index++;
+        }
+
+        while (p2.next != null){
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+
+        return p1.data;
+    }
+
+    public static void main(String[] args) {
+    }
+}

@@ -1,0 +1,110 @@
+package com.leetcode;
+
+//Iterative
+/**
+ * Write code to remove duplicates from an unsorted linked list without using additional buffer
+ * //Algo:
+ * Add each node at a time and pass the carry for next addition
+ */
+public class Program {
+
+    static class Node {
+        int data;
+        Node next;
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+
+Solution -1:
+    //Recursive
+    private static Node addTwoLists(Node head1, Node head2, int carry) {
+        if(head1 == null && head2 == null)
+            return null;
+
+        Node result = new Node(0);
+        int sum = carry;
+        if(head1 != null) {
+            sum += head1.data;
+        }
+        if(head2 != null) {
+            sum += head2.data;
+        }
+
+        result.data = sum%10;
+        Node more = addTwoLists(head1 == null ? null : head1.next, head2 == null ? null: head2.next, sum > 10 ? 1: 0);
+        result.next = more;
+
+        return result;
+    }
+
+
+Solution-2
+    //Non-Recursive
+    private static Node addTwoLists(Node head1, Node head2) {
+        if(head1 == null && head2 == null) {
+            return null;
+        }
+
+        if(head1 == null)
+            return head2;
+
+        if(head2 == null)
+            return head1;
+
+        Node p1 = head1;
+        Node p2 = head2;
+        Node result = null;
+        Node head3 = null;
+        boolean isCarry = false;
+        int sum;
+        while (p1 != null && p2 != null) {
+            if(isCarry) {
+                sum = p1.data + p2.data + 1;
+            } else {
+                sum = p1.data + p2.data;
+            }
+
+            Node n = new Node(sum %10);
+            if(result == null) {
+                result.data = n.data;
+                head3 = result;
+            } else {
+                result.next = n;
+                result = n;
+            }
+
+            isCarry = sum > 10;
+            p1 = p1.next;
+            p2 = p2.next;
+         }
+
+         if(p1 != null) {
+             addList(p1, result, isCarry);
+         } else if(p2 != null){
+             addList(p2, result, isCarry);
+         }
+
+         return head3;
+
+    }
+
+    private static void addList(Node p, Node result, boolean isCarry) {
+        int sum;
+        while (p != null) {
+            if(isCarry) {
+                sum = p.data + 1;
+            } else {
+                sum = p.data;
+            }
+            Node n = new Node(sum%10);
+            result.next = n;
+            result = n;
+
+            p = p.next;
+            isCarry = sum > 10;
+        }
+    }
+}
+

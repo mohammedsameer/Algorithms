@@ -1,0 +1,57 @@
+package com.leetcode;
+
+/**
+ * Write code to remove duplicates from an unsorted linked list without using additional buffer
+ */
+ //Algo:
+ 1. Use prev and curr to move along list
+ 2. Run a runner upto current
+    a) Determine if any node upto prev matches curr, if yes skip curr
+ 3. Move curr till end to remove all dupes
+
+public class Program {
+
+    class Node {
+        int data;
+        Node next;
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    /**
+     * Remove duplicates
+     * @param head
+     * @return
+     */
+    private static void removeDuplicates(Node head) {
+        if(head == null) return;
+
+        Node prev = head;
+        Node curr = prev.next;
+
+        while(curr != null) {
+            Node runner = head;
+
+            while(runner != curr) {
+                if (runner.data == curr.data) {
+                    //We break here because there are no duplicates up to prev
+                    prev.next = curr.next;
+                    curr = prev;
+                    break;
+                }
+
+                //Move cursor up to curr
+                runner = runner.next;
+            }
+            if(runner == curr) {
+                prev = curr;
+                curr = curr.next;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        //TODO
+    }
+}
