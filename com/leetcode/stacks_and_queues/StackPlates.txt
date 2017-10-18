@@ -1,0 +1,72 @@
+package com.leetcode;
+
+import java.util.*;
+
+class StackPlates {
+
+    List<Stack<Integer>> stackPlates = new ArrayList<>();
+    int stackSize;
+
+    StackPlates(int stackSize) {
+        this.stackSize = stackSize;
+    }
+
+    public void push(int data) {
+        Stack<Integer> stack = getCurrentStack();
+        if(stack!= null && stack.size() < stackSize) {
+            stack.push(data);
+        } else {
+            Stack<Integer> nStack = new Stack<>();
+            nStack.push(data);
+            stackPlates.add(nStack);
+        }
+    }
+
+    public int pop() {
+        Stack<Integer> stack = getCurrentStack();
+        int data;
+        if(stack != null && !stack.isEmpty()) {
+            data = stack.pop();
+            if(stack.size() == 0) {
+                stackPlates.remove(stackPlates.size() -1);
+            }
+        } else {
+            data = -1;
+        }
+        return data;
+    }
+
+    public int peek() {
+        Stack<Integer> stack = getCurrentStack();
+        int data;
+        if(stack != null && !stack.isEmpty()) {
+            data = stack.peek();
+        } else {
+            data = -1;
+        }
+        return data;
+    }
+
+    //index tells which sub stack to use
+    public int popAt(int index) {
+       int stackNum = index/stackSize;
+       Stack<Integer> stack = stackPlates.get(stackNum);
+
+       return stack.pop();
+    }
+
+
+    public Stack<Integer> getCurrentStack() {
+        Stack<Integer> currentStack;
+        if(stackPlates.size() == 0) {
+            return null;
+        } else {
+            currentStack = stackPlates.get(stackPlates.size() -1);
+        }
+        return currentStack;
+    }
+
+    public static void main(int[] args) {
+
+    }
+}

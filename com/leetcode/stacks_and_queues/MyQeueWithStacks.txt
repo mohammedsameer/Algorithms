@@ -1,0 +1,49 @@
+package com.leetcode;
+
+import java.util.Stack;
+
+/**
+ * Implement a queue using two stacks
+ * Algorithm
+ * Maintain two stacks S1 and S2
+ * Add: Always add elements to S1
+ * Remove: Remove first element of S2, if S2 is empty pop all elements of S1 over to S2
+ */
+class Program {
+
+    class MyQueue<T> {
+        Stack<T> primary;
+        Stack<T> secondary;
+        MyQueue() {
+            primary = new Stack<>();
+            secondary = new Stack<>();
+        }
+
+        public void add(T data) {
+            primary.push(data);
+        }
+
+        public T remove() {
+            if(!secondary.isEmpty()) {
+                return secondary.pop();
+            }
+
+            while (!primary.isEmpty()) {
+                secondary.push(primary.pop());
+            }
+            return secondary.pop();
+        }
+
+        public T peek() {
+            if(!secondary.isEmpty()) {
+                return secondary.peek();
+            }
+
+            while (!primary.isEmpty()) {
+                secondary.push(primary.pop());
+            }
+            return secondary.peek();
+        }
+    }
+
+}
