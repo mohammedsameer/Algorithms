@@ -1,0 +1,53 @@
+package com.leetcode;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Given a binary search tree, design an algorithm which creates a linked list of all the nodes at each depth
+ * (eg, if you have a tree with depth D, you’ll have D linked lists).
+ * Algorithm
+ * Breadth First Search traversal
+ */
+class Program {
+
+     public class Node {
+        int data;
+         Node left;
+         Node right;
+         Node(int data) {
+            this.data = data;
+        }
+    }
+
+    public List<List<Node>> breadthFirstSearchTraversal(Node root) {
+        if(root == null)
+            return null;
+
+        List<List<Node>> result  = new ArrayList<>();
+        List<Node> rootList = new ArrayList<>();
+        rootList.add(root);
+        result.add(rootList);
+
+        while (true) {
+            List<Node> levelList = new ArrayList<>();
+            //Every node in current level
+            for(Node node : result.get(result.size() - 1)) {
+                //Add left and right child nodes
+                if(node.left != null) {
+                    levelList.add(node.left);
+                }
+                if(node.right != null) {
+                    levelList.add(node.right);
+                }
+            }
+
+            if(levelList.isEmpty()) {
+                return result;
+            } else {
+                result.add(levelList);
+            }
+        }
+    }
+}

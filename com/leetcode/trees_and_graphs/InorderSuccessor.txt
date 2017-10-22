@@ -1,0 +1,49 @@
+package com.leetcode;
+
+
+/**
+ * Write an algorithm to find the ‘next’ node (i.e., in-order successor) of a given node in a binary search tree
+ * where each node has a link to its parent.
+ * Algorithm
+ * 1. Given node has right subtree then successor is left most child of right subtree
+ * Given node is leaf node
+ * 2. If given node is right leaf then we have visited the traversal and call successor(node.parent)
+ * 3. If given node is left leaf then successor is parent
+ */
+class Program {
+
+     public class Node {
+        int data;
+         Node left;
+         Node right;
+         Node parent;
+         Node(int data) {
+            this.data = data;
+        }
+    }
+
+
+    public Node successor(Node curr) {
+         if(curr == null)
+             return curr;
+
+         if(curr.right != null) {
+             //Find leftmost leaf of right subtree
+             Node node = curr.right;
+             while(node.left != null) {
+                 node = node.left;
+             }
+             return node;
+         } else {
+             Node parent;
+             //Go up until current node is on left subtree
+             while ((parent = curr.parent) != null)
+             {
+                 if(parent.left == curr) {
+                     return parent;
+                 }
+             }
+             return null;
+         }
+    }
+}

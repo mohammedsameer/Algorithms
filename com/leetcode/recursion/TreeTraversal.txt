@@ -1,0 +1,55 @@
+package com.leetcode;
+
+
+/**
+ * Algorithm
+ */
+class Program {
+
+    class TreeNode {
+        int data;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int data) {
+            this.data = data;
+        }
+    }
+
+    /**
+     * Left -> Current -> Right
+     * @param root
+     */
+    public void inorder(TreeNode root) {
+        if (root == null)
+            return;
+        inorder(root.left);
+        System.out.println(root.data);
+        inorder(root.right);
+    }
+
+    /**
+     * Current -> Left -> Right
+     * @param root
+     */
+    public void preorder(TreeNode root) {
+        if (root == null)
+            return;
+
+        System.out.println(root.data);
+        inorder(root.left);
+        inorder(root.right);
+    }
+
+    /**
+     * Left -> Right -> Current
+     * @param root
+     */
+    public void postOrder(TreeNode root) {
+        if (root == null)
+            return;
+
+        inorder(root.left);
+        inorder(root.right);
+        System.out.println(root.data);
+    }
+}
