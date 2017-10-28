@@ -1,0 +1,30 @@
+package com.leetcode;
+
+
+/**
+ * Determine if there exists a path from root to leaf that matches sum
+ * Algorithm
+ * Traverse down the tree and subtract root.data from current sum, validate if sum == 0 at leaf node
+ */
+class Program {
+
+     public class Node {
+        int data;
+         Node left;
+         Node right;
+         Node parent;
+         Node(int data) {
+            this.data = data;
+        }
+    }
+
+    private boolean hasPath(Node root, int sum) {
+         if(root == null)
+             return false;
+
+         if(sum - root.data == 0 && root.left == null && root.right == null)
+             return true;
+
+        return hasPath(root.left, sum - root.data) || hasPath(root.right, sum - root.data);
+    }
+}

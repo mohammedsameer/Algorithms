@@ -1,0 +1,43 @@
+package com.leetcode;
+
+import java.util.List;
+
+/**
+ * You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum up to that value.
+ * Algorithm
+ * 1. Recurse from given root until the sum matches
+ */
+class Program {
+
+     public class Node {
+        int data;
+         Node left;
+         Node right;
+         Node parent;
+         Node(int data) {
+            this.data = data;
+        }
+    }
+
+
+    public List<Node> sumPaths(Node root, List<Node> path, int sum, int curr) {
+         if(root == null || root.data + curr > sum) {
+             return null;
+         }
+
+         if(root.data + curr == sum) {
+             path.add(root);
+             return path;
+         }
+
+         if(root.data + curr < sum) {
+             curr =+ root.data;
+             path.add(root);
+         }
+
+        if(root.left != null) sumPaths(root.left, path, sum, curr);
+        if(root.right != null) sumPaths(root.right, path, sum, curr);
+
+        return null;
+    }
+}

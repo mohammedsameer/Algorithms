@@ -1,0 +1,42 @@
+package com.leetcode;
+
+//Iterative
+/**
+ * Write code to remove duplicates from an unsorted linked list without using additional buffer
+ * //Algo:
+ * Add each node at a time and pass the carry for next addition
+ */
+public class Program {
+
+    static class Node {
+        int data;
+        Node next;
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+
+Solution -1:
+    //Recursive
+    private static Node addTwoLists(Node head1, Node head2, int carry) {
+        if(head1 == null && head2 == null)
+            return null;
+
+        Node result = new Node(0);
+        int sum = carry;
+        if(head1 != null) {
+            sum += head1.data;
+        }
+        if(head2 != null) {
+            sum += head2.data;
+        }
+
+        result.data = sum%10;
+        Node more = addTwoLists(head1 == null ? null : head1.next, head2 == null ? null: head2.next, sum > 10 ? 1: 0);
+        result.next = more;
+
+        return result;
+    }
+}
+

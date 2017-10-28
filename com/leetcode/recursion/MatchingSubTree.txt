@@ -1,0 +1,43 @@
+package com.leetcode;
+
+/**
+ * You have two very large binary trees: T1, with millions of nodes, and T2, with hundreds of nodes.
+ * Create an algorithm to decide if T2 is a subtree of T1.
+ * Algorithm
+ * 1. Iterate through big tree until small tree's root matches
+ *      1a. On match match the two subtree recursively
+ * 2. If big tree ends then no match
+ */
+class Program {
+
+     public class Node {
+        int data;
+         Node left;
+         Node right;
+         Node parent;
+         Node(int data) {
+            this.data = data;
+        }
+    }
+
+    public boolean containsTree(Node root1, Node root2) {
+         if(root2 == null) return true;
+         else return subTree(root1, root2);
+    }
+
+    private boolean subTree(Node root1, Node root2) {
+         //Big tree is empty
+         if(root1==null) return false;
+         //Big tree and Small tree nodes match
+         if(root1.data == root2.data)
+             return (matchTree(root1, root2));
+         //Recurse the big tree to find small tree matching
+         return subTree(root1.left, root2) || subTree(root2.right, root2);
+    }
+
+    private boolean matchTree(Node root1, Node root2) {
+         if(root1 == null && root2 == null) return true;
+         if(root1 == null || root2 == null) return false;
+         return matchTree(root1.left, root2.left) && matchTree(root1.right, root2.right);
+    }
+}
