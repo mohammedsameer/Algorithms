@@ -1,59 +1,42 @@
-package learning.main;
+package com.leetcode;
+
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The Class Solution.
+ * Algorithm
+ * 1. Start with empty set
+ * 2. Append every character of given digit to current result set, repeat this for every digit
+ * Note: This is combination
  */
-public class Solution {
+public class Program {
 
-	/**
-	 * Letter combinations.
-	 *
-	 * @param digits the digits
-	 * @return the array list
-	 */
-	public static ArrayList<String> letterCombinations(String digits) {
+    public static List<String> letterCombinations(String digits) {
+        if(digits.isEmpty())
+            return new ArrayList<>();
 
-		ArrayList<String> result = new ArrayList<>();
-		ArrayList<String> currResult = new ArrayList<>();
-		String[] digitToAlpha = { "", "", "abc", "def", "ghi", "jkl", "mno",
-				"pqrs", "tuv", "wxyz" };
+        String[] digitToAlpha = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        List<String> result = new ArrayList<>();
+        result.add("");
 
-		if (digits == null || digits.length() == 0)
-			return result;
+        for(int i = 0; i < digits.length(); i ++) {
+            //Get every digit string
+            String currDigit = digitToAlpha[digits.charAt(i) - '0'];
+            List<String> currResult = new ArrayList<>();
+            for(String curr : result) {
+                //Get every current result string
+                for(Character c : currDigit.toCharArray()) {
+                    //Apply the new character of current digit to every current result
+                    currResult.add(curr + c);
+                }
+            }
+            result = currResult;
+         }
+         return result;
+    }
 
-		// Initialize empty string
-		result.add("");
-		int index = 0;
-		while (index < digits.length()) 
-		{
-			String curr = digitToAlpha[digits.charAt(index)-'0'];
-			currResult = new ArrayList<>();
-			
-			for(String currVal : result) 
-			{
-				for(int i=0;i<curr.length();i++)
-				{
-					currResult.add(currVal+curr.charAt(i));
-				}
-			}
-
-			index++;
-			result = currResult;
-		}
-		
-		return result;
-	}
-
-	/**
-	 * The main method.
-	 * 
-	 * @param args
-	 *            the arguments
-	 */
-	public static void main(String[] args) {
-		System.out.println("Letter Combinations :" + letterCombinations("23"));
-
-	}
+    public static void main(String[] args) {
+        System.out.println(letterCombinations("23"));
+    }
 }
