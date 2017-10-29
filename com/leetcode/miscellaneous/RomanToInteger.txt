@@ -1,54 +1,73 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+/**
+ * Algorithm
+ * 1. If the current number is greater than next, num = num
+ * 2. If the current number is smaller than next, num =-num
  */
-//Algo
-//Loop through string 
-//a)If the next element is greater then num=-num
-//b)If the next element is smaller then num=+num;
-class Solution {
-  
-  public static int romanToInt(String roman, HashMap<Character, Integer> romanMap)
-  {
-   int result = 0;
-    
-   if(roman==null)
-     return result;
-    
-   for(int i=0;i<roman.length();i++)
-   {
-     char c = roman.charAt(i);
-     int currNum = romanMap.get(c);
-     if(i<roman.length()-1)
-     {
-       char nc = roman.charAt(i+1);
-       int nextNum = romanMap.get(nc);
-       if(currNum<nextNum)
-         currNum = -currNum;
-     }
-     
-     result+=currNum;
-   }
-    
-   return result;
-    
-  }
-  
-  public static void main(String[] args) {
-   HashMap<Character, Integer> romanMap = new HashMap<>();
-   romanMap.put('M',1000);
-   romanMap.put('D',500);
-   romanMap.put('C',100);
-   romanMap.put('L',50);
-   romanMap.put('X',10);
-   romanMap.put('V',5);
-   romanMap.put('I',1);
-   String roman="LXXXIV";
-   System.out.println("Roman to Integer: "+ romanToInt(roman,romanMap));
-  }
+public class Program {
+
+    public static int romanToInt(String roman) {
+        if(roman.isEmpty())
+            return 0;
+
+        int len = roman.length();
+        int result = 0;
+        for(int i = 0; i < len; i ++) {
+            int curr = romanToIntHelper(roman.charAt(i));
+            int next = 0;
+            if(i < len -1) {
+                next = romanToIntHelper(roman.charAt(i+1));
+            }
+
+            if(curr < next) {
+                result = result - curr;
+            } else {
+                result = result + curr;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Rom to Integer helper
+     * @param c input character c
+     * @return
+     */
+    public static int romanToIntHelper(char c) {
+
+        int result;
+        switch (c) {
+            case 'M':
+                result = 1000;
+                break;
+            case 'D':
+                result = 500;
+                break;
+            case 'C':
+                result = 100;
+                break;
+            case 'L':
+                result = 50;
+                break;
+            case 'X':
+                result = 10;
+                break;
+            case 'V':
+                result = 5;
+                break;
+            case 'I':
+                result = 1;
+                break;
+            default:
+                result = 0;
+                break;
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(romanToInt("MCD"));
+    }
 }

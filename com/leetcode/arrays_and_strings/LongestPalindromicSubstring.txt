@@ -1,55 +1,46 @@
-import java.io.*;
+package com.leetcode;
+
 import java.util.*;
 
+/**
+ * Algorithm
+ * Expand around center
+ * Pallindromes can be even (aa) or odd length (aba)
+ * Expand around center for (start,end) = (i,i), and (start, end) = (i, i+1)
+ */
+public class Program {
 
-class Solution {
-  
-  public static String longestPalindrome(String s)
-  {
-    if(s==null||s.length()==0)
-      return "";
-    
-    int maxLength=0;
-    String result="";
-    
-    for(int i=0;i<s.length();i++)
-    {
-      for(int j=i+1;j<=s.length();j++)
-      {
-        String sub = s.substring(i,j);
-        if(isPalindrome(sub))
-        {
-          if(maxLength<sub.length())
-           {
-            maxLength = sub.length();
-            result = sub;
-           } 
+    public static String longestPalindrome(String s) {
+        if(s.isEmpty())
+            return s;
+
+        String resultString = "";
+        for(int i=0; i < s.length(); i++) {
+            String substr1 = pallindromeSubStr(s, i, i);
+            String substr2 = pallindromeSubStr(s, i, i+1);
+
+            if(substr1.length() > resultString.length()) {
+                resultString = substr1;
+            }
+
+            if(substr2.length() > resultString.length()) {
+                resultString = substr2;
+            }
         }
-      }
+
+        return resultString;
     }
-      
-      
-    
-    return result;
-  }
-  
-  public static boolean isPalindrome(String s)
-  {
-    boolean isPalindrome = true;
-    for(int i=0;i<s.length();i++)
-    {
-      if(s.charAt(i)!=s.charAt(s.length()-i-1))
-      {  
-         isPalindrome = false;
-         break;
-      }
+
+    public static String pallindromeSubStr(String s, int start, int end) {
+        while(start >= 0 && end < s.length() && s.charAt(start) == s.charAt(end)) {
+            start--;
+            end++;
+        }
+        return s.substring(start + 1, end);
     }
-    
-    return isPalindrome;
-  }
-  
-  public static void main(String[] args) {
-    System.out.println("Longest Palindromic Substring: "+ longestPalindrome("smoomd"));
-  
-  }
+
+    public static void main(String[] args) {
+        System.out.println(longestPalindrome("aba"));
+        System.out.println(longestPalindrome("sebces"));
+    }
 }

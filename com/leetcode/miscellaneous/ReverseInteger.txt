@@ -1,33 +1,24 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+/**
+ * Algorithm
+ * For every digit perform
+ * a) digit = num%10
+ * b) num = num/10
  */
-//Algo
-//Loop through num and Use % & /
-class Solution {
-  
-  public static int reverseNumber(int num)
-  {
-   int result = 0;
-   
-   while(num>0)
-   {
-     int rem = num%10;
-     num=num/10;
-     result= result*10+rem;
-   }
-    
-   return result;
-    
-  }
-  
-  public static void main(String[] args) {
-  
-   System.out.println("Reverse of Integer: "+ reverseNumber(6908));
-  }
+public class Program {
+    public static int reverse(int x) {
+        long result = 0;
+        while(x != 0) {
+            result = result * 10 + x %10;
+            x = x/10;
+            if(result > Integer.MAX_VALUE || result < Integer.MIN_VALUE) return 0;
+        }
+
+        return Math.toIntExact(result);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(reverse(1534236469));
+    }
 }

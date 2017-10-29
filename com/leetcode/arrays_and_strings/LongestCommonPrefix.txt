@@ -1,55 +1,47 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+/**
+ * Algorithm
+ * 1. Loop through and identify the min length string in array
+ * 2. Loop every character up to min length element and compare character
  */
-//Algo:
-//1. Use first element in array as index string
-//2. Match a given character against all other strings in array
-class Solution {
-  public static String longestCommonPrefix(String[] strArr)
-  {
-    if(strArr.length==0)
-      return "";
-    
-    StringBuilder sb = new StringBuilder();
-    int index=0;
-    char c;
-    
-    while(true)
-    {
-      if(index<strArr[0].length())
-      {
-        //new index character
-        c = strArr[0].charAt(index);
-      }
-      else
-      {
-        //length exceeded
-        return sb.toString();
-      }
-      
-      for(int i=1;i<strArr.length;i++)
-      {
-        //character mismatch or length exceeded
-        if(!(index<strArr[i].length() && strArr[i].charAt(index)==c))
-        {
+public class Program {
+
+    public static String longestCommonPrefix(String[] strArray) {
+        StringBuilder sb = new StringBuilder();
+
+        if(strArray == null || strArray.length == 0)
           return sb.toString();
+
+        int len = Integer.MAX_VALUE;
+        for(String string : strArray) {
+            len = len > string.length() ? string.length() : len;
         }
-      }
-     
-      sb.append(c);
-      index++;
+
+        boolean isMatch = true;
+        //Loop until min length string
+        for(int i=0; i< len; i++) {
+            Character c  = null;
+            //Loop every string to determine if character at i matches
+            for(int j=0; j< strArray.length; j++) {
+                if(c == null) {
+                    c = strArray[j].charAt(i);
+                } else {
+                    if(c != strArray[j].charAt(i)) {
+                        isMatch = false;
+                        break;
+                    }
+                }
+            }
+
+            if(isMatch) {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
-    
-  }
-  
-  public static void main(String[] args) {
-  String[] strArr = {"sameer","samrah","samar","sadath"};
-  System.out.println("Longest Common Prefix: "+ longestCommonPrefix(strArr));
-  }
+
+    public static void main(String[] args) {
+        System.out.println(longestCommonPrefix(new String[]{"abc", "abcde", "abcd"}));
+    }
 }
