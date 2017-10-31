@@ -1,0 +1,65 @@
+package com.leetcode;
+
+/**
+ * Search for a Range
+ * Algorithm
+ * Use binary search to locate the element, then you compute the left and right boundaries
+*/
+public class Program {
+
+    public static int[] searchRange(int[] nums, int target) {
+        int[] result = {-1, -1};
+
+        if(nums == null || nums.length == 0)
+            return result;
+
+        return binarySearch(nums, 0, nums.length-1, target, result);
+    }
+
+
+    public static int[] binarySearch(int[] nums, int start, int end, int target, int[] result) {
+
+        if(start > end) {
+            return result;
+        }
+
+        int mid = (start + end)/2;
+
+        if(target == nums[mid]) {
+            int lIndex = mid;
+            int rIndex = mid;
+
+            //Find the lower bound
+            while (lIndex > 0) {
+                if(target == nums[lIndex - 1]) {
+                    lIndex--;
+                } else {
+                    break;
+                }
+            }
+
+            //Find the upper bound
+            while (rIndex < nums.length -1) {
+                if(target == nums[rIndex + 1]) {
+                    rIndex++;
+                } else {
+                    break;
+                }
+            }
+
+            result[0] = lIndex;
+            result[1] = rIndex;
+
+        } else if (target > nums[mid]) {
+            binarySearch(nums, mid + 1, end, target, result);
+        } else {
+            binarySearch(nums, start, mid - 1, target, result);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(searchRange(new int[] {5,7,7,8,8,10}, 8));
+    }
+}

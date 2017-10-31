@@ -1,0 +1,42 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Loop through haystack until you match the first character of needle, then iterate both haystack and needle to match
+ * Note: Do not move the haystack cursor, instead use needle cursor Reason: Its possible that haystack and needle share a partial match before a full match, this may result in
+ * haystack cursor getting moved inadvertently for a mismatch
+ * E.g: haystack: "mississippi",  needle: "issippi"
+ */
+public class Program {
+
+    public static int strStr(String haystack, String needle) {
+
+        if(haystack.isEmpty() && needle.isEmpty())
+            return 0;
+
+        if(haystack.isEmpty())
+            return -1;
+
+        if(needle.isEmpty())
+            return 0;
+
+        int hIndex = 0, nIndex = 0;
+        while (hIndex < haystack.length()) {
+            nIndex = 0;
+           while (nIndex < needle.length()) {
+               if(hIndex + nIndex >= haystack.length()) return -1;
+               if(haystack.charAt(hIndex + nIndex) != needle.charAt(nIndex)) break;
+               nIndex++;
+           }
+
+           if(nIndex == needle.length()) return hIndex;
+           hIndex++;
+        }
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(strStr("mississippi", "issippi"));
+    }
+}

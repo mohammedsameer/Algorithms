@@ -1,31 +1,32 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-class Solution {
-  
-  public static String removeDuplicates(final String input)
-  {
-    
-    if(input==null||input.length()==0)
-      return input;
-    
-    StringBuilder sb = new StringBuilder();
-    char[] inputChars = input.toCharArray();
-    HashMap<Integer, Boolean> inputCharsMap = new HashMap<>();
-    
-    for(char c : inputChars)
-    {
-      if(!inputCharsMap.containsKey(Character.getNumericValue(c)))
-      {
-        sb.append(c);
-        inputCharsMap.put(Character.getNumericValue(c),true);
-      }
+/**
+ * Algorithm
+ * Start with i = 0, j = 1, if nums[i] != nums[j], then copy the element to nums[++i] = nums[j]
+ */
+public class Program {
+
+    public static int removeDuplicates(int[] nums) {
+
+        if(nums == null || nums.length == 0)
+            return 0;
+
+        if(nums.length < 2)
+            return nums.length;
+
+        int index = 0;
+        for(int i = 1; i< nums.length; i++) {
+            if(nums[index] != nums[i]) {
+                //Copy the next element safely in the ++index
+                nums[++index] = nums[i];
+            }
+        }
+
+        return index + 1;
     }
-    
-    return sb.toString();
-  }
-  
-  public static void main(String[] args) {
-    System.out.println("Remove duplicates: "+ removeDuplicates("saaas"));
-  }
+
+
+    public static void main(String[] args) {
+        System.out.println(removeDuplicates(new int[]{3,4,5,5,5,7,7,8,8,9}));
+    }
 }

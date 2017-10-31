@@ -1,41 +1,33 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
- */
+/**
+ * Algorithm
+ * Loop through the array and check for a match
+ * Note: If target is smaller than pivot or target is larger than max then no match
+*/
+public class Program {
 
-class Solution {
-  
-  public static boolean search(int[] arr,int target)
-  {
-    if(arr.length==0)
-      return false;
-    
-    for(int i=0;i<arr.length;i++)
-    {
-      if(target==arr[i])
-        return true;
-      
-     //rotation encountered & target still not matching/smaller
-     if(i<arr.length-1 && arr[i]>arr[i+1])
-      {
-        if(target>arr[i])
-          return false;
-      }
-      
+    public static int search(int[] nums, int target) {
+        if(nums == null || nums.length == 0)
+            return -1;
+
+        for(int i = 0; i < nums.length; i++) {
+            if(target == nums[i])
+                return i;
+
+            //Rotation encountered but target still greater than max element
+            if(i < nums.length -1 && nums[i] > nums[i+1])
+            {
+                if(target > nums[i] || target < nums[i+1])
+                {
+                    return -1;
+                }
+            }
+        }
+        return -1;
     }
-    
-    return false;
-    
-  }
-  
-  public static void main(String[] args) {
-   int[] arr = {3,4,5,5,1,1,2};
-   System.out.println("Search in Rotated Sorted Array: "+ search(arr, 3));
-  }
-  
+
+    public static void main(String[] args) {
+        System.out.println(search(new int[] {4, 5, 6, 0, 2, 3}, 2));
+    }
 }

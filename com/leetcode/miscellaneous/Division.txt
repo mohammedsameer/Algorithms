@@ -1,63 +1,46 @@
 
 //Solution1
-package learning.main;
+package com.leetcode;
 
 /**
- * The Class Solution.
- */
-public class Solution {
+ * Algorithm
+ * Subtract divisor from dividend until a) dividend is zero or b) dividend  is smaller than divisor
+ * Note: This does not completely handle all the MAX and MIN edge cases
+*/
+public class Program {
 
-	/**
-	 * Divide.
-	 * 
-	 * @param num
-	 *            the num
-	 * @param deno
-	 *            the deno
-	 * @return the int
-	 */
-	public static int divide(int num, int deno) {
+    public static int divide(int dividend, int divisor) {
 
-		int result = 0;
+        int negativeMultiplier = 1;
+        if(dividend == 0)
+            return 0;
 
-		if (num == 0)
-			return result;
+        if(divisor == 0)
+            return Integer.MAX_VALUE;
 
-		if (deno == 0)
-			return Integer.MAX_VALUE;
+        if(dividend < 0 && divisor < 0) {
+            dividend = dividend * -1;
+            divisor = divisor * -1;
+        } else if(dividend < 0) {
+            dividend = dividend * -1;
+            negativeMultiplier = -1;
+        } else if(divisor < 0) {
+            divisor = divisor * -1;
+            negativeMultiplier = -1;
+        }
 
-		int nnum = num;
-		int ndeno = deno;
+        int multiplier = 0;
+        while(dividend >= divisor) {
+            dividend = dividend - divisor;
+            ++multiplier;
+        }
 
-		if (num < 0)
-			nnum = -nnum;
+        return multiplier * negativeMultiplier;
+    }
 
-		if (deno < 0)
-			ndeno = -ndeno;
-
-		while (nnum > 0) {
-			nnum = nnum - ndeno;
-			result += 1;
-		}
-
-		//One of the num or deno is negative
-		if (!(num < 0 && deno < 0) && (num < 0 || deno < 0)) {
-			return -(result);
-		}
-		
-		return result;
-	}
-
-	/**
-	 * The main method.
-	 * 
-	 * @param args
-	 *            the arguments
-	 */
-	public static void main(String[] args) {
-		System.out.println("Division :" + divide(24, 3));
-
-	}
+    public static void main(String[] args) {
+        System.out.println(divide(18, 2));
+    }
 }
 
 
