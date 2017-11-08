@@ -1,0 +1,38 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * 1. If number is in range i.e. positive & b/w 0 & len, then A[i] = i, if not swap
+ * 2. Loop through elements to find an out of position element
+ */
+public class Program {
+    public static int firstMissingPositive(int[] A) {
+        int i = 0;
+        int length = A.length;
+        while(i < length){
+            //If number is in range 0 to length-1 and A[i] not equal to i, swap it with its position
+            if(A[i] >=0 && A[i] < length && A[i] != i) swap(A, i, A[i]);
+            else i++;
+        }
+
+        //Loop through and make sure all elements are in their respective index position
+        int k=1; (Initializing k to 1, ensures we return 1 when all numbers <=0)
+        while (k < length && A[k] == k) k++;
+
+        //If the above loop breaks then return k
+        if(length == 0 || k < length) return k;
+        else
+            return A[0] == k ? k+1: k;
+
+    }
+
+    private static void swap(int[] A, int i, int j){
+        int temp = A[i];
+        A[i] = A[j];
+        A[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(firstMissingPositive(new int[] {-1, -2, 0, 1, 3}));
+    }
+}

@@ -1,51 +1,43 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algorithm
+ * 1. Start with empty list
+ * 2. Loop through all elements of array and add them at all possible positions of prev element
  */
+public class Program {
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
 
-class Solution {
-  
-  public static ArrayList<ArrayList<Integer>> permute(int[] num)
-  {
-    ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-    ArrayList<ArrayList<Integer>> currResult = new ArrayList<ArrayList<Integer>>();
-    
-    if(num.length==0)
-      return result;
-    
-    //Initialize with first element
-    result.add(new ArrayList<Integer>());
-    
-    
-    for(int i=0;i<num.length;i++)
-    {
-      //Insert number in every element at every location in every element of result
-      for(ArrayList<Integer> prev: result)
-      {
-        //Indexed from 0 to len, as we need to add to the end
-        for(int j=0;j<=prev.size();j++)
-        {
-          ArrayList<Integer> curr = new ArrayList<>(prev);
-          curr.add(j,num[i]);
-          currResult.add(curr);
+        if(nums == null || nums.length == 0)
+            return result;
+
+        //Add empty list to result
+        result.add(new ArrayList<>());
+
+        for(int i=0; i <nums.length; i++) {
+            List<List<Integer>>  currResult = new ArrayList<>();
+
+            //Iterate over every prev in current result and add nums[i] at all position
+            for(List<Integer> prev : result) {
+
+                //Indexed from 0 to len, as we need to add to the end
+                for(int j=0; j<= prev.size(); j++) {
+                    List<Integer> curr = new ArrayList<>(prev);
+                    curr.add(j, nums[i]);
+                    currResult.add(curr);
+                }
+            }
+            result = currResult;
         }
-      }
-      
-      result = currResult;
-      currResult = new ArrayList<ArrayList<Integer>>();
+
+        return result;
     }
-    
-    return result;
-    
-  }
-  
-  public static void main(String[] args) {
-   int[] num = {1,2,3};
-   System.out.println("Permutation:"+ permute(num));
-  }
+
+    public static void main(String[] args) {
+        System.out.println(permute(new int[] {1,2,3}));
+    }
 }

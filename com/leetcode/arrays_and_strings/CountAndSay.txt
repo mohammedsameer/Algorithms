@@ -1,0 +1,44 @@
+package com.leetcode;
+
+/**
+* Algorithm
+ * Loop through n-1 character and compute the nth character by tracking
+ * a) Say: current character we are iterating over
+ * b) Count: Occurrence of current character
+*/
+public class Program {
+
+    public static String countAndSay(int n) {
+        if(n <= 0)
+            return "";
+
+        StringBuilder curr = new StringBuilder("1");
+        StringBuilder prev;
+        //Read out and say n-1th character to compute nth character
+        for(int i=1; i<n; i++) {
+            //Reset counter (Note: counter=0 here as we have not yet moved past the character)
+            int count = 0;
+            prev = curr;
+            curr = new StringBuilder();
+            Character say = prev.charAt(0);
+            for(Character c : prev.toString().toCharArray()) {
+                if(c == say) {
+                    count++;
+                }
+                else {
+                    curr.append(count).append(say);
+                    //Reset counter (Note: counter=1 here as we have moved past the character)
+                    count = 1;
+                    say = c;
+                }
+            }
+            curr.append(count).append(say);
+        }
+
+        return curr.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(countAndSay(5));
+    }
+}
