@@ -1,0 +1,94 @@
+//Solution-1
+package com.leetcode;
+
+import java.util.*;
+
+/**
+ * Algorithm
+ * 1. Maintain a map (sorted str, list)
+ * 2. Loop through string array and check if the key exists in map, if yes add to list else create new entry
+ */
+public class Program {
+
+    public static List<List<String>> groupAnagrams(String[] strs) {
+
+        if(strs.length == 0)
+            return new ArrayList<>();
+
+        Map<String, List<String>> result = new HashMap<>();
+        for(String str: strs) {
+            char[] currArr = str.toCharArray();
+            Arrays.sort(currArr);
+            String currStr = String.valueOf(currArr);
+
+            if(!result.containsKey(currStr)) {
+                result.put(currStr, new ArrayList<>());
+            }
+            result.get(currStr).add(str);
+        }
+
+        return new ArrayList<>(result.values());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}));
+    }
+}
+
+//Solution-2
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Algorithm
+ */
+public class Program {
+
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+
+        if(strs.length == 0)
+            return result;
+
+        for(String str : strs) {
+            //Check if the str is an anagram of existing str, else add
+            boolean isMatch = false;
+
+            for(int i=0; i< result.size(); i++) {
+                if(result.get(i).size() > 0 && isAnagram(str, result.get(i).get(0))) {
+                    result.get(i).add(str);
+                    isMatch = true;
+                }
+            }
+            if(!isMatch) {
+                List<String> stringList = new ArrayList<>();
+                stringList.add(str);
+                result.add(stringList);
+            }
+        }
+
+       return result;
+    }
+
+    /**
+     * Is anagram
+     * @param curr
+     * @param other
+     * @return
+     */
+    public static boolean isAnagram(String curr, String other) {
+        char[] currArr = curr.toCharArray();
+        char[] otherArr = other.toCharArray();
+        Arrays.sort(currArr);
+        Arrays.sort(otherArr);
+
+        return Arrays.equals(currArr, otherArr);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}));
+    }
+}

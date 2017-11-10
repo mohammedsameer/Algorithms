@@ -1,0 +1,34 @@
+package com.leetcode;
+
+/**
+ * Algorith
+ * 90 degree result[c][rows-1-r] = matrix[r][c]
+ * 180 degree result[rows-1-r][cols-1-c] = matrix[r][c]
+ */
+public class Program {
+
+    public void rotate(int[][] matrix) {
+        if(matrix.length == 0)
+            return;
+
+        int rows = matrix.length;
+        int cols = rows;
+
+        int[][] temp = new int[rows][cols];
+        for(int r=0; r<rows -1; r++) {
+            for(int c=0; c<cols-1; c++) {
+                temp[c][rows-1-r] = matrix[r][c];
+            }
+        }
+
+        for(int r=0; r<rows -1; r++) {
+            for(int c=0; c<cols-1; c++) {
+                matrix[r][c] = temp[r][c];
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println();
+    }
+}
