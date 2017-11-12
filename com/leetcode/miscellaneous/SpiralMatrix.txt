@@ -1,0 +1,72 @@
+
+//Algo: Loop through array as
+// Left to Left
+// Top to Bottom
+// Right to Left
+// Bottom to Top
+// Note: After each iteration completion increase index & check if it exceeds the bounds
+public class Solution {
+    public ArrayList<Integer> spiralOrder(int[][] matrix) {
+
+        ArrayList<Integer> result = new ArrayList<>();
+
+        if(matrix==null || matrix.length==0 || matrix[0].length==0)
+         return result;
+
+         int rows = matrix.length;
+         int cols = matrix[0].length;
+
+         int rBIndex = 0;
+         int rEIndex = rows-1;
+         int cBIndex = 0;
+         int cEIndex = cols-1;
+
+
+         while(true)
+         {
+             //Left to Right
+             for(int c=cBIndex;c<=cEIndex;c++)
+             {
+                 result.add(matrix[rBIndex][c]);
+             }
+
+             //Check if rows greater than bound
+             if(++rBIndex>rEIndex)
+              break;
+
+             //Top to Bottom
+             for(int r=rBIndex; r<=rEIndex;r++)
+             {
+                 result.add(matrix[r][cEIndex]);
+             }
+
+             //Check if cols lesser than bound
+             if(--cEIndex<cBIndex)
+              break;
+
+             //Right to Left
+             for(int c=cEIndex;c>=cBIndex;c--)
+             {
+                 result.add(matrix[rEIndex][c]);
+             }
+
+             //Check if rows lesser than bound
+             if(--rEIndex<rBIndex)
+              break;
+
+             //Bottom to Top
+             for(int r=rEIndex;r>=rBIndex;r--)
+             {
+                 result.add(matrix[r][cBIndex]);
+             }
+
+             //Check if cols cols greater than bound
+             if(++cBIndex>cEIndex)
+              break;
+
+         }
+
+         return result;
+
+    }
+}

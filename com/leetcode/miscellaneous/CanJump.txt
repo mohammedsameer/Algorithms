@@ -1,0 +1,42 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * 1. Steps keep track of current num[i]
+ * 2. If num[i] + i > end i.e. can you jump from current to end then go ahead and jump, else decrease the step
+ */
+public class Program {
+
+    public static boolean canJump(int[] nums) {
+        if(nums.length == 0)
+            return true;
+
+        int maxReach = 0;
+        int steps = 0;
+        int end = nums.length -1;
+        for(int i=0; i< end; i++) {
+            if(nums[i] + i > maxReach) {
+                maxReach = nums[i] + i;
+                steps = nums[i];
+            }
+
+            //Reached end or beyond i.e. from current do you have a max reach to end,
+            // if yes go ahead and jump
+            if(maxReach >= end)
+                return true;
+
+            //Run out of steps
+            if(steps == 0)
+                return false;
+
+            //Reduce one step
+            steps--;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(canJump(new int[]{2,3,1,1,4}));
+    }
+}

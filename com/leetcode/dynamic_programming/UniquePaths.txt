@@ -1,0 +1,37 @@
+package com.leetcode;
+
+
+/**
+ * Algorithm
+ */
+public class Program {
+    public static int uniquePaths(int m, int n) {
+      //Dynamic programming bottom up approach i.e. we compute all sub problems
+
+       if(m < 0 || n < 0)
+           return 0;
+
+       int[][] result = new int[m][n];
+       //Base case (You can only move in one way for column 0)
+       for(int r=0; r<m; r++) {
+          result[r][0] = 1;
+       }
+
+        //Base case (You can only move in one way for row 0)
+        for(int c=0; c<n; c++) {
+            result[0][c] = 1;
+        }
+
+        for(int r=1; r<m; r++) {
+           for(int c=1; c<n; c++) {
+               result[r][c] = result[r-1][c] + result[r][c-1];
+           }
+        }
+
+        return result[m-1][n-1];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(uniquePaths(1,2));
+    }
+}

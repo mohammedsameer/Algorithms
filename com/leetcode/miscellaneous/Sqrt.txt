@@ -1,46 +1,37 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+/**
+ * Algorithm
+ * The sqrt should be between 1...n/2 for 1....n
  */
-//Algo:
-//Given 1...mid...n, sqrt will be <=mid
-class Solution {
-  public static int sqrt(int num)
-  {
-    if(num<=0)
-      return 0;
-    
-    if(num==1)
-      return 1;
-    
-    int mid=num/2;
-    int low = 1;
-    int high = mid+1;
-   
-    while(low<=high)
-    {
-      int sq = mid*mid;
-      
-      if(sq==num)
+public class Program {
+
+    public static int mySqrt(int n) {
+        if(n==1)
+            return 1;
+
+        int start = 1;
+        int end = n;
+        int mid = n/2;
+
+        while(start <= end) {
+            //If square of mid = n, then mid is sqrt of n
+            int square = mid * mid;
+            if(square == n)
+                return mid;
+
+            if(square < n)
+                start = mid + 1;
+            else
+                end = mid - 1;
+
+            mid = (start + end)/2;
+        }
+
         return mid;
-      
-      if(sq<num)
-        low = mid+1;
-      else
-        high = mid-1;
-    
-      mid = (low+high)/2;
     }
-    
-    return high;
-  }
-  public static void main(String[] args) {
-   int num  = 5;
-  System.out.println("Sqrt of num:"+ num+" is:"+ sqrt(num));
-  }
+
+    public static void main(String[] args) {
+        System.out.println(mySqrt(119));
+    }
 }

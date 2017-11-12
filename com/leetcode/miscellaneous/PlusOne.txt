@@ -1,0 +1,29 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ */
+public class Program {
+
+    public static int[] plusOne(int[] num) {
+        int carry = 1;
+        for(int i = num.length - 1; i >=0; i--) {
+            if(num[i] < 9) {
+                num[i] = num[i] + carry;
+                return num;
+            }
+
+            //Since the digit 9, 9+1=0, and keep the carry to 1
+            num[i] = 0;
+        }
+
+        //Note all lower digits are zero due to carry
+        int[] nnum = new int[num.length+1];
+        nnum[0] = carry;
+        return nnum;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(plusOne(new int[] {1,2,3}));
+    }
+}
