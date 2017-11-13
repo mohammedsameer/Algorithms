@@ -1,0 +1,31 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Dynamic programming
+ * climb[n] = climb[n-1] + climb[n-2]
+ */
+public class Program {
+
+    public static int climbStairs(int n) {
+        if(n==0)
+            return 0;
+
+        if(n==1)
+            return 1;
+
+        int[] climb  = new int[n];
+        climb[0] = 1;
+        climb[1] = 2;
+
+        for(int i=2; i<n; i++) {
+            climb[i] = climb[i-1] + climb[i-2];
+        }
+
+        return climb[n-1];
+    }
+
+    public static void main(String[] args) {
+       System.out.println(climbStairs(3));
+    }
+}

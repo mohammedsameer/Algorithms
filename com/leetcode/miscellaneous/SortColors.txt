@@ -1,0 +1,47 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * 1. Identify the color counts
+ * 2. Identify the color start index and set the array
+ */
+public class Program {
+
+    /**
+     * 0 -> red
+     * 1 -> white
+     * 2 -> blue
+     */
+    public static void sortColors(int[] nums) {
+        int rCount = 0 , wCount = 0, bCount = 0;
+
+        for(int color : nums) {
+            switch (color) {
+                case 0:
+                    ++rCount;
+                    break;
+                case 1:
+                    ++wCount;
+                    break;
+                case 2:
+                    ++bCount;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        int rIndex = 0;
+        int wIndex = rCount;
+        int bIndex = rCount + wCount;
+
+        for(int i = 0; i < rCount; i++) nums[rIndex++] = 0;
+        for(int i = 0; i < wCount; i++) nums[wIndex++] = 1;
+        for(int i = 0; i < bCount; i++) nums[bIndex++] = 2;
+    }
+
+    public static void main(String[] args) {
+       sortColors(new int[]{0,2});
+       System.out.println();
+    }
+}
