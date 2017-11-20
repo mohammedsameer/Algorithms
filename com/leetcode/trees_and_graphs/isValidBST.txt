@@ -1,0 +1,47 @@
+package com.leetcode;
+
+import java.util.Stack;
+
+/**
+ * Algorithm
+ * 1. Push all nodes until the left most node & then pop node and move to their right
+ * 2. On popping if previous node is not empty compare current with previous node and move the current to right
+ */
+public class Program {
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+     }
+
+    public boolean isValidBST(TreeNode root) {
+        if(root==null)
+            return false;
+
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        TreeNode prev = null;
+        while (!stack.isEmpty() || curr!= null) {
+            if(curr != null){
+                stack.push(curr);
+                curr = curr.left;
+            } else {
+                curr = stack.pop();
+                //Compare current with previous node
+                if(prev != null && prev.val >= curr.val) {
+                    return false;
+                }
+                prev = curr;
+                curr = curr.right;
+            }
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+       System.out.println();
+    }
+}

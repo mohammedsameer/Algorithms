@@ -1,0 +1,44 @@
+package com.leetcode;
+
+
+/**
+ * Algorithm
+ * 1. Recurse left and right subtrees
+ * Symettry:
+ * Parent: root.left.val = root.right.val
+ */
+public class Program {
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+    }
+
+    public boolean isSymmetric(TreeNode root) {
+
+        if(root == null)
+            return true;
+
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        return isSymmetricHelper(left, right);
+
+    }
+
+    public boolean isSymmetricHelper(TreeNode p, TreeNode  q) {
+
+        if(p == null && q == null)
+            return true;
+
+        if(p == null || q == null || p.val != q.val)
+            return false;
+
+        return isSymmetricHelper(p.left, q.right) && isSymmetricHelper(p.right, q.left);
+    }
+
+    public static void main(String[] args) {
+        System.out.println();
+    }
+}

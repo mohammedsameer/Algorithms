@@ -1,0 +1,64 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Start from every cell of board and try to match the word
+ */
+public class Program {
+
+    public boolean exist(char[][] board, String word) {
+        if(board.length == 0 || word.length() == 0)
+            return false;
+
+        boolean[][] visited = new boolean[board.length][board.length];
+        //Search for word starting every cell
+        for(int r=0; r<board.length; r++) {
+            for(int c=0; c<board.length; c++) {
+                if(isMatch(board, r, c, visited, 0, word)) return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isMatch(char[][] board, int r, int c, boolean[][] visited, int index, String word) {
+        //All erroneous conditions
+        if(r > board.length || c > board.length || r < 0 || c < 0 || index >= word.length()
+                || visited[r][c] || board[r][c] != word.charAt(index))
+            return false;
+
+        //Cell visited
+        visited[r][c] = true;
+
+        if(index == word.length() -1)
+            return true;
+
+        //Match next character
+
+        //Next row
+        if(isMatch(board, r+1, c, visited, index++, word))
+            return true;
+
+        //Next col
+        if(isMatch(board, r, c+1, visited, index++, word))
+            return true;
+
+
+        //Prev row
+        if(isMatch(board, r-1, c, visited, index++, word))
+            return true;
+
+        //Prev col
+        if(isMatch(board, r, c-1, visited, index++, word))
+            return true;
+
+        //Allow visiting the cell by other means
+        visited[r][c]  = false;
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+       System.out.println();
+    }
+}

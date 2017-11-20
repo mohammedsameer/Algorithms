@@ -1,12 +1,11 @@
 package com.leetcode;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 /**
  * Algorithm
- * Push all nodes until the left most node & then pop node and move to their right
+ * 1. Push all nodes until the left most node & then pop node and move to their right
+ * 2. On popping check if kCounter == 0
  */
 public class Program {
 
@@ -17,13 +16,12 @@ public class Program {
         TreeNode(int x) { val = x; }
      }
 
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public TreeNode kthSmallest(TreeNode root, int k) {
         if(root == null)
-            return new ArrayList<>();
+            return root;
 
-        List<Integer> result = new ArrayList<>();
+        int kCounter  = k;
         Stack<TreeNode> stack = new Stack<>();
-
         TreeNode curr = root;
         while (!stack.isEmpty() || curr != null) {
             if(curr != null) {
@@ -31,13 +29,13 @@ public class Program {
                 curr = curr.left;
             } else {
                 TreeNode node = stack.pop();
-                result.add(node.val);
+                if(--kCounter == 0) break;
                 //Move the cursor the node's right
                 curr = node.right;
             }
         }
 
-        return result;
+        return curr;
     }
 
     public static void main(String[] args) {
