@@ -1,0 +1,81 @@
+package com.leetcode;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * Algorithm
+ * Level traversal using stack to allow reading the element from top
+ * Reason: Stack allows for switching order of traversal
+ */
+public class Program {
+
+ public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+ }
+
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+     if(root == null)
+         return new ArrayList<>();
+
+
+     Stack<TreeNode> currLevel = new Stack<>();
+     Stack<TreeNode> nextLevel;
+     List<List<Integer>> result = new ArrayList<>();
+     List<Integer> nextResult = new ArrayList<>(Arrays.asList(root.val));
+     result.add(nextResult);
+     currLevel.push(root);
+
+     boolean isRightToLeft = true;
+
+     while (true) {
+         nextResult = new ArrayList<>();
+         nextLevel = new Stack<>();
+
+         while (!currLevel.isEmpty()) {
+             TreeNode node = currLevel.pop();
+             if (isRightToLeft) {
+                 if (node.right != null) {
+                     nextResult.add(node.right.val);
+                     nextLevel.push(node.right);
+                 }
+
+                 if (node.left != null) {
+                     nextResult.add(node.left.val);
+                     nextLevel.push(node.left);
+                 }
+             } else {
+                 if (node.left != null) {
+                     nextResult.add(node.left.val);
+                     nextLevel.push(node.left);
+                 }
+
+                 if (node.right != null) {
+                     nextResult.add(node.right.val);
+                     nextLevel.push(node.right);
+                 }
+             }
+         }
+
+         if(!nextResult.isEmpty()) {
+             result.add(nextResult);
+         } else {
+             return result;
+         }
+
+         //Reset current level as next level
+         currLevel = nextLevel;
+         isRightToLeft = !isRightToLeft;
+        }
+    }
+
+    public static void main(String[] args) {
+       System.out.println();
+    }
+}
