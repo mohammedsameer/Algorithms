@@ -1,0 +1,42 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Recursion
+ * 1. start>end  (Base condition)
+ * 2. root = a[mid]
+ * 3. root.left = (start, mid-1, nums)
+ * 4. root.right = (mid+1, end, nums)
+ */
+public class Program {
+
+ public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+ }
+
+    public TreeNode sortedArrayToBST(int[] nums) {
+        if(nums == null || nums.length == 0)
+            return null;
+
+        return binarySearchTree(0, nums.length - 1, nums);
+    }
+
+    private TreeNode binarySearchTree(int start, int end, int[] nums) {
+     if(start > end)
+         return null;
+
+     int mid = (start + end)/2;
+     TreeNode root = new TreeNode(nums[mid]);
+     root.left = binarySearchTree(start, mid-1, nums);
+     root.right = binarySearchTree(mid+1, end, nums);
+
+     return root;
+    }
+
+    public static void main(String[] args) {
+       System.out.println();
+    }
+}
