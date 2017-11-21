@@ -1,52 +1,45 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algorithm
+ * 1. Number of elements in a row is equal to rowNumber
+ * 2. The boundary elements in every row are 1, all other elements curr.add(index, prev.get(index - 1) + prev.get(index))
  */
+public class Program {
 
-class Solution {
-  public static ArrayList<ArrayList<Integer>> pascalTriangle(int num)
-  {
-    if(num<=0)
-      return null;
-    
-    ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-    ArrayList<Integer> curr = new ArrayList<>();
-    ArrayList<Integer> prev = new ArrayList<>();
-    curr.add(1);
-    result.add(curr);
-    
-    for(int line=2;line<=num;line++)
-    {
-      prev = result.get(line-2);
-      curr = new ArrayList<>();
-      
-      for(int i=0;i<line;i++)
-      {
-        int val = 0;
-        if(i==0||i==line-1)
-        {
-          val = 1;
+    public static List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(numRows < 0)
+            return null;
+
+        if(numRows == 0)
+            return new ArrayList<>();
+
+        List<Integer> curr = new ArrayList<>();
+        curr.add(1);
+        result.add(curr);
+
+        for(int r = 1; r < numRows; r ++) {
+            //Number of elements in every level is equal to row number
+            curr = new ArrayList<>();
+            //initialize boundaries
+            List<Integer> prev = result.get(r - 1);
+            for(int index = 0; index <= r; index++) {
+                if(index == 0 || index == r)
+                    curr.add(index, 1);
+                else
+                    curr.add(index, prev.get(index - 1) + prev.get(index));
+            }
+            result.add(curr);
         }
-        else
-        {
-          val = prev.get(i-1)+prev.get(i);
-        }
-        curr.add(val);
-      }
-      
-      result.add(curr);
+
+        return result;
     }
-    
-    return result;
-    
-  }
-  
-  public static void main(String[] args) {
-  System.out.println("Pascal Triangle: "+ pascalTriangle(3));
-  }
+
+    public static void main(String[] args) {
+       System.out.println(generate(3));
+    }
 }
