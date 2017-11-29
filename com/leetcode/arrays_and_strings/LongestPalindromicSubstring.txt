@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Algorithm
  * Expand around center
- * Pallindromes can be even (aa) or odd length (aba)
+ * Palindromes can be even (aa) or odd length (aba)
  * Expand around center for (start,end) = (i,i), and (start, end) = (i, i+1)
  */
 public class Program {

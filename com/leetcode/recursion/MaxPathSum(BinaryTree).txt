@@ -1,0 +1,47 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * 1. Recursively calculate MAX left path sum and right path sum
+ * 2. Update max as Math.max(node.val + maxLeftSum + maxRightSum, max)
+ * 3. Return the node.val + Math.max (maxLeftSum + maxRightSum)
+ */
+public class Program {
+
+   public class TreeNode {
+     int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+   }
+
+    //store max value
+    int max = Integer.MIN_VALUE;
+
+    public int maxPathSum(TreeNode root) {
+        max = (root == null) ? 0 : root.val;
+        findMax(root);
+        return max;
+    }
+
+    public int findMax(TreeNode node) {
+        if (node == null)
+            return 0;
+
+        //leftSum and rightSum hold the max branch sum from left node and right node
+        int maxLeftSum = Math.max(findMax(node.left), 0);
+        int maxRightSum = Math.max(findMax(node.right), 0);
+
+        //Once the max paths of left node and right node are computed apply current node val to
+        //indicate max path sum from current node
+        max = Math.max(node.val + maxLeftSum + maxRightSum, max);
+
+        //The following return is used with left node and right node computation to determine max branh sum
+        return node.val + Math.max(maxLeftSum, maxRightSum);
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println();
+    }
+}

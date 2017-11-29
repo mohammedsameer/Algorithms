@@ -1,35 +1,30 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+/**
+ * Algorithm
+ * 1. Iterate through the array and track min stock value
+ * 2. Compute the profit by performing prices[i]-min
+ * Note: Maximize the profit
  */
-
-class Solution {
+public class Program {
   
-  public static int bestTimeToBuy(int[] stockPrices) {
-    
-    if(stockPrices.length==0)
-      return -1;
-    
-    int profit = 0;
-    int min = Integer.MAX_VALUE;
-    
-    for(int i=0;i<stockPrices.length;i++)
-    {
-      min = Math.min(stockPrices[i], min);
-      profit = Math.max(profit, stockPrices[i]-min);
-    }
-    
-   return profit;
-  }
+   public int maxProfit(int[] prices) {
+
+          if(prices.length == 0)
+              return 0;
+
+          int min = Integer.MAX_VALUE;
+          int profit = 0;
+
+          for(int price : prices) {
+              min = Math.min(price, min);
+              int currDiff = price - min;
+              profit = Math.max(profit, currDiff);
+          }
+          return profit;
+      }
   
   public static void main(String[] args) {
-    int [] stockPrices = {90,100,20,10};    
-   System.out.println("Maximum Profit: "+ bestTimeToBuy(stockPrices));
+   System.out.println();
   }
-  
 }

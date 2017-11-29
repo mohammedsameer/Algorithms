@@ -1,0 +1,43 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
+
+/**
+ * Algorithm
+ * 1. Add the input array into treeset (sorted)
+ * 2. Loop through array and compute the max length
+ * a) If current numList.get(index) + 1 = numList.get(index+1), increase count and compute max
+ * b) Else reset count = 1
+ * */
+public class Program {
+
+    public static int longestConsecutive(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+
+        TreeSet<Integer> numSet = new TreeSet<> ();
+        for(Integer num : nums) {
+            numSet.add(num);
+        }
+
+        int count = 1;
+        int max = 1;
+        List<Integer> numList = new ArrayList<>(numSet);
+        for(int index = 0; index < numList.size() - 1; index++) {
+            if(numList.get(index) + 1 == numList.get(index + 1)) {
+                count++;
+                max = Math.max(count, max);
+            } else {
+                count = 1;
+            }
+        }
+
+        return max;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(longestConsecutive(new int[] {9,1,4,7,3,-1,0,5,8,-1,6}));
+    }
+}

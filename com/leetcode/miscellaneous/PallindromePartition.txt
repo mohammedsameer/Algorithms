@@ -1,63 +1,58 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
- */
-//Palindrome Partition
-//Algo:
-//For every length substring check if palindrome
-class Solution {
-  
-  public static ArrayList<ArrayList<String>> palindromePartition(String input) {
-    
-    ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-    
-    if(input==null || input.length()==0)
-      return result;
-    
-    int currLen = 1;
-    while(currLen<=input.length())
-    {
-      ArrayList<String> curr = new ArrayList<>();
-      for(int i=0;i<=input.length()-currLen;i++)
-      {
-        String sub = input.substring(i,i+currLen);
-        if(isPalindrome(sub))
-        {
-          curr.add(sub);
+import java.util.ArrayList;
+import java.util.List;
+//TODO: Revisit
+/**
+ * Algorithm
+ * 1. Compute all substrings
+ * 2. Check if every substring is palindrome, if yes add to result list
+ * */
+public class Program {
+
+    public static List<List<String>> partition(String s) {
+        if(s.isEmpty())
+            return new ArrayList<>();
+
+        int currLen = 1;
+        List<List<String>> result = new ArrayList<>();
+        //Iterate over for every length until the string length
+        while (currLen <= s.length()) {
+
+            List<String> curr = new ArrayList<>();
+            for(int start=0; start < s.length(); start++) {
+                int end = start + currLen > s.length() ? s.length(): start + currLen;
+                String subString = s.substring(start, end);
+                if(isPalindrome(subString))
+                    curr.add(subString);
+            }
+
+            if(!curr.isEmpty()) {
+                result.add(curr);
+            }
+
+            currLen++;
         }
-      }
-      
-      if(curr.size()>0)
-      {
-        result.add(curr);
-      }
-      
-      currLen++;
+
+        return result;
     }
-    
-    return result;
-  }
-  
-  public static boolean isPalindrome(String input)
-  {
-    int len = input.length();
-    int mid = len/2;
-    for(int i = 0;i <mid; i++)
-    {
-      if(input.charAt(i)!=input.charAt(len-1-i))
-        return false;
+
+    public static boolean isPalindrome(String s) {
+        if(s.isEmpty())
+            return true;
+
+        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        int mid = s.length()/2;
+        for(int i = 0; i < mid; i++) {
+            if(s.charAt(i) != s.charAt(s.length() - 1 - i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
-    
-    return true;
-  }
-  
-  public static void main(String[] args) {
-    String input ="aabbccc";
-    System.out.println("Palindrom Partition:"+ palindromePartition(input));
-  }
+
+    public static void main(String[] args) {
+        System.out.println(partition("aab"));
+    }
 }

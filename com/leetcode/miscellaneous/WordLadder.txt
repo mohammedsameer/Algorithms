@@ -1,60 +1,61 @@
-import java.io.*;
+package com.leetcode;
+
 import java.util.*;
 
+/**
+ * Algorithm
+ * 1. From every word perform
+ * a) Change character at every position and see
+ * if it matches end or -> return current distance + 1
+ * if present in dictionary -> remove the word from dictionary to avoid duplication
+ * Repeat above until the word queue is empty
+ */
+public class Program {
 
-class Solution {
+    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        if(beginWord.equals(endWord))
+            return 0;
 
+        if(wordList.isEmpty())
+            return -1;
 
-  public static int wordLadderLength(String start, String end, HashSet<String> dict)
-  {
-    if(start.equals(end))
-      return 0;
-    
-    if(dict==null)
-      return -1;
-    
-    LinkedList<String> wordQueue = new LinkedList<>();
-    LinkedList<Integer> distanceQueue = new LinkedList<>();
-    wordQueue.add(start);
-    distanceQueue.add(1);
-    
-    while(!wordQueue.isEmpty())
-    {
-      String currWord = wordQueue.pop();
-      int currDistance = distanceQueue.pop();
-      
-      for(int i=0;i<currWord.length();i++)
-      {
-        char[] charArr = currWord.toCharArray();
-        for(char c='a';c<='z';c++)
-        {
-          charArr[i]=c;
-          String nWord = new String(charArr);
-          if(nWord.equals(end))
-          {
-            return currDistance+1;
-          }
-          
-          if(dict.contains(nWord))
-          {
-            dict.remove(nWord);
-            wordQueue.add(nWord);
-            distanceQueue.add(currDistance+1);
-          }
+        LinkedList<String> wordQueue = new LinkedList<>();
+        LinkedList<Integer> distanceQueue = new LinkedList<>();
+
+        wordQueue.add(beginWord);
+        distanceQueue.add(1);
+
+        while (!wordQueue.isEmpty()) {
+            String currWord = wordQueue.pop();
+            Integer currDistance = distanceQueue.pop();
+
+            if(currWord.equals(endWord))
+                return currDistance;
+
+            for(int i = 0; i < currWord.length(); i++) {
+                char[] currWordArr = currWord.toCharArray();
+                for (char c = 'a'; c <= 'z'; c++) {
+                    //Create a new word by replacing the character at i
+                    currWordArr[i] = c;
+
+                    String nWord = new String(currWordArr);
+                    //Remove the nWord from dictionary and add the nWord to word queue/distance queue
+                    if(wordList.contains(nWord)) {
+                        //The end word is expected to be in dictionary
+                        if(nWord.equals(endWord))
+                            return currDistance + 1;
+                        wordList.remove(nWord);
+                        wordQueue.add(nWord);
+                        distanceQueue.add(currDistance + 1);
+                    }
+                }
+            }
         }
-      }
+        return -1;
     }
-    
-    return -1;
-  }
-  
-  public static void main(String[] args) {
-    HashSet<String> mySet= new HashSet<String>();
-    mySet.add("hot");
-    mySet.add("dot");
-    mySet.add("dog");
-    mySet.add("lot");
-    mySet.add("log");
-    System.out.println("Word Ladder Length:"+ wordLadderLength("hit","cog", mySet));
-  }
+
+    public static void main(String[] args) {
+        String[] strArr = new String[] {"hot","dot","dog","lot","log","cog"});
+        System.out.println(ladderLength("hit", "cog", Arrays.asList(strArr));
+    }
 }

@@ -1,32 +1,28 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-class Solution {
-  
-  //isPalindrome:Checks if input is palindrome or not
-	public static boolean isPalindrome(String s)
-  {
-    if(s==null || s.length()==0)
-     return false;
-    
-    //Remove unwanted characters
-    s = s.replaceAll("[^a-zA-Z0-9]","").toLowerCase();
-    
-    int mid = s.length()/2;
-    
-    for(int i=0; i<mid; i++)
-    {
-      if(s.charAt(i)!=s.charAt(s.length()-i-1))
-      {
-         return false;
-      }
+/**
+ * Algorithm
+ * 1. Remove all special characters
+ * 2. Check if s[i] = s[len -1 - i] i.e.  Move i to length/2
+ */
+public class Program {
+
+    public static boolean isPalindrome(String s) {
+        if(s.isEmpty())
+            return true;
+
+        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        int mid = s.length()/2;
+        for(int i = 0; i < mid; i++) {
+            if(s.charAt(i) != s.charAt(s.length() - 1 - i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
-    
-    return true;
-  }
-  
-  public static void main(String[] args) {
-    System.out.println("IsPalindrome- mom: "+ isPalindrome("mom"));
-    System.out.println("IsPalindrome- mommy: "+ isPalindrome("mommy"));
-  }
+
+    public static void main(String[] args) {
+        System.out.println(isPalindrome("abba"));
+    }
 }
