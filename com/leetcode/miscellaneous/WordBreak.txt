@@ -1,48 +1,79 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
 
-class Solution {
-  
-  public static boolean wordBreak(Set<String> mySet, String s)
-  {
-    if(s==null|| s.length()==0|| mySet==null|| mySet.size()==0)
-      return false;
-    
-    return wordBreakHelper(mySet,s,0);
-  }
-  
-  public static boolean wordBreakHelper(Set<String> mySet, String s1, int start)
-  {
-     if(start==s1.length())
-       return true;
-    
-    for(String dictWord:mySet)
-    {
-      int len = dictWord.length();
-      int end = start+len;
-      
-      if(end > s1.length())
-        continue;
-      
-      if(s1.substring(start,end).equals(dictWord))
-       {
-          if(wordBreakHelper(mySet,s1,end))
-            return true;
-       }
+//Solution - 1
+/**
+ * Algorithm
+ * 1. Run two loops
+ * a) end=0 to end=str.length+1 (end index)
+ * b) start=0 to start < end (start index)
+ * 2. Compute substring and if substring in dictionary set f[end] = true
+ * 3. If the complete string can be matched in dictionary then f[end] = true
+ */
+public class Program {
+
+    public static boolean wordBreak(String str, List<String> wordDict) {
+        boolean[] f = new boolean[str.length() + 1];
+        f[0] = true;
+
+        for(int end=1; end <= str.length(); end++){
+            for(int start=0; start < end; start++){
+                if(f[end] && wordDict.contains(str.substring(start, end))){
+                    f[end] = true;
+                    break;
+                }
+            }
+        }
+
+        return f[str.length()];
     }
-    
-    return false;
-  }
-  
-  public static void main(String[] args) {
-    Set<String> mySet= new HashSet<String>();
-    mySet.add("sam");
-    mySet.add("eer");
-    mySet.add("add");
-    
-    System.out.println("Word Break sameer: "+ wordBreak(mySet,"sameer"));
-    //System.out.println("Word Break samantha: "+ wordBreak(mySet,"samantha"));
-    
-  }
+
+    public static void main(String[] args) {
+        List<String> dict  = new ArrayList<>();
+        dict.add("leet");
+        dict.add("code");
+        System.out.println(wordBreak("leetcode", dict));
+    }
+}
+
+
+//Solution - 2
+/**
+ * Algorithm
+ * 1. For every partition check if its available in dictionary
+ * Note: Key is to loop through every element in dictionary and see if it matches with substring and continue on
+ */
+public class Program {
+
+    public boolean wordBreak(String str, List<String> wordDict) {
+        return wordBreakHelper(str, wordDict, 0);
+    }
+
+    public boolean wordBreakHelper(String str, List<String> wordDict, int start) {
+        //We have reached the end of partition
+        if(start == str.length())
+            return true;
+
+        for(String dictStr : wordDict) {
+            int len = dictStr.length();
+            int end = start + len;
+
+            //Skip the end is beyond the length of string
+            if(end > str.length())
+                continue;
+
+            String sub = str.substring(start, end);
+            if(sub.equals(dictStr)) {
+                if(wordBreakHelper(str, wordDict, end))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println();
+    }
 }

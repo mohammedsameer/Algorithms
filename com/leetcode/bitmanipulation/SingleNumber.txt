@@ -1,35 +1,34 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
- */
-//XOR rules
-//1^1=0
-//0^0=0
-//1^0=1
-//0^1=1
-//1^0^1=0
-//1^1^1=1
-class Solution {
-  
-  public static int singleElement(int[] arr) {
-    int x=0;
-    int index = 0;
-    while(index<arr.length)
-    {
-      x = x^arr[index];
-      index++;
+import java.util.Arrays;
+
+/**
+ * Algorithm
+ * XOR operation
+ //XOR rules
+ //1^1=0
+ //0^0=0
+ //1^0=1
+ //0^1=1
+ //1^0^1=0
+ //1^1^1=1
+ //https://stackoverflow.com/questions/1991380/what-does-the-operator-do-in-java
+ * */
+public class Program {
+
+    public static int singleNumber(int[] nums) {
+        if(nums.length == 0)
+            return -1;
+
+        int curr = nums[0];
+
+        for(int i=1; i< nums.length; i++)
+            curr = curr^nums[i];
+
+        return curr;
     }
-         
-    return x;
-  }
-  
-  public static void main(String[] args) {
-    int[] arr = {1,1,2,2,3,4,4};
-    System.out.println("Single Element: "+singleElement(arr));
-  }
+
+    public static void main(String[] args) {
+        System.out.println(singleNumber(new int[] {1,1,2,2,4,5,5,7,7}));
+    }
 }
