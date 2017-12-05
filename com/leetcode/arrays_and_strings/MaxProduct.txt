@@ -1,35 +1,42 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+/**
+ * Algorithm
+ * 1. Iterates the array in both directions and keeps track of running product
+ * 2. Compares running product and max
+ * Note: Resets prod = 1, when the current number is 0
  */
-//Algo:
-//Start with index 0 & check if all subsequent elements are >, if so //continue else thats the min element
+public class Program {
 
-class Solution {
-  
-  public static int maxProduct(int[] num)
-  {
-    if(num.length==0)
-      return -1;
-    
-    int max = num[0];
-    int curr = num[0];
-    for(int i=1;i<num.length;i++)
-    {
-      curr = Math.max(curr*num[i], num[i]);
-      max = Math.max(curr,max);
+    public static int maxProduct(int[] nums) {
+        if(nums.length == 0)
+            return -1;
+
+        int max = Integer.MIN_VALUE;
+        int prod = 1;
+        //Handles all positives and zero occurrence.
+        for(int i = 0; i< nums.length; i++) {
+            prod = nums[i] * prod;
+            max = Math.max(prod, max);
+            if(nums[i] == 0) {
+                prod = 1;
+            }
+        }
+
+        //Handles negative occurrences and therefore evaluates from right.
+        prod = 1;
+        for(int i = nums.length -1; i>= 0; i--) {
+            prod = nums[i] * prod;
+            max = Math.max(prod, max);
+            if(nums[i] == 0) {
+                prod = 1;
+            }
+        }
+
+        return max;
     }
-    
-    return max;
-  }
-  
-  public static void main(String[] args) {
-    int[] num = {2,3,4,-5,-6};
-    System.out.println("Max Product:"+maxProduct(num));
-  }
+
+    public static void main(String[] args) {
+        System.out.println(maxProduct(new int[]{-2, 3, -4}));
+    }
 }

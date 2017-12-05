@@ -1,0 +1,81 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Merge sort:
+ * 1. Divide the list into two halves
+ * 2. Sort individual halves
+ * 3. Merge the sorted halves
+ */
+public class Program {
+
+    class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) {
+            val = x;
+            next = null;
+        }
+    }
+
+    public ListNode sortList(ListNode head) {
+
+        if(head == null || head.next == null)
+            return head;
+
+        ListNode fast = head;
+        ListNode slow = head;
+
+        //Move cursors such that we have two halves
+        //Using fast because that's the one we wish to move to end, no need to check slow.next as its always behind fast
+        //and the intention is to iterate till end
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode left = head;
+        ListNode right = slow.next;
+        //Reset the slow
+        slow.next = null;
+
+        left = sortList(left);
+        right = sortList(right);
+
+        return merge(left, right);
+    }
+
+    public ListNode merge(ListNode left, ListNode right) {
+        ListNode preHead = new ListNode(0);
+        ListNode currResult = preHead;
+
+        while (left != null || right != null) {
+            ListNode curr;
+            if(left != null && right != null) {
+                if(left.val < right.val) {
+                    curr = new ListNode(left.val);
+                    left = left.next;
+                } else {
+                    curr = new ListNode(right.val);
+                    right = right.next;
+                }
+            } else if(left != null) {
+                curr = new ListNode(left.val);
+                left = left.next;
+            } else {
+                curr = new ListNode(right.val);
+                right = right.next;
+            }
+            //Append new node at end
+            currResult.next = curr;
+            currResult = currResult.next;
+        }
+
+        //Two cursors point to head, one moves and other remains at temp head
+        return preHead.next;
+    }
+
+    public static void main(String[] args) {
+        System.out.println();
+    }
+}

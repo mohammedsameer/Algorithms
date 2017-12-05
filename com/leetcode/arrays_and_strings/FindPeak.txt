@@ -1,35 +1,27 @@
-import java.io.*;
-import java.util.*;
+package com.leetcode;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+/**
+ * Algorithm
+ * Iterate through the array and check if current element is greater than neighbour\
+ * Peak: an element greater than its neighbours
+ * E.g: 1,3,2,4,1
+ * Peaks are: 3 and 4
  */
-//Algo:
-//Start with index 1 & compare with only its predecissor
+public class Program {
 
-class Solution {
-  
-  public static int findPeak(int[] num)
-  {
-    if(num.length==0)
-      return -1;
-    
-    int peakIndex =0;
-    
-    for(int i=1;i<num.length;i++)
-    {
-      if(num[i]>num[i-1])
-        peakIndex=i;
+    public int findPeakElement(int[] nums) {
+        if(nums == null || nums.length == 0)
+            return -1;
+
+        int maxIndex = 0;
+        for(int i = 1; i < nums.length; i++) {
+            if(nums[i] > nums[i-1])
+                maxIndex = i;
+        }
+
+        return maxIndex;
     }
-    
-    return peakIndex;
-  }
-  
-  public static void main(String[] args) {
-    int[] arr = {2,3,5,1,6,4};
-    System.out.println("Find Peak Index:"+findPeak(arr));
-  }
+    public static void main(String[] args) {
+        System.out.println();
+    }
 }

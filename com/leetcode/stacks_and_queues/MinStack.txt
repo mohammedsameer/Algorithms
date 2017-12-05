@@ -4,49 +4,51 @@ import java.util.*;
 
 class Program {
 
-    public static List<Integer> stack = new ArrayList<>();
-    public static List<Integer> minStack = new ArrayList<>();
+        public ArrayList<Integer> stack = new ArrayList<>();
+    	public ArrayList<Integer> minStack = new ArrayList<>();
 
-    public static void push(int val)
-    {
-        //Always add on primary stack
-        stack.add(val);
+    	public void push(int e){
 
-        if(minStack.isEmpty()) {
-            minStack.add(val);
-        }
-        else
-        {
-            if(getMin()>val)
-                minStack.add(val);
-        }
-    }
+    		stack.add(e);
 
-    public static int pop()
-    {
-        int result = -1;
-        if(!stack.isEmpty())
-        {
-            result = stack.remove(stack.size() - 1);
-            if(getMin() == result)
-            {
-                minStack.remove(minStack.size() -1);
-            }
-        }
+    		if(minStack.isEmpty())
+    		{
+    			minStack.add(e);
+    		}
+    		else
+    		{
+    			//Add in minstack if new element smaller than current top min element
+    			if(e<=this.getMin())
+    			{
+    				minStack.add(e);
+    			}
+    		}
+    	}
 
-        return result;
-    }
+    	public void pop(){
+    		int size = stack.size();
+    		int e = stack.get(size-1);
 
-    public static int getMin()
-    {
-        int result = -1;
-        if(!minStack.isEmpty()) {
-            result = minStack.get(minStack.size()-1);
-        }
+    		stack.remove(size-1);
 
-        return result;
-    }
+    		//Remove if the current element removed from mainstack is the top element of minstack
+    		if(e==this.getMin())
+    		{
+    			int minStackSize = minStack.size();
+    			minStack.remove(minStackSize-1);
+    		}
+    	}
 
+    	public int top(){
+    		int size = stack.size();
+    		return stack.get(size-1);
+    	}
+
+    	public int getMin(){
+    	    int minStackSize = minStack.size();
+    		return minStack.get(minStackSize-1);
+
+    	}
 
     public static void main(String[] args) {
 
@@ -60,7 +62,43 @@ class Program {
 }
 
 
-//Solution-2 (Multiple stacks)
+//Solution-2 Using two stacks
+class MinStack {
+        Stack<Integer> stack;
+        Stack<Integer> minStack;
+        public MinStack() {
+            stack = new Stack<>();
+            minStack = new Stack<>();
+        }
+
+        public void push(int x) {
+            stack.push(x);
+            if(minStack.isEmpty()) {
+                minStack.add(x);
+            } else {
+               if(minStack.peek() >=x) {
+                   minStack.push(x);
+               }
+            }
+        }
+
+        public void pop() {
+            int data = stack.pop();
+            if(minStack.peek() == data) {
+                minStack.pop();
+            }
+        }
+
+        public int top() {
+            return stack.peek();
+        }
+
+        public int getMin() {
+            return minStack.peek();
+        }
+ }
+
+//Solution-3 (Multiple stacks)
 package com.leetcode;
 
 /**

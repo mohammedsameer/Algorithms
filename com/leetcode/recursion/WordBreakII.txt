@@ -1,0 +1,60 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * Algorithm
+ * 1. Recursively loop through input string and match on dictionary word
+ * E.g: map (The map constructs all possible sentences formed using substring
+ * [ dog -> dog
+ *   anddog -> and dog
+ *   sanddog -> sand dog
+ *   catsanddog -> cat sand dog, cat and dog ] (This is achieved because with input string catsanddog wordbreak helper is called
+ *   twice one each of dictionary words cat and cats)
+ */
+public class Program {
+
+    public static List<String> wordBreak(String s, List<String> wordDict) {
+        return wordBreakHelper(s, wordDict, new HashMap<String, List<String>>());
+    }
+
+
+    private static List<String> wordBreakHelper(String s, List<String> wordDict, HashMap<String, List<String>> map) {
+        if(map.containsKey(s)) {
+            return map.get(s);
+        }
+
+        List<String>res = new ArrayList<>();
+        if (s.length() == 0) {
+            res.add("");
+            return res;
+        }
+
+        for(String word: wordDict) {
+            if(s.startsWith(word)) {
+                //Returns the sublist of words formed using post sub string
+                // E.g: i.e. sanddog
+                List<String> subList = wordBreakHelper(s.substring(word.length()), wordDict, map);
+                for(String sub: subList) {
+                    // sand + " " + dog (because dog is calculated)
+                    res.add(word + (sub.isEmpty() ? "" : " ") + sub);
+                }
+            }
+        }
+
+        map.put(s, res);
+        return res;
+    }
+
+    public static void main(String[] args) {
+        List<String> dict  = new ArrayList<>();
+        dict.add("cat");
+        dict.add("cats");
+        dict.add("sand");
+        dict.add("and");
+        dict.add("dog");
+        System.out.println(wordBreak("catsanddog", dict));
+    }
+}

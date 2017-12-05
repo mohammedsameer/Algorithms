@@ -9,7 +9,7 @@ import java.util.List;
  * 1. Run two loops
  * a) end=0 to end=str.length+1 (end index)
  * b) start=0 to start < end (start index)
- * 2. Compute substring and if substring in dictionary set f[end] = true
+ * 2. Compute substring and if substring in dictionary set f[start] = true (aka the prior substring is already a match)
  * 3. If the complete string can be matched in dictionary then f[end] = true
  */
 public class Program {
@@ -20,7 +20,7 @@ public class Program {
 
         for(int end=1; end <= str.length(); end++){
             for(int start=0; start < end; start++){
-                if(f[end] && wordDict.contains(str.substring(start, end))){
+                if(f[start] && wordDict.contains(str.substring(start, end))){
                     f[end] = true;
                     break;
                 }

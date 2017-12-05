@@ -1,0 +1,19 @@
+package com.leetcode;
+
+import java.util.Arrays;
+
+/**
+ * Algorithm
+ * Sort the array and return the element in middle index
+ */
+public class Program {
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+
+        return nums[nums.length/2];
+    }
+
+    public static void main(String[] args) {
+        System.out.println();
+    }
+}
