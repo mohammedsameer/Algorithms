@@ -1,0 +1,31 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Iterate through array and keep running result
+ * result = result * 26 + (char - 'A' + 1)
+ */
+public class Program {
+
+    /**
+     * Title to number
+     * @param s input string
+     * @return column number
+     */
+    public static int titleToNumber(String s) {
+        if(s.isEmpty())
+            return 0;
+
+        int result = 0;
+        char[] sArr = s.toCharArray();
+        for(int i = 0; i < sArr.length; i++) {
+            result = result * 26 + (sArr[i] - 'A' + 1);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(titleToNumber("ABC"));
+    }
+}

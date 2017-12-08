@@ -1,0 +1,36 @@
+package com.leetcode;
+
+import java.util.*;
+
+/**
+ * Algorithm
+ * Comparator which compares and sorts the collection in descending order
+ * E.g: (9, 12), returns (12,9)
+ */
+public class Program {
+    static Comparator<String> stringComparator = (s1, s2) -> {
+        String str1 = s1 + s2;
+        String str2 = s2 + s1;
+        return str2.compareTo(str1);
+    };
+
+    public static String largestNumber(int[] nums) {
+        String[] numStrArr = new String[nums.length];
+        for(int i = 0; i < nums.length ; i++) {
+            numStrArr[i] = String.valueOf(nums[i]);
+        }
+
+        Arrays.sort(numStrArr, stringComparator);
+        StringBuilder sb = new StringBuilder();
+        for(String n: numStrArr) {
+            sb.append(String.valueOf(n));
+        }
+
+        String result = sb.toString().replaceFirst("^0*", "");
+        return  result.isEmpty() ? "0" : result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(largestNumber(new int[] {824,938,1399,5607,6973,5703,9609,4398,8247}));
+    }
+}

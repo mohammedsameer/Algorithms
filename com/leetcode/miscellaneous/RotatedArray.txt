@@ -1,0 +1,32 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Copy the elements of arrays into new array using rotated indexes
+ */
+public class Program {
+
+    public static void rotate(int[] nums, int k) {
+        int[] rotatedArr = new int[nums.length];
+
+        if(k < 0)
+            return;
+
+        if(k > nums.length)
+            k = k % nums.length;
+
+        for(int i=0; i<nums.length; i++){
+            int index = nums.length - k + i < nums.length ? nums.length - k + i : i - k;
+            rotatedArr[i] = nums[index];
+        }
+
+       for(int i=0; i<rotatedArr.length; i++) {
+            nums[i] = rotatedArr[i];
+       }
+    }
+
+    public static void main(String[] args) {
+        rotate(new int[]{1,2}, 3);
+        System.out.println();
+    }
+}

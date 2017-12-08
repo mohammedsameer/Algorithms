@@ -1,0 +1,29 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Loop through array skipping adjacent elements
+ * Note: At every element determine if adding a new element increases the max, if yes continue adding else check if other max is greater
+ */
+public class Program {
+
+    public static int rob(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+
+        int evenSum = 0;
+        int oddSum = 0;
+        for(int i=0; i<nums.length; i++){
+            if(i % 2 == 0)
+                evenSum = Math.max(evenSum + nums[i], oddSum);
+            else
+                oddSum = Math.max(oddSum + nums[i], evenSum);
+        }
+
+        return Math.max(evenSum, oddSum);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(rob(new int[] {4,3,3,585,2,7}));
+    }
+}

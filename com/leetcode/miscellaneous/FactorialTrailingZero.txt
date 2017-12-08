@@ -1,0 +1,27 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * result = result + n/5;
+ * Note: After 5, every digit has atleast one zero reason?
+ * ...*5*4* because 5! = 120 and x*120 will always have a zero at the end
+ */
+public class Program {
+
+
+    public static int trailingZeroes(int n) {
+        if(n<=0)
+            return 0;
+
+        int result = 0;
+        while (n > 0){
+            result = result + n/5;
+            n = n/5;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(trailingZeroes(30));
+    }
+}

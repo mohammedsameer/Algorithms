@@ -41,6 +41,6 @@ public class Program {
     }
 
     public static void main(String[] args) {
-        System.out.println(isHappy(18));
+        System.out.println(isHappy(19));
     }
 }
