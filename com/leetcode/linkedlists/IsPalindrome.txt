@@ -1,0 +1,44 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algorithm
+ */
+public class Program {
+    public static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) {
+            val = x;
+        }
+    }
+
+    public static boolean isPalindrome(ListNode head) {
+        if(head == null || head.next == null)
+            return true;
+
+        List<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+
+        boolean isPalindrome = true;
+        for(int i=0; i<list.size()/2; i++) {
+            if(!list.get(i).equals(list.get(list.size() - i - 1))) {
+                isPalindrome = false;
+                break;
+            }
+        }
+        return isPalindrome;
+    }
+
+    public static void main(String[] args) {
+        ListNode node1 = new ListNode(-129);
+        ListNode node2 = new ListNode(-129);
+        node1.next = node2;
+        System.out.println(isPalindrome(node1));
+    }
+}

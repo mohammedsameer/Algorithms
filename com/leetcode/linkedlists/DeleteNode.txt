@@ -1,0 +1,25 @@
+
+package com.leetcode;
+
+/**
+ * Algorithm
+ * 1. Check for non-null and non-tail node
+ * 2. Swap the value of next node into to current node and delete next node
+ */
+public class Program {
+
+      public class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) {
+            val = x;
+        }
+    }
+
+    public void deleteNode(ListNode node) {
+        if(node == null || node.next == null)
+            return;
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}

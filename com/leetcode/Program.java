@@ -1,46 +1,24 @@
 package com.leetcode;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Algorithm
- * Compute the squares of individual digits of number
- * a) Check if its 1 -> Happy number
- * b) Check if its repeated -> Loop; not a happy number
+ * 1. Use (n) * (n + 1)/2 to calculate sum of n numbers
+ * 2. Subtract every number whats remainder is the number thats missing
+ * Note: n starts with 1, hence if the remainder is 0 then it implies 0 is missing
  */
 public class Program {
 
-    public static boolean isHappy(int num) {
-        Set<Integer> squareSet = new HashSet<>();
+    public static int missingNumber(int[] nums) {
+        int len = nums.length;
+        int sum = (len) * (len + 1)/2;
 
-        while (true) {
-            int sumOfSquares = sumOfSquares(num);
-
-            if(sumOfSquares == 1) {
-                return true;
-            } else if (squareSet.contains(sumOfSquares)) {
-                return false;
-            }
-
-            squareSet.add(sumOfSquares);
-            num = sumOfSquares;
+        for(int i = 0; i < nums.length; i++) {
+            sum -= nums[i];
         }
-    }
-
-    private static int sumOfSquares(int num) {
-        int result = 0;
-        while (num > 0) {
-            int curr = num%10;
-            num = num/10;
-
-            result += curr * curr;
-        }
-
-        return result;
+        return sum;
     }
 
     public static void main(String[] args) {
-        System.out.println(isHappy(18));
+        System.out.println(missingNumber(new int[] {3,0,1}));
     }
 }
