@@ -1,0 +1,21 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ */
+public class Program {
+    public static String reverseString(String s) {
+        char[] sArr = s.toCharArray();
+        StringBuilder r = new StringBuilder();
+
+        for(int i = sArr.length - 1; i >= 0; i--) {
+            r.append(sArr[i]);
+        }
+
+        return r.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(reverseString("hello"));
+    }
+}
