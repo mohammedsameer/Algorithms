@@ -3,12 +3,13 @@ package com.leetcode;
 /**
  * Write code to remove duplicates from an unsorted linked list without using additional buffer
  */
- //Algo:
- 1. Use prev and curr to move along list
- 2. Run a runner upto current
-    a) Determine if any node upto prev matches curr, if yes skip curr
- 3. Move curr till end to remove all dupes
-
+/**
+ * Algorithm
+ * 1. Maintain a runner which scans for any dupes till current node from head
+ * 2. Advance the runner once it coincides with the current node
+ * Note: The concept of sliding window is used here, as the runner only encounters one dupe within a given
+ * move up to current, as we only advance current by one node till end
+ */
 public class Program {
 
     class Node {
@@ -36,8 +37,10 @@ public class Program {
             while(runner != curr) {
                 if (runner.data == curr.data) {
                     //We break here because there are no duplicates up to prev
-                    prev.next = curr.next;
-                    curr = prev;
+                    //Remove current node as all nodes up to prev are any way removed
+                    //Note: The newer nodes with matching dupe data are removed, hence the curr node here is removed
+                    curr = prev.next.next;
+                    prev.next = curr;
                     break;
                 }
 

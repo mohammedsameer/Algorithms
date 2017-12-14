@@ -63,40 +63,51 @@ class Program {
 
 
 //Solution-2 Using two stacks
-class MinStack {
-        Stack<Integer> stack;
-        Stack<Integer> minStack;
-        public MinStack() {
-            stack = new Stack<>();
-            minStack = new Stack<>();
-        }
+package com.leetcode;
 
-        public void push(int x) {
-            stack.push(x);
-            if(minStack.isEmpty()) {
-                minStack.add(x);
-            } else {
-               if(minStack.peek() >=x) {
-                   minStack.push(x);
-               }
+import java.util.Stack;
+
+/**
+ * Algo:
+ * Maintain two stacks
+ * stack -> Original stack
+ * minStack -> Maintains elements provided incoming elements are smaller
+ */
+public class Program {
+    Stack<Integer> stack = new Stack<>();
+    Stack<Integer> minStack = new Stack<>();
+
+    public void push(int val) {
+        stack.push(val);
+        if(!minStack.isEmpty()) {
+            if(minStack.peek() >= val) {
+                minStack.push(val);
             }
+        } else {
+            minStack.push(val);
         }
+    }
 
-        public void pop() {
-            int data = stack.pop();
-            if(minStack.peek() == data) {
+    public int pop() {
+        int value = -1;
+        if(!stack.isEmpty()) {
+            value = stack.pop();
+            if(!minStack.isEmpty() && minStack.peek() == value) {
                 minStack.pop();
             }
         }
 
-        public int top() {
-            return stack.peek();
-        }
+        return value;
+    }
 
-        public int getMin() {
-            return minStack.peek();
+    public int getMin(int val) {
+        int value = -1;
+        if(!minStack.isEmpty()) {
+            value = minStack.peek();
         }
- }
+        return value;
+    }
+}
 
 //Solution-3 (Multiple stacks)
 package com.leetcode;

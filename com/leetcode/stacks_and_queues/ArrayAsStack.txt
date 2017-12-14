@@ -8,42 +8,47 @@ package com.leetcode;
  * 3. Pop: Check if given stack is empty then pop
  * 4. Peep: Return top element
  * 5. isEmpty: Check if stack is empty
- *
  */
 
-public class Program {
-
-    public class Stacks {
+public class Stacks {
         int stackSize = 30;
         int[] stackIndex = {-1, (stackSize/3) -1 , (2*stackSize/3) -1};
         int[] stack =  new int[stackSize * 3];
 
         public void push(int stackNum, int value) {
-            if(stackIndex[stackNum] < stackSize * (stackNum + 1) - 1) {
-                int index = stackIndex[stackNum] + 1;
-                stack[index] = value;
-                stackIndex[stackNum]++;
-            } else {
+            int currIndex = stackIndex[stackNum];
+            //+1 here helps to advance to beginning of next stack index
+            if(currIndex < stackSize * (stackNum + 1) - 1) {
+               stack[++currIndex] = value;
+               stackIndex[stackNum]++;
+           } else {
+                //Stack is full
                 return;
             }
         }
 
         public int pop(int stackNum) {
+            int currIndex = stackIndex[stackNum];
+            int value = -1;
             if(!isEmpty(stackNum)) {
-                int index = stackIndex[stackNum];
+                value = stack[currIndex];
                 stackIndex[stackNum]--;
-                return stack[index];
-            } else {
-                return  -1;
             }
+            return value;
         }
 
         public int peek(int stackNum) {
-            return stack[stackNum];
+            int currIndex = stackIndex[stackNum];
+            int value = -1;
+            if(!isEmpty(stackNum)) {
+                value = stack[currIndex];
+            }
+            return value;
         }
 
         public boolean isEmpty(int stackNum) {
-           return stackIndex[stackNum] == stackNum * stackSize - 1;
+            //+1 is not used as we want to remain at the beginning of our stack
+            int currIndex = stackIndex[stackNum];
+            return currIndex <= stackSize * stackNum - 1;
         }
-    }
 }

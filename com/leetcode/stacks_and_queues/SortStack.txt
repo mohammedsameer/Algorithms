@@ -4,27 +4,25 @@ package com.leetcode;
 import java.util.Stack;
 
 /**
- * Sort a stack using push/pop/peek/isEmpty
- * Algorithm
- * Move elements from primary to secondary stack, every time making sure the secondary peek < primary peek
- * else move elements from secondary to primary until the new elements fits in sorted order
+ * Algo:
+ * 1. Move elements from pStack to sStack such that they are stored in sorted order in sStack
+ * 2. Exit condition is pStack is empty
  */
-class SortStack<Ineteger> {
-    Stack<Integer> secondary;
+public class Program {
 
-    SortStack() {
-        secondary = new Stack<>();
+    Stack<Integer> sStack = new Stack<>();
+
+    public void sort(Stack<Integer> pStack) {
+        while (!pStack.isEmpty()) {
+            int value = pStack.pop();
+            while (!sStack.isEmpty() && sStack.peek() < value) {
+                pStack.push(sStack.pop());
+            }
+            sStack.push(value);
+        }
     }
 
-    public Stack<Integer> sort (Stack<Integer> primary) {
-        while (!primary.isEmpty()) {
-            int data = primary.pop();
-            while (!secondary.isEmpty() && secondary.peek() > data) {
-                primary.push(secondary.pop());
-            }
-            secondary.push(data);
-        }
+    public static void main(String[] args) {
 
-        return secondary;
     }
 }

@@ -1,13 +1,12 @@
 package com.leetcode;
 
-//Iterative
 /**
- * Write code to remove duplicates from an unsorted linked list without using additional buffer
- * //Algo:
- * Add each node at a time and pass the carry for next addition
+ * Algorithm
+ * 1. Iterate and add individual nodes
+ * 2. Keep track of sum and carry
+ * Note: Trick is to use a pre head and assign to runner, which then return preHead.next as result
  */
 public class Program {
-
     static class Node {
         int data;
         Node next;
@@ -16,27 +15,51 @@ public class Program {
         }
     }
 
+    private static Node addTwoLists(Node head1, Node head2) {
+        if(head1 == null && head2 == null) return null;
 
-Solution -1:
-    //Recursive
-    private static Node addTwoLists(Node head1, Node head2, int carry) {
-        if(head1 == null && head2 == null)
-            return null;
+        int carry = 0;
+        int sum = 0;
+        Node preHead = new Node(-1);
+        Node runner = preHead;
+        while (head1 != null || head2 != null) {
+            sum = carry;
+            if(head1 != null) {
+                sum+=head1.data;
+                head1 = head1.next;
+            }
 
-        Node result = new Node(0);
-        int sum = carry;
-        if(head1 != null) {
-            sum += head1.data;
+            if(head2 != null){
+                sum+=head2.data;
+                head2 = head2.next;
+            }
+
+            runner.next = new Node(sum % 10);
+            runner = runner.next;
+            carry = sum >= 10 ? 1 : 0;
         }
-        if(head2 != null) {
-            sum += head2.data;
-        }
 
-        result.data = sum%10;
-        Node more = addTwoLists(head1 == null ? null : head1.next, head2 == null ? null: head2.next, sum > 10 ? 1: 0);
-        result.next = more;
+        if(carry == 1)
+            runner.next = new Node(1);
 
-        return result;
+        return preHead.next;
+    }
+
+    public static void main(String[] args) {
+
+        Node head1 = new Node(1);
+        Node node1 = new Node(2);
+        Node node2 = new Node(3);
+        head1.next = node1;
+        node1.next = node2;
+
+        Node head2 = new Node(5);
+        Node node3 = new Node(9);
+        Node node4 = new Node(6);
+        head2.next = node3;
+        node3.next = node4;
+
+        Node curr = addTwoLists(head1, head2);
+        System.out.println(curr);
     }
 }
-
