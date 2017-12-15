@@ -1,0 +1,73 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo:
+ * 1. Traverse from root to p
+ * 2. Traverse from root to q
+ * 3. Compare the paths until the last match
+ */
+public class Program {
+
+    class TreeNode {
+        int data;
+        TreeNode left;
+        TreeNode right;
+        TreeNode parent;
+        TreeNode(int data) {
+            this.data = data;
+        }
+    }
+
+    List<TreeNode> pPath = new ArrayList<>();
+    List<TreeNode> qPath = new ArrayList<>();
+
+    private TreeNode commonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null)
+            return root;
+
+        if(p == null && q == null)
+            return null;
+
+        //Traverse from root to p and q
+        traverse(root, p, pPath);
+        traverse(root, q, qPath);
+
+        //Compare the paths for matching treenode
+        TreeNode ancestor = root;
+        for(int index = 0; index < pPath.size() && index <qPath.size(); index++) {
+            if(pPath.get(index) == qPath.get(index))
+                ancestor = pPath.get(index);
+            else
+                break;
+        }
+
+        return ancestor;
+    }
+
+    private boolean traverse(TreeNode root, TreeNode node, List<TreeNode> path) {
+        if(root == null)
+            return false;
+
+        if(root.data == node.data)
+            return true;
+
+       path.add(root);
+
+        //Recurse through left subtree (Note: This is true when root.data matches node.data
+       while (root.left != null && traverse(root.left, node, path)) {
+           return true;
+       }
+
+        //Recurse through right subtree (Note: This is true when root.data matches node.data
+        while (root.right != null && traverse(root.right, node, path)) {
+            return true;
+        }
+
+        //If it comes till here, it implies we did not find the path
+        path.remove(path.size() - 1);
+        return false;
+    }
+}

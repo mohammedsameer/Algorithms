@@ -1,0 +1,36 @@
+
+package com.leetcode;
+
+/**
+ * CommonAncestorBinarySearchTree
+ * Algo:
+ *  If root.data > p.data and q.data, then p and q are in left subtree
+ *  If root.data < p.data and q.data, then p and q are in right subtree
+ *  Exit condition: root.data > p.data and root.data < q.data
+ */
+public class Program {
+
+    class TreeNode {
+        int data;
+        TreeNode left;
+        TreeNode right;
+        TreeNode parent;
+        TreeNode(int data) {
+            this.data = data;
+        }
+    }
+
+    public TreeNode commonAncestorBinarySearchTree(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null)
+            return null;
+
+        if(root.data > p.data && root.data > q.data)
+            commonAncestorBinarySearchTree(root.left, p, q);
+
+        if(root.data < p.data && root.data < q.data)
+            commonAncestorBinarySearchTree(root.right, p, q);
+
+        //This is the condition when root.data > p.data and root.data < q.data (ancestor)
+        return root;
+    }
+}

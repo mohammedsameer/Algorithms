@@ -8,7 +8,7 @@ package com.leetcode;
  * 1. Given node has right subtree then successor is left most child of right subtree
  * Given node is leaf node
  * 2. If given node is right leaf then we have visited the traversal and call successor(node.parent)
- * 3. If given node is left leaf then successor is parent
+ * 3. If given node is left then successor is parent
  */
 class Program {
 
@@ -35,6 +35,7 @@ class Program {
              }
              return node;
          } else {
+             //Current node is leaf of left subtree
              Node parent;
              //Go up until current node is on left subtree
              while ((parent = curr.parent) != null)
@@ -43,6 +44,8 @@ class Program {
                      return parent;
                  }
              }
+
+             //Current node is right most leaf node
              return null;
          }
     }

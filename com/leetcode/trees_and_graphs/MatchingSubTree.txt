@@ -36,8 +36,10 @@ class Program {
     }
 
     private boolean matchTree(Node root1, Node root2) {
+         // Both big and small tree are empty
          if(root1 == null && root2 == null) return true;
-         if(root1 == null || root2 == null) return false;
+         //The small tree is empty
+         if(root2 == null) return true;
          return matchTree(root1.left, root2.left) && matchTree(root1.right, root2.right);
     }
 }

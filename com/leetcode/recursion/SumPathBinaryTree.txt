@@ -2,6 +2,8 @@ package com.leetcode;
 
 import java.util.List;
 
+
+// Solution - 1 (Only one path)
 /**
  * You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum up to that value.
  * Algorithm
@@ -39,5 +41,50 @@ class Program {
         if(root.right != null) sumPaths(root.right, path, sum, curr);
 
         return null;
+    }
+}
+
+//Solution - 2 (All paths)
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo
+ */
+public class Program {
+
+    static List<List<TreeNode>> result = new ArrayList<>();
+
+    static class TreeNode {
+        int data;
+        TreeNode left;
+        TreeNode right;
+        TreeNode parent;
+        TreeNode(int data) {
+            this.data = data;
+        }
+    }
+
+    public static void sumPaths(TreeNode curr, int sum, int currSum, List<TreeNode> currPath) {
+
+        int newSum = curr.data + currSum;
+
+        if(newSum == sum) {
+            currPath.add(curr);
+            result.add(currPath);
+        }
+
+        if(newSum < sum) {
+            currPath.add(curr);
+            if (curr.left != null) sumPaths(curr.left, sum, newSum, currPath);
+            if (curr.right != null) sumPaths(curr.right, sum, newSum, currPath);
+        }
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(0);
+        sumPaths(root, 10, 0, new ArrayList<>());
     }
 }

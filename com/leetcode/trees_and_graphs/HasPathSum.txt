@@ -1,0 +1,27 @@
+package com.leetcode;
+
+/**
+ * Algo
+ * Recursively subtract sum - curr.data to validate if its equal to 0 for a leaf node
+ */
+public class Program {
+    static class TreeNode {
+        int data;
+        TreeNode left;
+        TreeNode right;
+        TreeNode parent;
+        TreeNode(int data) {
+            this.data = data;
+        }
+    }
+
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if(root == null)
+            return false;
+
+        if(sum - root.data == 0 && root.left== null && root.right==null)
+            return true;
+
+        return hasPathSum(root.left, sum - root.data) || hasPathSum(root.right, sum - root.data);
+    }
+}
