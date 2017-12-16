@@ -1,0 +1,28 @@
+package com.leetcode;
+
+/**
+ * Algo
+ * Swap adjacent pair of elements
+ * Note: At the end of first pass the largest element is at the end
+ */
+public class Program {
+
+    public static int[] bubbleSort(int[] arr) {
+        //Outerloop only to limit the i
+        for (int i = 0; i < arr.length; i++) {
+            for(int j = 0; j< arr.length - i - 1; j++) {
+                if(arr[j] > arr[j+1]) {
+                    int temp = arr[j+1];
+                    arr[j+1]  = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+
+        return arr;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(bubbleSort(new int[] {4, 3, 2, 5}));
+    }
+}

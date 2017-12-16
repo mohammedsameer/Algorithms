@@ -1,0 +1,35 @@
+package com.leetcode;
+
+/**
+ * Algo
+ * Copy elements from the end of both arrays
+ * Note: If all elements in B are larger than A, they are copied at the end and no need to
+ * copy remainder as A elements are already inplace
+ */
+public class Program {
+
+    private static int[] merge(int[] A, int[] B) {
+        int i = A.length - B.length - 1; //index of last valued element in A
+        int j = B.length - 1;
+        int k = A.length - 1;
+
+        while (i>=0 && j>=0) {
+            if(A[i] > B[j]) {
+                A[k--] = A[i--];
+            } else {
+                A[k--] = B[j--];
+            }
+        }
+
+        while (j>=0) {
+            A[k--] = B[j--];
+        }
+
+        return A;
+    }
+
+    public static void main(String[] args) {
+        int[] result = merge(new int[] {7, 8, 9, 10, -1, -1, -1}, new int[] {1,2,3});
+        System.out.println(result);
+    }
+}

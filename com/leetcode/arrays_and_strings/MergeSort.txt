@@ -1,0 +1,61 @@
+package com.leetcode;
+
+/**
+ * Algo
+ * 1. Find the middle of array
+ * 2. Call merge sort on left half i.e continue dividing
+ * 3. Call merge sort on right half i.e. continue dividing
+ * 4. Call merge
+ */
+public class Program {
+
+    public static int[] mergeSort(int[] arr, int start, int end) {
+        if (start < end) {
+            int mid = (start + end)/2;
+            //Divide left half
+            mergeSort(arr, start, mid);
+            //Divide right half
+            mergeSort(arr, mid+1, end);
+            //Merge
+            merge(arr, start, mid, end);
+        }
+        return arr;
+    }
+
+
+    private static void merge(int[] arr, int start, int mid, int end) {
+        int[] helper = new int[arr.length];
+
+        //Copy original array
+        for(int i = start; i <= end; i++) {
+            helper[i] = arr[i];
+        }
+
+        int i = start;
+        int j = mid + 1;
+        int k = start;
+
+        while (i <= mid &&  j<= end) {
+            if(helper[i] < helper[j]) {
+                arr[k] = helper[i];
+                i++;
+            } else {
+                arr[k] = helper[j];
+                j++;
+            }
+            k++;
+        }
+
+        //Copy remainders
+        while (i<=mid) {
+            arr[k] = helper[i];
+            i++;
+            k++;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] result = mergeSort(new int[] {4, 3, 2, 5}, 0, 3);
+        System.out.println(result);
+    }
+}

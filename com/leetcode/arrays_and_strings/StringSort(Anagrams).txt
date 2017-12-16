@@ -1,0 +1,31 @@
+package com.leetcode;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+/**
+ * Algo
+ * Sort strings using anagram comparator so the strings with anagrams are next to each other
+ */
+public class Program {
+
+    static Comparator<String> anagramComparator = (s1, s2) -> {
+        char[] s1Arr = s1.toCharArray();
+        char[] s2Arr = s2.toCharArray();
+        Arrays.sort(s1Arr);
+        Arrays.sort(s2Arr);
+        String s1N = new String(s1Arr);
+        String s2N = new String(s2Arr);
+        return s1N.compareTo(s2N);
+    };
+
+
+    public static String[] stringComparison(String[] sArr) {
+       Arrays.sort(sArr, anagramComparator);
+       return sArr;
+    }
+
+    public static void main(String[] args) {
+        String[] result = stringComparison(new String[] {"love", "sam", "ovel", "mas", "voel"});
+    }
+}

@@ -1,3 +1,4 @@
+//Solution - 1
 package com.leetcode;
 
 /**
@@ -15,7 +16,7 @@ public class Program {
             if(target == nums[i])
                 return i;
 
-            //Rotation encountered but target still greater than max element
+            //Rotation encountered but target still greater than max element or smaller than min element
             if(i < nums.length -1 && nums[i] > nums[i+1])
             {
                 if(target > nums[i] || target < nums[i+1])
@@ -29,5 +30,54 @@ public class Program {
 
     public static void main(String[] args) {
         System.out.println(search(new int[] {4, 5, 6, 0, 2, 3}, 2));
+    }
+}
+
+
+//Solution - 2
+package com.leetcode;
+
+/**
+ * Algo
+ * Sort strings using anagram comparator so the strings with anagrams are next to each other
+ */
+public class Program {
+
+    public static int searchNumber(int[] arr, int start, int end, int num) {
+
+        if (arr.length == 0)
+            return -1;
+
+        while (start < end) {
+            int mid = (start+end)/2;
+
+            if(num == arr[mid]) {
+                return mid;
+            }
+            //Implies 4,3,6,7 i.e. number in increasing order
+            else if(arr[start] < arr[mid]) {
+                if(num > arr[mid])
+                    start = mid + 1;
+                else if(num > arr[start])
+                    end = mid - 1;
+                else
+                    start = mid + 1;
+
+            //Implies number is decreasing order
+            } else if(num < arr[mid]) {
+                start = mid - 1;
+            } else if (num < arr[end]) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        int result = searchNumber(new int[] {6,7,8,1,2,3,4,5}, 0, 7, 3);
+        System.out.println(result);
     }
 }
