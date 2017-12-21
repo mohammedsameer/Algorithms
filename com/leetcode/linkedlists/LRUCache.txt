@@ -1,0 +1,95 @@
+ package com.leetcode;
+
+ import java.util.HashMap;
+
+ /**
+  * Algo
+  * 1. Use doubly linked list for managing values
+  * 2. Use hashmap for holding key -> Node, provides access to node in O(1)
+  */
+public class Node {
+        Node prev;
+        Node next;
+        int value;
+
+        public Node(int value) {
+            this.value = value;
+        }
+    }
+
+public class LRUCache {
+        int size;
+        HashMap<Integer, Node> map = new HashMap<>();
+        Node head;
+        Node end;
+
+        public LRUCache(int size) {
+            this.size = size;
+        }
+
+        public void add(int key, int value) {
+            if(map.containsKey(key)) {
+                Node node = map.get(key);
+                node.value = value;
+                //Put this in the front
+                setHead(node);
+            } else {
+                Node node = new Node(value);
+                //Check if LRU cache maxed out
+                if(map.size() == size) {
+                    remove(end);
+                }
+                map.put(key, node);
+                //Put this in the front
+                setHead(node);
+            }
+        }
+
+        public void remove(Node node) {
+
+            if(map.containsValue(node)) {
+                //Reset node (Next link)
+                if(node.prev != null) {
+                    node.prev.next = node.next.next;
+                } else {
+                    //Removing head or head = head.next
+                    head = node.next;
+                }
+
+                //Reset node (Prev link)
+                if(node.next != null) {
+                    node.next.prev = node.prev;
+                } else {
+                    //Removing end or end = end.prev
+                    end = node.prev;
+                }
+
+                //Remove from map
+                map.values().removeIf(value -> value.equals(node));
+            }
+        }
+
+        public Node get(int key) {
+            if(map.containsKey(key)) {
+                Node node = map.get(key);
+                //Put this in the front
+                setHead(node);
+                return head;
+            }
+            return null;
+        }
+
+        public void setHead(Node node) {
+            node.next = head;
+            node.prev = null;
+
+            //Base conditions
+            if(head != null)
+                head.prev = node;
+
+            head = node;
+
+            if(end == null)
+                end = head;
+        }
+}

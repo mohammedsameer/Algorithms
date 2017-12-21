@@ -1,35 +1,72 @@
-import java.io.*;
+
+
+//Solution-1
+package com.leetcode;
+
 import java.util.*;
 
+/**
+ * Algorithm
+ * Keep track of positive segments of array i.e. when current sum becomes negative reset to zero
+ */
+public class Program {
 
-class Solution {
-  
-   public static void maxSubArray(int[] arr)
-   {
-     if(arr.length==0)
-       return;
-     
-     int max=arr[0];
-     int nmax=arr[0];
-     
-     for(int i=1;i<arr.length;i++)
-     {
-       nmax = Math.max(arr[i], nmax+arr[i]);
-       max = Math.max(max,nmax);
-     }
-     
-     System.out.println(max);
-   }
-  
-  public static void main(String[] args) {
-    int[] arr = new int[5];
-    arr[0]=4;
-    arr[1]=-1;
-    arr[2]=2;
-    arr[3]=-5;
-    arr[4]=1;
-    
-    System.out.println("Maximum subarray");
-    maxSubArray(arr);
-  }
+    public static int maxSubArray(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+
+        int max = Integer.MIN_VALUE;
+        int curr_max = 0;
+
+        for(int i=0; i<nums.length; i++) {
+            curr_max = curr_max + nums[i];
+            //Calculate current max
+            //Note: Negative is handled because max is first compared
+            if(max < curr_max)
+                max = curr_max;
+            //Reset to zero, because we may have a positive integer next
+            if(curr_max < 0)
+                curr_max = 0;
+        }
+
+        return max;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(maxSubArray(new int[]{-2, -3, -4, -1, -2, -1, -5, -3}));
+    }
+}
+
+//Solution - 2
+package com.leetcode;
+
+import java.util.*;
+
+/**
+ * Algorithm
+ * Brute force
+ */
+public class Program {
+
+    public static int maxSubArray(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+
+        int max = Integer.MIN_VALUE;
+        for(int start=0; start<nums.length; start++) {
+            for(int end=start; end<nums.length; end++) {
+                int curr = 0;
+                for(int i=start; i<=end; i++) {
+                    curr = curr + nums[i];
+                    max = Math.max(curr, max);
+                }
+            }
+        }
+
+        return max;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4}));
+    }
 }

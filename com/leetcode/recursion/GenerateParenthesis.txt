@@ -1,0 +1,37 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algorithm
+ * Recursively call generate parenthesis
+ * Use open and close open < n add "(", close < open add ")"
+ */
+public class Program {
+    public static List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        generateParenthesis(n, result, 0, 0, "");
+        return result;
+    }
+
+    private static void generateParenthesis(int n, List<String> result, int open, int close, String curr) {
+        if(curr.length() == n * 2) {
+            result.add(curr);
+            return;
+        }
+
+        //Recursively open (
+        if(open < n) {
+            generateParenthesis(n, result, open+1, close, curr + "(");
+        }
+
+        if(close < open) {
+            generateParenthesis(n, result, open, close+1, curr + ")");
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(generateParenthesis(3));
+    }
+}
