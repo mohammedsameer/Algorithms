@@ -1,0 +1,89 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * Move both odd and even pointers at once
+ */
+public class Program {
+
+     public class ListNode {
+      int val;
+      ListNode next;
+      ListNode(int x) { val = x; }
+    }
+
+
+    public ListNode oddEvenList(ListNode head) {
+
+         if(head == null || head.next == null)
+             return head;
+
+         ListNode odd = head, even = head.next, evenHead = even, oddHead = odd;
+         //Moving even as its the faster node
+         while (even != null && even.next != null) {
+             //Skip next elements
+             odd.next = odd.next.next;
+             even.next = even.next.next;
+             //Move cursors
+             odd = odd.next;
+             even = even.next;
+         }
+
+         odd.next = evenHead;
+         return oddHead;
+    }
+
+    public static void main(String[] args) {
+    }
+}
+
+//Solution - 2
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Use two pointers (aka runners) odd & even
+ * 2. Loop through and find the sub lists and join them together
+ */
+public class Program {
+
+     public class ListNode {
+      int val;
+      ListNode next;
+      ListNode(int x) { val = x; }
+    }
+
+
+    public ListNode oddEvenList(ListNode head) {
+
+         if(head == null || head.next == null)
+             return head;
+
+         ListNode preHead = new ListNode(-1);
+         ListNode runner = preHead;
+         ListNode curr = head;
+
+         int count = 0;
+         while (curr!= null) {
+             if(++count%2 != 0) {
+                 runner.next = curr;
+                 runner = runner.next;
+             }
+             curr = curr.next;
+         }
+
+        curr = head;
+        while (curr!= null) {
+            if(++count%2 == 0) {
+                runner.next = curr;
+                runner = runner.next;
+            }
+            curr = curr.next;
+        }
+
+        return preHead.next;
+    }
+
+    public static void main(String[] args) {
+    }
+}

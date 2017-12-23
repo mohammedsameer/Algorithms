@@ -1,3 +1,52 @@
+//Solution - 1
+package com.leetcode;
+
+/**
+ * Algo
+ * 1. Use concept of binary search
+ * 2. Start from top right corner idea being
+ * a) If the target > matrix[r][c] then it cannot be in current row
+ * b) If the target < matrix<[r][c] then it is in current row
+ */
+public class Program {
+
+    public static boolean searchMatrix(int[][] matrix, int target) {
+
+        if(matrix.length == 0)
+            return false;
+
+        int r = 0;
+        int c = matrix[0].length -1;
+        while (r < matrix.length && c >=0) {
+            if(target == matrix[r][c])
+                return true;
+            else if(target > matrix[r][c])
+                r++;
+            else
+                c--;
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+
+        int[][] matrix = new int[3][3];
+        matrix[0][0] = 2;
+        matrix[0][1] = 8;
+        matrix[0][2] = 10;
+        matrix[1][0] = 4;
+        matrix[1][1] = 9;
+        matrix[1][2] = 15;
+        matrix[2][0] = 12;
+        matrix[2][1] = 13;
+        matrix[2][2] = 17;
+
+        System.out.println(searchMatrix(matrix, 10));
+    }
+}
+
+//Solution - 2
 package com.leetcode;
 
 /**

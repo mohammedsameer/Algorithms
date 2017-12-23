@@ -1,0 +1,42 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Dynamic programming
+ * a) Compute the number of coins it takes to get a sum
+ */
+public class Program {
+
+    public static int coinChange(int[] coins, int amount) {
+
+        if (coins.length == 0 || amount < 0) {
+            return -1;
+        }
+
+        int[] dp = new int[amount+1];
+        dp[0] = 0;
+        int currAmount = 0;
+
+        while (++currAmount <= amount) {
+            //If no coin can be used to reach
+            int min = -1;
+            int count = 0;
+            for(int coin: coins) {
+                //If current amount is more than coin value, then simply dp[currAmount - coin] + 1 (assuming dp[currentAmount-coin] is reachable)
+                if(currAmount >= coin && dp[currAmount-coin] != -1) {
+                    count = dp[currAmount-coin] + 1;
+                    //Tracks the minimum number of coins for currentAmount
+                    min = min < 0 ? count : (count < min ? count : min);
+                }
+            }
+
+            dp[currAmount] = min;
+        }
+
+        return dp[amount];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(coinChange(new int[] {1,2,5,10}, 43));
+    }
+}

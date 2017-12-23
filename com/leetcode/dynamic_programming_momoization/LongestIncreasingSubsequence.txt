@@ -1,0 +1,40 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * Dynamic programming
+ * 1. The longest increasing subsequence only depends on elements up to now and not after
+ * 2. Move up to current and check if its value is greater than previous values and set the dp[i]
+ */
+public class Program {
+
+    public static int lengthOfLIS(int[] nums) {
+
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        int[] dp = new int[nums.length];
+        //The longest increasing subsequence is at least 1
+        dp[0] = 1;
+        int maxCount = 1;
+        for(int i=1; i < nums.length; i++) {
+            //initialized to 0 (the current element will be accommodated in the end)
+            int currCount = 0;
+            for(int j=0; j<i; j++) {
+                if(nums[i] > nums[j]) {
+                    //Its important to not blindly increase count because it does not handle order
+                    currCount = Math.max(currCount, dp[j]);
+                }
+            }
+            dp[i] = currCount + 1;
+            maxCount = Math.max(maxCount, dp[i]);
+        }
+
+        return maxCount;
+    }
+
+    public static void main(String[] args) {
+        lengthOfLIS(new int[]{10,9,2,5,3,7,101,18});
+    }
+}

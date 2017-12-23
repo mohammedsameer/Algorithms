@@ -1,9 +1,10 @@
 package com.leetcode;
 
 /**
- * Given a circular linked list, implement an algorithm which returns node at the beginning of the loop
- * Algo:
- * Move one node twice as fast as the other. If there is a loop, they will meet eventually
+ * LinkedList Cycle's beginning node
+ * 1.Use two cursors slow and fast
+ * 2. slow = slow.next, fast = fast.nex.next, loop until they meet (Always within loop) it confirms cycle
+ * 3. Reset slow or fast and move them one node at a time and it will meet at the beginning of cycle
  */
 public class Program {
 
@@ -15,20 +16,31 @@ public class Program {
         }
     }
 
-    private static Node circularList(Node head) {
-        if(head == null) {
-            return null;
+    public Node linkedListCyle(Node head) {
+        if(head == null)
+            return head;
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if(slow == fast)
+                break;
         }
-        Node n1 = head;
-        Node n2 = head;
 
-        do {
-            n1 = n1.next;
-            n2 = n2.next.next;
-        } while (n1 != n2);
-        return n1;
-    }
+        //Invalid list
+        if(slow != fast)
+            return null;
 
-    public static void main(String[] args) {
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow;
     }
 }

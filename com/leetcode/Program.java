@@ -1,7 +1,7 @@
 package com.leetcode;
 
 /**
- * Algorithm
+ * Algo:
  */
 public class Program {
 

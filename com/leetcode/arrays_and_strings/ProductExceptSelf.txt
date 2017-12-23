@@ -1,0 +1,36 @@
+package com.leetcode;
+
+/**
+ * Algorithm
+ * 1. Make two passes
+ * Pass 1: Compute the product from left till now (excluding element) (Left to Right)
+ * Pass 2: Compute the product from right till now (excluding element) (Right to Left)
+ */
+public class Program {
+
+    public int[] productExceptSelf(int[] nums) {
+
+       int[] result = new int[nums.length];
+
+       //Left to Right product till now
+       int left = 1;
+       result[0] = left;
+       for(int i = 1; i < nums.length; i++) {
+           left  *= nums[i-1];
+           result[i] = left;
+
+          // OR
+           // result [i] = result[i-1] * nums[i-1];
+       }
+
+        //Note: At this time result[nums.length-1] already has the right value
+       //Right to Left product from right
+        int right = 1;
+       for (int i=nums.length - 1; i>=0; i--) {
+           result[i] *= right;
+           right *= nums[i];
+       }
+
+       return result;
+    }
+}

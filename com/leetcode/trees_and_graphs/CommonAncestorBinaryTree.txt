@@ -25,11 +25,8 @@ public class Program {
     List<TreeNode> qPath = new ArrayList<>();
 
     private TreeNode commonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null)
-            return root;
-
-        if(p == null && q == null)
-            return null;
+        if(root == null || root == p || root == q)
+          return root;
 
         //Traverse from root to p and q
         traverse(root, p, pPath);
