@@ -1,0 +1,33 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Keep track of small and big.
+ * 2. If current element is smaller than small, then small = current
+ * 3. If current element is greater than small and less than current big, then big = current
+ * 4. If you find an element which is greater than small and big, you have 3 elements
+ */
+public class Program {
+
+    public static boolean increasingTriplet(int[] nums) {
+
+        if(nums.length == 0)
+            return false;
+
+        int small = Integer.MAX_VALUE;
+        int big = Integer.MAX_VALUE;
+
+        for(int num: nums) {
+            if(num <= small) small = num;
+            //Implies current number is > small and less than big
+            else if(num <= big) big = num;
+            else return true;
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(increasingTriplet(new int[]{1,2,3,1,2,1}));
+    }
+}

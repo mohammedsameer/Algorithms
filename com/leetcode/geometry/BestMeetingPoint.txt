@@ -1,0 +1,53 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+/**
+ * Algo:
+ * 1. Identify the location of homes in rows and cols array
+ * 2. Compute the median along rows axis and cols axis
+ */
+public class Program {
+
+    public static int minTotalDistance(int[][] grid) {
+        ArrayList<Integer> cols = new ArrayList<>();
+        ArrayList<Integer> rows = new ArrayList<>();
+
+        for (int r = 0; r < grid[0].length; r++) {
+            for (int c = 0; c < grid.length; c++) {
+                if(grid[r][c] == 1) {
+                    rows.add(r);
+                    cols.add(c);
+                }
+            }
+        }
+
+        Collections.sort(rows);
+        Collections.sort(cols);
+
+        //Compute median and subtract from every home
+        int sum = 0;
+        for (int r: rows) {
+            //Note: rows.size()/2 gives index of median
+            sum+= Math.abs(r - rows.get(rows.size()/2));
+        }
+
+
+        for (int c: cols) {
+            //Note: cols.size()/2 gives index of median
+            sum+= Math.abs(c - cols.get(cols.size()/2));
+        }
+
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        int[][] grid = new int[3][5];
+        grid[0][0] = 1;
+        grid[0][4] = 1;
+        grid[2][2] = 1;
+
+        minTotalDistance(grid);
+    }
+}

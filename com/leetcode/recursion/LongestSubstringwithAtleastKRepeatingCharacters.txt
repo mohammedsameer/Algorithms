@@ -1,0 +1,47 @@
+package com.leetcode;
+
+
+/**
+ * Algo:
+ * 1. Compute the occurrence of every character
+ * 2. For every character with count > k, b/w start and end skip
+ * 3. For every character with count < k, compute the left max and right max
+ */
+public class Program {
+
+    public static int longestSubstring(String s, int k) {
+        char[] str = s.toCharArray();
+        return helper(str,0,s.length(),k);
+    }
+
+    private static int helper(char[] str, int start, int end,  int k){
+        if(end-start<k) return 0;//substring length shorter than k.
+        int[] count = new int[26];
+        for(int i = start;i<end;i++){
+            int idx = str[i]-'a';
+            count[idx]++;
+        }
+        for(int i = 0;i<26;i++){
+            //Skip if
+            // 1. The current character meet the minimum length k requirement
+            // 2. The current character has not appeared
+            if(count[i]<k&&count[i]>0){ //count[i]=0 => i+'a' does not exist in the string, skip it.
+                for(int j = start;j<end;j++){
+                    //Match the ith character in string
+                    if(str[j]==i+'a'){
+                        int left = helper(str,start,j,k);
+                        int right = helper(str,j+1,end,k);
+                        return Math.max(left,right);
+                    }
+                }
+            }
+        }
+
+        //Length of characters upto now which have meet the k length requirement
+        return end-start;
+    }
+
+    public static void main(String[] args) {
+        longestSubstring("ababbc", 2);
+    }
+}

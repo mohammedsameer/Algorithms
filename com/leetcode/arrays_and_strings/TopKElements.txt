@@ -1,0 +1,52 @@
+package com.leetcode;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+/**
+ * Algo:
+ * 1. Add elements to map using num as key
+ * 2. Transfer elements to tree map using freq as key
+ * 3. Return elements up to k
+ */
+public class Program {
+
+    public static List<Integer> topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> numCountMap = new HashMap<>();
+        TreeMap<Integer, List<Integer>> frequencyMap = new TreeMap<>();
+
+        //Add elements to num count map
+        for(int num: nums) {
+            numCountMap.put(num, numCountMap.getOrDefault(num, 0) + 1);
+        }
+
+        //Add elements to frequency map using frequency
+        for(Entry<Integer, Integer> entry : numCountMap.entrySet()) {
+            int num = entry.getKey();
+            int freq = entry.getValue();
+
+            List<Integer> list;
+            if(!frequencyMap.containsKey(freq)) {
+                list = new ArrayList<>();
+            } else {
+                list = frequencyMap.get(freq);
+            }
+            list.add(num);
+            frequencyMap.put(freq, list);
+        }
+
+        //Add elements to result
+        List<Integer> resultList = new ArrayList<>();
+        while (resultList.size() < k) {
+            //Returns the element with largest key
+            Entry<Integer, List<Integer>> entry = frequencyMap.pollLastEntry();
+            resultList.addAll(entry.getValue());
+        }
+
+        return resultList;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(topKFrequent(new int[]{1,1,1,2,2,3}, 2));
+    }
+}

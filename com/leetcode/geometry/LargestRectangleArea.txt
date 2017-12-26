@@ -1,0 +1,44 @@
+package com.leetcode;
+
+import java.util.Stack;
+
+/**
+ * Algo:
+ * 1. Maintain a stack which holds indexes (to calculate the width of rectangle)
+ * 2. Push elements to stack if incoming height is > height of stack peek or stack is empty
+ * 3. Pop elements to compute area
+ */
+public class Program {
+
+    public int largestRectangleArea(int[] heights) {
+        if(heights.length == 0)
+            return 0;
+
+        Stack<Integer> stack = new Stack<>();
+        int i = 0;
+        int max = Integer.MIN_VALUE;
+        while (i<heights.length) {
+            if(stack.isEmpty() || heights[i] > heights[stack.peek()]) {
+                stack.push(i);
+                i++;
+            } else {
+                int h = heights[stack.pop()];
+                int w = stack.isEmpty()?i:i-1-stack.peek();
+                max = Math.max(max, h*w);
+            }
+        }
+
+        while (!stack.isEmpty()) {
+            int h = heights[stack.pop()];
+            int w = stack.isEmpty()?i:i-1-stack.peek();
+            max = Math.max(max, h*w);
+        }
+
+        return max;
+    }
+
+
+    public static void main(String[] args) {
+
+    }
+}

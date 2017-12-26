@@ -1,0 +1,81 @@
+package com.leetcode;
+
+
+import java.util.*;
+
+/**
+ * Algo:
+ * Always add to result set when the current max height changes
+ * 1. Maintain the heights as two entry sets a) (start point, -height) b) (end point, height)
+ * 2. Maintain a priority queue which holds the heights in reverse order
+ * 3. Loop through entry sets, when you encounter a start point add height to pq, and when you encounter end point
+ * remove height from pq
+ * 4. For every height change add to result
+ */
+public class Program {
+
+    public static List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> result = new ArrayList<>();
+        List<int[]> height = new ArrayList<>();
+        for(int[] b:buildings) {
+            // start point has negative height value
+            height.add(new int[]{b[0], -b[2]});
+            // end point has normal height value
+            height.add(new int[]{b[1], b[2]});
+        }
+
+        // sort $height, based on the first value, if necessary, use the second to
+        // break ties
+        Comparator<int[]> heightComparator = (a,b) -> {
+            if(a[0] != b[0])
+                return a[0] - b[0];
+            return a[1] - b[1];
+        };
+        Collections.sort(height, heightComparator);
+
+        //Queue for managing heights
+        Queue<Integer> pq = new PriorityQueue<>((a,b) -> b-a);
+
+        //Initial height
+        pq.offer(0);
+
+        //Prev and Curr heights
+        int prev = 0;
+        int curr = 0;
+
+        for(int[] h: height) {
+            //Index 0 has x axis and index 1 has height
+            if(h[1] < 0) {
+                //Add the height (Note: - of - is +ve)
+                pq.offer(-h[1]);
+            } else {
+                //Remove when the building ends, as the start of next building will pick up next
+                pq.remove(h[1]);
+            }
+
+            //Highest/Lowest building (aka when the max height changes simply add to result)
+            curr = pq.peek();
+
+            if(prev != curr) {
+                result.add(new int[]{h[0], curr});
+                prev = curr;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[][] buildings = new int[3][3];
+        buildings[0][0] = 2;
+        buildings[0][1] = 3;
+        buildings[0][2] = 3;
+        buildings[1][0] = 3;
+        buildings[1][1] = 6;
+        buildings[1][2] = 4;
+        buildings[2][0] = 7;
+        buildings[2][1] = 8;
+        buildings[2][2] = 5;
+        getSkyline(buildings);
+    }
+}

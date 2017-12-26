@@ -1,0 +1,63 @@
+package com.leetcode;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+/**
+ * Algo:
+ * 1. Sort meetings based on start time
+ * 2. Start with one meeting room, if the next meeting room overlaps with current meeting increment meeting room
+ * Note: Remember to free up meeting rooms once done (Use priority queue)
+ */
+public class Program {
+
+    public static class Interval {
+        int start;
+        int end;
+
+        Interval(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+
+    public static int minMeetingRooms(Interval[] intervals) {
+
+        if(intervals.length == 0)
+            return 0;
+
+        Comparator<Interval> intervalComparator = (i1, i2) -> {
+            return i1.start - i2.start;
+        };
+
+        Arrays.sort(intervals, intervalComparator);
+        Queue<Integer> pq = new PriorityQueue<>();
+        int count = 1;
+        pq.offer(intervals[0].end);
+
+        for(int i = 1; i < intervals.length; i++) {
+            if(intervals[i].start < pq.peek()) {
+                //The next meeting start time is before current meeting, need a new room
+                count++;
+            } else {
+                //Free up meeting room
+                pq.poll();
+            }
+
+            //Add the current meeting
+            pq.offer(intervals[i].end);
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Interval i1 = new Interval(5,10);
+        Interval i2 = new Interval(15,20);
+        Interval i3 = new Interval(7,12);
+        minMeetingRooms(new Interval[] {i1, i2, i3});
+    }
+}
