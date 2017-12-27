@@ -1,0 +1,51 @@
+
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo:
+ * Iterate through elements of nums & identify if the current + 1 = next, if not get range
+ */
+public class Program {
+
+    public static List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        if(nums.length == 0 || lower == upper)
+            return new ArrayList<>();
+
+        List<String> ranges = new ArrayList<>();
+
+        //Handle first and lower boundary
+        if(nums[0] > lower) {
+            ranges.add(getRange(lower-1, nums[0]));
+        }
+
+        //Handle elements in array
+        for(int i = 0; i < nums.length -1; i++) {
+            //Ensure we are above lower boundary and below upper boundary
+            if(nums[i+1] - nums[i] != 1 && nums[i] >= lower && nums[i+1] <= upper) {
+                ranges.add(getRange(nums[i], nums[i+1]));
+            }
+        }
+
+        //Handle last & upper boundary
+         if(nums[nums.length -1] < upper) {
+            ranges.add(getRange(nums[nums.length-1], upper+1));
+        }
+
+        return ranges;
+    }
+
+    private static String getRange(int num1, int num2) {
+        if(num2 - num1 == 2) {
+            return num1 + (num2 - num1 - 1) + "";
+        } else {
+            return (num1 + 1) + "->" + (num2 - 1);
+        }
+    }
+
+    public static void main(String[] args) {
+            findMissingRanges(new int[] {0}, 0, 10);
+    }
+}

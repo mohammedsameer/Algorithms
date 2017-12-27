@@ -1,0 +1,44 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Keep track of leftMax and rightMax i.e. max on either side of array
+ * 2. If left max < right max it implies at that index i we can store atleast leftMax - arr[i]
+ * (Reason: the right boundary is higher than left)
+ * 3. If left max > right max it implies at that index j we can store atleast rightMax - arr[j]
+ * (Reason: the left boundary is higher than right)
+ * Note: 2 & 3 do not worry about whats happening b/w i & j, & are only concerned up to particular index, hence run the index
+ * up to i<=j
+ */
+public class Program {
+
+    public static int trap(int[] height){
+        if(height.length == 0)
+            return 0;
+
+        int amount = 0;
+        int i = 0;
+        int j = height.length - 1;
+        int leftMax = 0;
+        int rightMax = 0;
+
+        while (i<=j) {
+            leftMax = Math.max(leftMax, height[i]);
+            rightMax = Math.max(rightMax, height[j]);
+
+            if(leftMax < rightMax) {
+                amount+= leftMax - height[i];
+                i++;
+            } else {
+                amount+= rightMax - height[j];
+                j--;
+            }
+        }
+
+        return amount;
+    }
+
+    public static void main(String[] args) {
+        trap(new int[]{0,1,0,2});
+    }
+}
