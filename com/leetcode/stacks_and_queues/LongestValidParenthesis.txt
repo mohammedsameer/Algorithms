@@ -1,0 +1,46 @@
+package com.leetcode;
+
+import java.util.Stack;
+
+/**
+ * Algo:
+ * 1. If input "(", add on stack
+ * 2. else
+ * a) if stack is empty always add on stack
+ * b) if stack is non-empty, element on top is "(", pop and compute length till now, else add current index on top of stack
+ *  (Note: The later is essential to compute the latest length for subsequent iterations)
+ */
+public class Program {
+    public  static int longestValidParentheses(String s) {
+        int size = s.length(), length = 0;
+        if(size < 2)
+            return length;
+
+        Stack<Integer> stack = new Stack<>();
+        for(int i = 0; i < size; i++) {
+            if( s.charAt(i) == '(') {
+                //Push when "("
+                stack.push(i);
+            } else {
+                //Push when stack is empty
+                if(stack.isEmpty())
+                    stack.push(i);
+                else {
+                    //Stack peek is "(", matching pair, so pop and keep track of max length
+                    if(s.charAt(stack.peek()) == '(') {
+                        stack.pop();
+                        // If empty stack then string is valid till now, hence + 1
+                        // else subtract the peek index from current index
+                        length = Math.max(i - (stack.isEmpty()? -1: stack.peek()), length);
+                    }
+                    else stack.push(i);
+                }
+            }
+        }
+        return length;
+    }
+
+    public static void main(String[] args) {
+        longestValidParentheses("()()");
+    }
+}

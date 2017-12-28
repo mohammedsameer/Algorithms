@@ -1,3 +1,4 @@
+//Solution - 1
 package com.leetcode;
 
 import java.util.ArrayList;
@@ -39,5 +40,42 @@ public class Program {
 
     public static void main(String[] args) {
         System.out.println(permute(new int[] {1,2,3}));
+    }
+}
+
+//Solution - 2 (Backtracking)
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo:
+ * 1. Add an element to templist, check if templist size == nums size, if yes add to result else move to next element
+ * Note: Make sure when you add elements to temp list the list does not already have the same element
+ */
+public class Program {
+    public static List<List<Integer>> permutations(int[] nums) {
+      List<List<Integer>> result = new ArrayList<>();
+      backtrack(result, new ArrayList<>(), nums);
+      return result;
+    }
+
+    private static void backtrack(List<List<Integer>> result, ArrayList<Integer> tempList, int[] nums) {
+        if(tempList.size() == nums.length) {
+            result.add(new ArrayList<>(tempList));
+        } else {
+            for(int i=0; i< nums.length; i++) {
+                if(!tempList.contains(nums[i])) {
+                    tempList.add(nums[i]);
+                    backtrack(result, tempList, nums);
+                    tempList.remove(tempList.size() - 1);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        permutations(new int[] {2,3,4});
     }
 }

@@ -1,0 +1,34 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo:
+ * Incrementally add elements to temporary list and check if the current sum = target, if yes add the elements to result
+ * Note: This is backtracking because we compute a result and then decide if it satisfies the requirement then either choose
+ * to retain or discard
+ */
+public class Program {
+    public static List<List<Integer>> combinationSum(int[] nums, int target) {
+      List<List<Integer>> result = new ArrayList<>();
+      backtrack(result, new ArrayList<>(), nums, target, 0);
+      return result;
+    }
+
+    private static void backtrack(List<List<Integer>> result, ArrayList<Integer> tempList, int[] nums, int remain, int start) {
+        if(remain < 0) return;
+        else if (remain == 0) result.add(tempList);
+        else {
+            for(int i = start; i < nums.length; i++) {
+                tempList.add(nums[i]);
+                backtrack(result, tempList, nums, remain - nums[i], i);
+                tempList.remove(tempList.size() - 1);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        combinationSum(new int[] {2,3,4}, 6);
+    }
+}

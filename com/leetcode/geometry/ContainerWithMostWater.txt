@@ -1,0 +1,34 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Keep track of two pointers, left and right
+ * 2. Move them along x - axis, based on idea height[left] < height[right], then left ++, else right--
+ * Reason: We attempt to move close to taller height in hopes of forming a big container
+ */
+public class Program {
+
+    public static int maxArea(int[] height) {
+        if(height.length == 0)
+            return 0;
+
+        int maxArea = 0;
+        int left = 0;
+        int right = height.length - 1;
+
+        while (left<right) {
+            maxArea = Math.max(maxArea, Math.min(height[left], height[right]) * (right-left));
+            if(height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return maxArea;
+    }
+
+    public static void main(String[] args) {
+        maxArea(new int[]{1,2,3,4});
+    }
+}
