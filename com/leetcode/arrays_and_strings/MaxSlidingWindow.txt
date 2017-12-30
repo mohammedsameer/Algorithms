@@ -1,0 +1,34 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. For every iteration, maintain a start and end which represents the window size.
+ * 2. Loop through subarray b/w start and end to identify the max and store in the array
+ */
+public class Program {
+
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+        int len = nums.length;
+        if(len == 0)
+            return nums;
+
+        int[] maxArr = new int[len-k+1];
+        int maxIndex = -1;
+        int max;
+        for(int i=0; i<len-k+1; i++) {
+         int start = i;
+         int end = start+k-1;
+         max = Integer.MIN_VALUE;
+         for(int j=start; j<=end; j++) {
+                max = Math.max(max, nums[j]);
+         }
+         maxArr[++maxIndex] = max;
+        }
+
+        return maxArr;
+    }
+
+    public static void main(String[] args) {
+        maxSlidingWindow(new int[] {1,3,-1,-3,5,3,6,7}, 3);
+    }
+}

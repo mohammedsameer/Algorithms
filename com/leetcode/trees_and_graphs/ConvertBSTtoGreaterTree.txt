@@ -1,0 +1,33 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Reverse of inorder traversal
+ * i.e. visit right, root and left
+ * Keep track of sum to update the values
+ */
+public class Program {
+  public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+    }
+
+
+    private int sum = 0;
+
+    public TreeNode convertBST(TreeNode root) {
+        if (root != null) {
+            convertBST(root.right);
+            sum += root.val;
+            root.val = sum;
+            convertBST(root.left);
+        }
+        return root;
+    }
+
+
+    public static void main(String[] args) {
+    }
+}

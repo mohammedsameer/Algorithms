@@ -1,0 +1,39 @@
+
+package com.leetcode;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo:
+ * 1. Keep an additional array say freq to track the numbers visited.
+ * 2. Loop through the freq array to identify the numbers not visited.
+ * https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/discuss/92956
+ */
+public class Program {
+
+    public static List<Integer> findDisappearedNumbers(int[] nums) {
+        if(nums.length == 0)
+            return new ArrayList<>();
+
+        List<Integer> result = new ArrayList<>();
+        int[] freq = new int[nums.length];
+        for(int i=0; i<nums.length; i++) {
+            //nums[i] -1 because the number at i should be i+1 as array is 1 <= a[i] <=n
+            freq[nums[i]-1]++;
+        }
+
+        for(int i=0; i<nums.length; i++) {
+            if(freq[i] == 0)
+                //i+1 to identify the number
+                result.add(i+1);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        findDisappearedNumbers(new int[]{4,3,2,7,8,2,3,1});
+    }
+}

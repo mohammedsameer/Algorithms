@@ -1,0 +1,38 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Algo:
+ * Loop through s upto length s.length - p.length, and check if the strings are anagrams
+ */
+public class Program {
+
+    public List<Integer> findAnagrams(String s, String p) {
+
+        if(s.length() == 0)
+            return new ArrayList<>();
+
+        List<Integer> result = new ArrayList<>();
+        int slen = s.length();
+        int plen = p.length();
+        char[] pArr = p.toCharArray();
+        Arrays.sort(pArr);
+        for(int i = 0; i <=slen - plen; i++) {
+            char[] sSubArr = s.substring(i, i+plen).toCharArray();
+            Arrays.sort(sSubArr);
+            String s1 = new String(sSubArr);
+            String s2 = new String(pArr);
+            if(s1.equals(s2)) {
+                result.add(i);
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+    }
+}

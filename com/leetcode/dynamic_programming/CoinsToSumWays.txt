@@ -1,0 +1,44 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * Dynamic programming
+ * a) Number of ways to make sum s using repeated coins
+ * b) Number of ways to make sum s using non-repeated coins
+ */
+public class Program {
+
+    //Number of ways to make sum s using repeated coins
+    public static int coinrep(int[] coins, int s) {
+        int[] dp = new int[s+1];
+        dp[0] = 1;
+
+        for(int coin: coins) {
+            //Every iteration of coin updates the dp with number of ways we can reach sum using coins up to now (Allows repeats)
+            for(int i=coin; i<=s; i++) {
+                dp[i] += dp[i-coin];
+            }
+        }
+        return dp[s];
+    }
+
+    //Number of ways to make sum s not repeating coins
+    public static int coinnorep(int[] coins, int s) {
+        int[] dp = new int[s+1];
+        dp[0] = 1;
+
+        for(int coin: coins) {
+            //Every iteration of coin updates the dp with number of ways we can reach sum using coins up to now (No repeats)
+           for(int i=s; i>=coin; i--) {
+               dp[i] += dp[i-coin];
+           }
+        }
+        return dp[s];
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(coinrep(new int[] {1,2,4,5}, 10));
+        System.out.println(coinnorep(new int[] {1,2,4,5}, 10));
+    }
+}

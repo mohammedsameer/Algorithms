@@ -1,0 +1,35 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * Find paths from every node.
+ * Note: There is no expectation that sum = 0 at leaf node
+ */
+public class Program {
+
+     public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+    }
+
+    public int pathSum(TreeNode root, int sum) {
+        if(root == null)
+            return 0;
+        return pathSumHelper(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+    }
+
+    public int pathSumHelper(TreeNode root, int sum) {
+
+         if(root == null)
+             return 0;
+
+         return (sum - root.val == 0 ? 1 : 0) +
+                 pathSumHelper(root.left, sum - root.val) +
+                 pathSumHelper(root.right, sum - root.val);
+    }
+
+    public static void main(String[] args) {
+    }
+}

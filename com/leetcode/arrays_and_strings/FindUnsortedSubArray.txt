@@ -1,0 +1,92 @@
+//Solution 1
+package com.leetcode;
+
+/**
+ * Algo:
+ * Make one pass and track the min and max elements
+ * start(last index of element greater than current min) and end (last index of element smaller than current max)
+ */
+public class Program {
+
+    public static int findUnsortedSubarray(int[] nums) {
+        int start = -1;
+        int end = -1;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        int len = nums.length;
+
+        for(int i=0; i <nums.length; i++) {
+            min = Math.min(min, nums[len - i - 1]);
+            max = Math.max(max, nums[i]);
+
+            if(nums[i] < max) {
+                end = i;
+            }
+            if(nums[len - i - 1] > min){
+                start = len - i - 1;
+            }
+        }
+
+        if(start != -1 && end != -1) {
+            return end - start + 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findUnsortedSubarray(new int[]{2, 6, 4, 8, 10, 9, 15}));
+    }
+}
+
+//Solution - 2
+package com.leetcode;
+
+/**
+ * Algo:
+ * Make two passes of O(n2),
+ * Pass 1: From left determine if you have another element smaller than current
+ * Pass 2: From right determine if you have another element greater than current
+ * Track start and end indexes and return end-start+1 as length in unsorted subarray
+ */
+public class Program {
+
+    public static int findUnsortedSubarray(int[] nums) {
+        int start = -1;
+        int end = -1;
+
+        //Left to right pass
+        for(int i=0; i < nums.length; i++) {
+            for(int j=i+1; j<nums.length; j++) {
+                if(nums[i] > nums[j]) {
+                    start = i;
+                    break;
+                }
+            }
+            if(start != -1)
+                break;
+        }
+
+        //Right to left pass
+        for(int i=nums.length-1; i >=0; i--) {
+            for(int j=i-1; j>=0; j--) {
+                if(nums[i] < nums[j]) {
+                    end = i;
+                    break;
+                }
+            }
+            if(end != -1)
+                break;
+        }
+
+        if(start != -1 && end != -1) {
+            return end - start + 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findUnsortedSubarray(new int[]{2, 6, 4, 8, 10, 9, 15}));
+    }
+}

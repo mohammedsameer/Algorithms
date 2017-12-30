@@ -1,0 +1,55 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Calculate the depth of binary tree
+ * 2. Keep track of max = Math.max(max, leftDepth + rightDepth)
+ */
+public class Program {
+
+    public static class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+    }
+
+    static int max = 0;
+
+    //Compute the depth and track the max
+    public static int diameterOfBinaryTree(TreeNode root) {
+        if(root==null)
+            return 0;
+
+        depth(root);
+        return max;
+    }
+
+    //Same as max depth of binary tree
+    public static int depth(TreeNode node) {
+        if(node == null)
+            return 0;
+
+        if(node.left == null && node.right == null)
+            return 1;
+
+        int leftDepth = depth(node.left);
+        int rightDepth = depth(node.right);
+
+        max = Math.max(max, leftDepth + rightDepth);
+        return Math.max(leftDepth, rightDepth) + 1;
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        TreeNode left = new TreeNode(2);
+        TreeNode right = new TreeNode(3);
+        root.left = left;
+        root.right = right;
+        TreeNode leftleft = new TreeNode(4);
+        TreeNode leftright = new TreeNode(5);
+        left.left = leftleft;
+        left.right = leftright;
+        diameterOfBinaryTree(root);
+    }
+}
