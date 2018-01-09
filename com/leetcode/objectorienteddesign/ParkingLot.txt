@@ -1,0 +1,132 @@
+package com.leetcode;
+
+//Core objects
+//Vehicle - Base class with basic vehicle attributes
+//Car, MotorBike, Truck, Bus - Specific class with specific attributes
+//Spot - Spot with type info
+//ParkingLot - ParkingLot supports parking vehicle, Removing vehicle, Mapping Vehicle and Spot for O(1) retrieval
+
+import java.util.*;
+
+public enum Color {
+    black, red, green;
+}
+
+public enum VehicleType {
+    small(0), medium(1), large(2), extraLarge(3);
+
+    private int value;
+
+    VehicleType(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+
+public enum SpotType {
+    small(0), medium(1), large(2), extraLarge(3);
+
+    private int value;
+
+    SpotType(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+
+public abstract class Vehicle {
+    private String license;
+    private Color color;
+    private String make;
+    private VehicleType type;
+
+    public Vehicle(String license, Color color, String make, VehicleType type) {
+        this.license = license;
+        this.color = color;
+        this.make = make;
+        this.type = type;
+    }
+
+    public VehicleType getType() {
+        return type;
+    }
+}
+
+public class Motorbike extends Vehicle {
+    public Motorbike(String license, Color color, String make) {
+        super(license, color, make, VehicleType.small);
+    }
+}
+
+public class Car extends Vehicle {
+    public Car(String license, Color color, String make) {
+        super(license, color, make, VehicleType.medium);
+    }
+}
+
+public class Bus extends Vehicle {
+    public Bus(String license, Color color, String make) {
+        super(license, color, make, VehicleType.large);
+    }
+}
+
+public class Truck extends Vehicle {
+    public Truck(String license, Color color, String make) {
+        super(license, color, make, VehicleType.extraLarge);
+    }
+}
+
+public class Spot {
+    SpotType type;
+
+    Spot(SpotType type) {
+        this.type = type;
+    }
+
+    public SpotType getType() {
+        return type;
+    }
+
+    public void setType(SpotType type) {
+        this.type = type;
+    }
+}
+
+public class ParkingLot {
+    List<Spot> allSpots = new ArrayList<>();
+    Queue<Spot>[] freeSpots = new LinkedList[4];
+    Map<Vehicle, Spot> parkedVehicles = new HashMap<>();
+
+    public ParkingLot(List<Spot> spots) {
+        this.allSpots = spots;
+        //initialize all spots as free spots
+    }
+
+    public Spot parkVehicle(Vehicle vehicle) {
+        int vehicleTypeValue = vehicle.getType().getValue();
+        Spot spot = null;
+        if(!freeSpots[vehicleTypeValue].isEmpty()) {
+            spot = freeSpots[vehicleTypeValue].remove();
+            parkedVehicles.put(vehicle, spot);
+        }
+        return spot;
+    }
+
+    public void removeVehicle(Vehicle vehicle) {
+        if(parkedVehicles.containsKey(vehicle)) {
+            Spot spot = parkedVehicles.get(vehicle);
+            parkedVehicles.remove(vehicle);
+            freeSpots[vehicle.getType().getValue()].add(spot);
+        }
+    }
+}
+
+
+
+

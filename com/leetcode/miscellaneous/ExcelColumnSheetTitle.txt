@@ -1,0 +1,21 @@
+package com.leetcode;
+
+class Program {
+
+    public static String columnTitle(int n) {
+        StringBuilder sb = new StringBuilder();
+
+        while (n > 0) {
+            n--;
+            char c = (char) ('A' + n%26);
+            sb.append(c);
+            n = n/26;
+        }
+
+        return sb.reverse().toString();
+    }
+
+    public static void main(String[] args) {
+        columnTitle(28);
+    }
+}

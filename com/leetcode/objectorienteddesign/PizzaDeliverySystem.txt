@@ -1,0 +1,130 @@
+package com.leetcode;
+
+//PizzaDelivery System
+//Pizza
+//PizzaBuilder
+//Driver
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+public enum Sauce {
+    TOMATO, BARBECUE, MARINARA
+}
+
+public enum Toppings {
+    CHEESE, CHICKEN, BEEF, PEPERRONI, ONION, GARLIC, PEPPERS
+}
+
+public enum Doug {
+    WHEAT, WHITE
+}
+
+public enum Crust {
+    THICK, THIN
+}
+
+public class Pizza {
+    Sauce sauce;
+    Doug doug;
+    Crust crust;
+    List<Toppings> toppings;
+
+    public Pizza(Sauce sauce, Doug doug, Crust crust, List<Toppings> toppings) {
+        this.sauce = sauce;
+        this.doug = doug;
+        this.crust = crust;
+        this.toppings = toppings;
+    }
+}
+
+public abstract class PizzaBuilder {
+    abstract Pizza make();
+}
+
+public class CheesePizzaBuilder extends PizzaBuilder {
+    @Override
+    Pizza make() {
+        List<Toppings> toppings = new ArrayList<>();
+        toppings.add(Toppings.CHEESE);
+        Pizza pizza = new Pizza(Sauce.TOMATO, Doug.WHITE, Crust.THICK, toppings);
+        return pizza;
+    }
+}
+
+public class ChickenPizzaBuilder extends PizzaBuilder {
+    @Override
+    Pizza make() {
+        List<Toppings> toppings = new ArrayList<>();
+        toppings.add(Toppings.CHEESE);
+        Pizza pizza = new Pizza(Sauce.TOMATO, Doug.WHITE, Crust.THICK, toppings);
+        return pizza;
+    }
+}
+
+public class Order {
+    public String pizzaType;
+    public String location;
+
+    public Pizza pizza;
+
+    public Order(String pizzaType, String location) {
+        this.pizzaType = pizzaType;
+        this.location = location;
+    }
+
+    public Pizza getPizza() {
+        return pizza;
+    }
+
+    public void setPizza(Pizza pizza) {
+        this.pizza = pizza;
+    }
+}
+
+public class PizzaDeliveryPersonal {
+    boolean isFree = true;
+
+    public void goDeliver(Order order) {
+        //Deliver to location
+    }
+
+}
+
+public class PizzaDeliverySystem {
+    Queue<PizzaDeliveryPersonal> freePizzaDeliveryPersonals = new LinkedList<>();
+    Queue<Order> orderQueue = new LinkedList<>();
+
+    public void handleOrder(Order order) {
+        Pizza pizza = null;
+        switch (order.pizzaType) {
+            case "Cheese":
+                CheesePizzaBuilder cheesePizzaBuilder = new CheesePizzaBuilder();
+                order.setPizza(cheesePizzaBuilder.make());
+                break;
+            case "Chicken":
+                ChickenPizzaBuilder chickenPizzaBuilder = new ChickenPizzaBuilder();
+                order.setPizza(chickenPizzaBuilder.make());
+                break;
+            default:
+                break;
+        }
+
+        if(!freePizzaDeliveryPersonals.isEmpty()) {
+            PizzaDeliveryPersonal pizzaDeliveryPersonal = freePizzaDeliveryPersonals.remove();
+            pizzaDeliveryPersonal.goDeliver(order);
+        } else {
+            orderQueue.add(order);
+        }
+    }
+
+    public void completeDelivery(PizzaDeliveryPersonal pizzaDeliveryPersonal) {
+        if(!orderQueue.isEmpty()) {
+            pizzaDeliveryPersonal.goDeliver(orderQueue.remove());
+        } else {
+            freePizzaDeliveryPersonals.add(pizzaDeliveryPersonal);
+        }
+    }
+}

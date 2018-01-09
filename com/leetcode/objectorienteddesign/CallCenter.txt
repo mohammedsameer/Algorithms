@@ -1,0 +1,106 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+//Core Objects
+//Employee - Base employee object , escalates when unable to handle call hence needs access to call handler
+//Fresher - Fresher extends Employee and has specific info
+//Technical Lead - Technical Lead extends Employee and has specific info
+//Project Manager - Project Manager extends Employee has specific info
+//Call - Pojo for call
+//CallHandler - Main Handler which a) dispatches call, b) finds free employee
+
+public class CallHandler {
+    public static final int LEVELS = 3;
+    List<Employee>[] employees = new ArrayList[LEVELS];
+    Queue<Call>[] callQueue = new LinkedList[LEVELS];
+
+    public CallHandler(List<Employee>[] employees) {
+        this.employees = employees;
+    }
+
+    public Employee getHandler(Call call) {
+        for(int level = call.rank; level < LEVELS; level++) {
+            for(Employee employee : employees[level]) {
+                if(employee.isFree) {
+                    return employee;
+                }
+            }
+        }
+
+        //None of the employees are free
+        return null;
+    }
+
+    public void dispatchCall(Call call) {
+        Employee employee = getHandler(call);
+        if(employee != null) {
+            employee.handleCall(call);
+        } else {
+            callQueue[call.rank].add(call);
+        }
+    }
+}
+
+
+public class Call {
+    String message;
+    int rank = 0;
+
+    Call(String message) {
+        this.message = message;
+    }
+}
+
+public class Employee {
+    int rank;
+    boolean isFree = true;
+    CallHandler callHandler;
+
+    public Employee(int rank) {
+        this.rank = rank;
+    }
+
+    public void handleCall(Call call) {
+        isFree = false;
+        if(isEcalationNeeded(call)) {
+            call.rank +=1;
+            callHandler.dispatchCall(call);
+        } else {
+            //process call
+        }
+
+        isFree = true;
+    }
+
+    public boolean isEcalationNeeded(Call call) {
+        //call requires escalation
+        return false;
+    }
+
+}
+
+public class Fresher extends Employee {
+
+    public Fresher(int rank) {
+        super(rank);
+    }
+}
+
+public class TechLead extends Employee {
+
+    public TechLead(int rank) {
+        super(rank);
+    }
+}
+
+public class ProductManager extends Employee {
+
+    public ProductManager(int rank) {
+        super(rank);
+    }
+}
+

@@ -50,7 +50,7 @@ public class LRUCache {
             if(map.containsValue(node)) {
                 //Reset node (Next link)
                 if(node.prev != null) {
-                    node.prev.next = node.next.next;
+                    node.prev.next = node.next;
                 } else {
                     //Removing head or head = head.next
                     head = node.next;

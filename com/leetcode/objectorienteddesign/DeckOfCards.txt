@@ -1,0 +1,49 @@
+package com.leetcode;
+
+import java.util.List;
+
+//Suite - Enum with Spade, Diamond, Club, Hearts
+//Card - Base class with Suite and NumValue
+//Deck - List of cards
+
+//Card Suite
+public enum Suite {
+    Spade(0), Diamond(1), Heart(2), Club(3);
+    private final int value;
+
+    Suite(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return this.value;
+    }
+}
+
+//General card
+public class Card {
+    private Suite suite;
+    private int num;
+
+    public Suite getSuite() {
+        return suite;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public Card(Suite suite, int num) {
+        this.suite = suite;
+        this.num = num;
+    }
+}
+
+//Deck
+public class Deck {
+    private List<Card> cards;
+
+    public Deck(List<Card> cards) {
+        this.cards = cards;
+    }
+}

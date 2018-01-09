@@ -1,0 +1,104 @@
+package com.leetcode;
+
+//Core objects
+//User - User has its info + plus renewal info
+//Book - Book has identifier (ISBN), Book Category
+//Library - Collection of books, Collection of Users, Renewal/Remove of user, Add/Remove of book
+//OnlineBookReaderSystem - Search book, Search User
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class User {
+    private String fName, lName;
+    private long ID;
+    Date expirationDate;
+    //To display dataFormatter.format(expirationDate)
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+
+
+    public User(String fName, String lName, long ID) {
+        this.fName = fName;
+        this.lName = lName;
+        this.ID = ID;
+
+        //initialize membership expiration to 90days
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar.add(Calendar.DATE, 90);
+        expirationDate = calendar.getTime();
+
+    }
+
+    public void renewUser(int days) {
+        expirationDate.setTime(expirationDate.getTime() + days * 24 * 60 * 60 * 1000);
+    }
+
+    public long getID() {
+        return this.ID;
+    }
+}
+
+public class Book {
+    private String name;
+    private long ID;
+
+    public Book(String name, long ID) {
+        this.name = name;
+        this.ID = ID;
+    }
+
+    public long getID() {
+        return this.ID;
+    }
+}
+
+public class Library {
+    private String name;
+    private String address;
+    private Set<Book> books;
+    private List<User> members;
+
+    public Library(String name, String address, Set<Book> books, List<User> members) {
+        this.name = name;
+        this.address = address;
+        this.books = books;
+        this.members = members;
+    }
+
+    public void addMember(String fName, String lName, long ID) {
+        members.add(new User(fName, lName, ID));
+    }
+
+    public void removeMember(User user) {
+        members.removeIf(currUser -> currUser.getID() == user.getID());
+    }
+
+    public void renewMembership(User user) {
+        user.renewUser(30);
+    }
+
+    public void addBook(String name, long ID) {
+        books.add(new Book(name, ID));
+    }
+
+    public void removeBook(Book book) {
+        books.removeIf(currBook -> book.getID() == book.getID());
+    }
+}
+
+public class OnlineBookReaderSystem {
+    List<Library> libraries;
+    List<User> users;
+
+    public OnlineBookReaderSystem(List<Library> libraries, List<User> users) {
+        this.libraries = libraries;
+        this.users = users;
+    }
+
+    public User searchUser() {
+
+    }
+
+    public User searchBook() {
+    }
+}

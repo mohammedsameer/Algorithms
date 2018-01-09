@@ -1,0 +1,22 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * Integers are 32 bit, so loop through and right shift 32 times to count number of times 1 occurs
+ */
+class Program {
+    public static int hammingWeight(int n) {
+        int count = 0;
+
+        for(int i=0; i<32; i++) {
+            //Move every bit to 1's place and & with 1 if == 1, then its 1 else 0
+            count+= (n >> i & 1) == 1 ? 1: 0;
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        hammingWeight(4);
+    }
+}

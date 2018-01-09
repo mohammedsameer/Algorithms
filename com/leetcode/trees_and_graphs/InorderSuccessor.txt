@@ -43,6 +43,7 @@ class Program {
                  if(parent.left == curr) {
                      return parent;
                  }
+                 curr = parent;
              }
 
              //Current node is right most leaf node

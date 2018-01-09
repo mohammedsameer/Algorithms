@@ -1,0 +1,172 @@
+package com.leetcode;
+
+import java.util.List;
+
+//Core objects
+//Player - Human player with turn function
+//Board - Board with spots[8][8]
+//Spot - Individual spot on board
+//Piece - Base class for every piece on board
+//SpecificPieces (King, Queen, etc) - Extend the base Piece class and have valid move function
+//Move - Pojo for move fromX, fromY to toX, toY
+//Game - Game with board and players
+
+public enum Color {
+    WHITE, BLACK;
+}
+
+public class Move {
+    int fromX;
+    int fromY;
+    int toX;
+    int toY;
+
+    public Move(int fromX, int fromY, int toX, int toY) {
+        this.fromX = fromX;
+        this.fromY = fromY;
+        this.toX = toX;
+        this.toY = toY;
+    }
+}
+
+public class Spot {
+    private int x;
+    private int y;
+    private Piece piece;
+
+    public Spot(int x, int y, Piece piece) {
+        this.x = x;
+        this.y = y;
+        this.piece = piece;
+    }
+
+    public boolean isOccupied() {
+        if(this.piece != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Piece releaseSpot() {
+        Piece releasedPiece = this.piece;
+        this.piece = null;
+        return releasedPiece;
+    }
+}
+
+public class Piece {
+    int x;
+    int y;
+    private Color color;
+
+    public Piece(int x, int y, Color c) {
+        this.x = x;
+        this.y = y;
+        this.color = c;
+    }
+
+
+    public boolean isValidMove(Move move) {
+        if(x == move.toX && y == move.toY) {
+            return false;
+        } else if(/* toX and toY within range */) {
+            return true;
+        }
+        return false;
+    }
+}
+
+public class Knight extends Piece {
+
+    public Knight(int x, int y, Color color) {
+        super(x, y, color);
+    }
+
+    @Override
+    public boolean isValidMove(Move move) {
+    }
+}
+
+public class Queen extends Piece {
+
+    public Queen(int x, int y, Color color) {
+        super(x, y, color);
+    }
+
+    @Override
+    public boolean isValidMove(Move move) {
+    }
+}
+
+public class King extends Piece {
+
+    public King(int x, int y, Color color) {
+        super(x, y, color);
+    }
+
+    @Override
+    public boolean isValidMove(Move move) {
+    }
+}
+
+public class Player {
+    private Color color;
+    private List<Piece> pieces;
+
+    public Player(Color color) {
+        this.color = color;
+        initializePieces();
+    }
+
+    private void initializePieces() {
+        //Place the pieces to their original locations
+    }
+
+    public Move nextMove() {
+        //Logic of what player does next
+        return new Move(1,2,3,4);
+    }
+}
+
+public class Board {
+    Spot[][] spots = new Spot[8][8];
+
+    public Board() {
+        for(int r = 0; r < spots.length; r++) {
+            for (int c = 0; c < spots[r].length; c++) {
+                Spot spot = new Spot(r, c, null);
+                spots[r][c] = spot;
+            }
+        }
+    }
+}
+
+public class Game {
+    Board board;
+    Player player1;
+    Player player2;
+
+    public Game(Board board, Player player1, Player player2) {
+        //initialize
+        this.board = board;
+        this.player1 = player1;
+        this.player2 = player2;
+    }
+
+    public boolean play() {
+        boolean isPlayer1Turn = true;
+        Move move;
+        while (!isGameOver()) {
+            if(!isPlayer1Turn)  {
+                move = player2.nextMove();
+            } else {
+                move = player1.nextMove();
+            }
+        }
+    }
+
+    public boolean isGameOver() {
+        //Logic to determine how to end game
+    }
+}

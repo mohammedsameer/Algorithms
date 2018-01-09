@@ -4,88 +4,16 @@ import java.util.*;
 
 class Program {
 
-        public ArrayList<Integer> stack = new ArrayList<>();
-    	public ArrayList<Integer> minStack = new ArrayList<>();
+    public Stack<Integer> stack = new Stack<>();
+    public Stack<Integer> minStack = new Stack<>();
 
-    	public void push(int e){
-
-    		stack.add(e);
-
-    		if(minStack.isEmpty())
-    		{
-    			minStack.add(e);
-    		}
-    		else
-    		{
-    			//Add in minstack if new element smaller than current top min element
-    			if(e<=this.getMin())
-    			{
-    				minStack.add(e);
-    			}
-    		}
-    	}
-
-    	public void pop(){
-    		int size = stack.size();
-    		int e = stack.get(size-1);
-
-    		stack.remove(size-1);
-
-    		//Remove if the current element removed from mainstack is the top element of minstack
-    		if(e==this.getMin())
-    		{
-    			int minStackSize = minStack.size();
-    			minStack.remove(minStackSize-1);
-    		}
-    	}
-
-    	public int top(){
-    		int size = stack.size();
-    		return stack.get(size-1);
-    	}
-
-    	public int getMin(){
-    	    int minStackSize = minStack.size();
-    		return minStack.get(minStackSize-1);
-
-    	}
-
-    public static void main(String[] args) {
-
-        //Add ontop of stack
-        Program.push(10);
-        Program.push(20);
-        Program.push(-30);
-        System.out.println("The min element:"+ Program.getMin());
-
-    }
-}
-
-
-//Solution-2 Using two stacks
-package com.leetcode;
-
-import java.util.Stack;
-
-/**
- * Algo:
- * Maintain two stacks
- * stack -> Original stack
- * minStack -> Maintains elements provided incoming elements are smaller
- */
-public class Program {
-    Stack<Integer> stack = new Stack<>();
-    Stack<Integer> minStack = new Stack<>();
-
-    public void push(int val) {
-        stack.push(val);
-        if(!minStack.isEmpty()) {
-            if(minStack.peek() >= val) {
-                minStack.push(val);
-            }
-        } else {
-            minStack.push(val);
+    public void push(int e){
+        stack.add(e);
+        if((!minStack.isEmpty() && minStack.peek() > e) || minStack.isEmpty())
+        {
+            minStack.add(e);
         }
+
     }
 
     public int pop() {
@@ -100,90 +28,23 @@ public class Program {
         return value;
     }
 
-    public int getMin(int val) {
+    public int getMin() {
         int value = -1;
         if(!minStack.isEmpty()) {
             value = minStack.peek();
         }
         return value;
     }
-}
 
-//Solution-3 (Multiple stacks)
-package com.leetcode;
-
-/**
- * How would you design a stack which, in addition to push and pop, also has a function min which returns the minimum element?
- * Push, pop and min should all operate in O(1) time
- */
-
-//Solution1 - Multistack implementation
-public class Program {
-
-    public class Node {
-        int data;
-        Node next;
-        Node(int data) {
-            this.data = data;
+    public int top(){
+        if(!stack.isEmpty()) {
+            return stack.peek();
         }
+
+        return -1;
     }
 
-    //Basic stack implementation
-    public class Stack {
-        Node top;
-        public void push(int data) {
-            if(top != null) {
-                Node node = new Node(data);
-                node.next = top;
-                top = node;
-            } else {
-                top = new Node(data);
-            }
-        }
+    public static void main(String[] args) {
 
-        public int pop() {
-            if(!isEmpty()) {
-                int data = top.data;
-                top = top.next;
-                return data;
-            }
-            return -1;
-        }
-
-        public int peek() {
-            if(!isEmpty()) {
-                return top.data;
-            }
-            return -1;
-        }
-        public boolean isEmpty() {
-            return top == null;
-        }
-    }
-
-    //Min stack implementation
-    public class StackMin extends Stack {
-        Node top;
-        public void push(int data) {
-            if(data < min()) {
-                top.data = data;
-            }
-            super.push(data);
-        }
-
-        public int pop() {
-            int data = super.pop();
-            if(data == min()) {
-                top = top.next;
-            }
-            return data;
-        }
-
-        public int min() {
-            if(!isEmpty()) {
-                return top.data;
-            }
-            return -1;
-        }
     }
 }

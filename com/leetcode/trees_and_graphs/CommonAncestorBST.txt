@@ -1,44 +1,6 @@
 //Solution-1
 package com.leetcode;
 
-/**
- * Algorithm
- * Recursively go to left and right
- */
-public class Program {
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
-    }
-
-    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q)
-            return root;
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        return left != null && right != null ? root: left == null ? right : left;
-    }
-
-    public static void main(String[] args) {
-        TreeNode root = new TreeNode(7);
-        TreeNode left = new TreeNode(4);
-        TreeNode right = new TreeNode(3);
-        TreeNode p = new TreeNode(5);
-        TreeNode q = new TreeNode(6);
-        right.left = p;
-        right.right = q;
-        root.left = left;
-        root.right = right;
-        lowestCommonAncestor(root, p, q);
-    }
-}
-
-
-//Solution - 2
-package com.leetcode;
 
 /**
  * CommonAncestorBinarySearchTree
