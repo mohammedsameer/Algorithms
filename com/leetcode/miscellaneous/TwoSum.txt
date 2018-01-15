@@ -4,8 +4,7 @@ import java.util.*;
 
 /**
  * Algorithm
- * 1. Store current array in set
- * 2. Loop through array and see if target - diff is present in set
+ * Loop through array and see if num is present in set if not store the compliment
  */
 public class Program {
 
@@ -14,15 +13,12 @@ public class Program {
         int[] result = {-1, -1};
 
         for(int num : inputArr) {
-            inputSet.add(num);
-        }
-
-        for(int num : inputArr) {
-            int diff = target - num;
-            if(inputSet.contains(diff)) {
+            if(inputSet.contains(num)) {
                 result[0] = num;
-                result[1] = diff;
+                result[1] = target - num;
                 return result;
+            } else {
+                inputSet.add(target - num);
             }
         }
 
@@ -30,7 +26,7 @@ public class Program {
     }
 
     public static void main(String[] args) {
-        int[] inputArr = {0, 5, 3, 8, 9};
+        int[] inputArr = {2, 3, 5, 8, 9};
         int target = 5;
         int[] result = twoSum(inputArr, target);
         for(int entity: result) {

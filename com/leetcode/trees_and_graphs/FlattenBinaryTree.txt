@@ -1,0 +1,33 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Recursively go to right subtree & then its left subtree
+ * 2. root.right = prev
+ * 3. root.left = null
+ * 4. prev = root
+ */
+public class Program {
+
+     public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+     }
+
+    private TreeNode prev = null;
+
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        flatten(root.right);
+        flatten(root.left);
+        root.right = prev;
+        root.left = null;
+        prev = root;
+    }
+
+    public static void main(String[] args) {
+    }
+}
