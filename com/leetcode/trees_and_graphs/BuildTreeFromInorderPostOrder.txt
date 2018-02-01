@@ -1,0 +1,48 @@
+
+package com.leetcode;
+
+/**
+ * Algorithm
+ * Recursion
+ * 1. root = postOrder[postEnd], therefore iterate inorder until inorder[k] == root
+ * 2. Recursively call buildTree with start and end for each of postorder and inorder arrays
+ */
+public class Program {
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+    }
+
+    public TreeNode buildTree(int[] postOrder, int[] inorder) {
+        if(postOrder.length == 0 || inorder.length == 0)
+            return null;
+
+        return buildTree(0, postOrder.length-1, postOrder, 0, inorder.length -1, inorder);
+    }
+
+    private TreeNode buildTree(int postStart, int postEnd, int[] postOrder, int inStart, int inEnd, int[] inorder) {
+        if(postStart > postEnd || inStart > inEnd)
+            return null;
+
+        int k = 0;
+        TreeNode root = new TreeNode(postOrder[postEnd]);
+        while (k < inEnd) {
+            if(inorder[k] == root.val)
+                break;
+            ++k;
+        }
+
+        //Length of left subtree is k - instart (Reason: k is at root aka mid)
+        root.left = buildTree(postStart, postStart+k-inStart-1, postOrder, inStart, k-1, inorder);
+        root.right = buildTree(postStart+k-inStart-1, postEnd-1, postOrder, k+1, inEnd, inorder);
+        return root;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println();
+    }
+}

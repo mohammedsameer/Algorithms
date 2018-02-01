@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Algorithm
  * Comparator which compares and sorts the collection in descending order
- * E.g: (9, 12), returns (12,9)
+ * E.g: (12, 9), returns (9, 12)
  */
 public class Program {
     static Comparator<String> stringComparator = (s1, s2) -> {

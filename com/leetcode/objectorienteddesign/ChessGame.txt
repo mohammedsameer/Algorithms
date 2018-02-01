@@ -163,6 +163,7 @@ public class Game {
             } else {
                 move = player1.nextMove();
             }
+            isPlayer1Turn = !isPlayer1Turn;
         }
     }
 
