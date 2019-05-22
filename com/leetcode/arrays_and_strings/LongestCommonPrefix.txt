@@ -1,12 +1,14 @@
+Solution - 1
 package com.leetcode;
 
-/**
- * Algorithm
- * 1. Loop through and identify the min length string in array
- * 2. Loop every character up to min length element and compare character
- */
+
 public class Program {
 
+    /**
+     * Algorithm
+     * 1. Loop through and identify the min length string in array
+     * 2. Loop every character up to min length element and compare character
+     */
     public static String longestCommonPrefix(String[] strArray) {
         StringBuilder sb = new StringBuilder();
 
@@ -41,7 +43,30 @@ public class Program {
         return sb.toString();
     }
 
+    /**
+     * Algorithm
+     * 1. Pick an anchor string
+     * 2. Compare a pair of (string, prefix) if no match after exhausting all of prefix simply return empty if match, t
+     * hen use this match to compare other pair of (string, prefix)
+     */
+     public static String longestCommonPrefix(String[] strs) {
+           if(strs.length == 0)
+               return "";
+
+           String prefix = strs[0];
+           for(int i=1; i<strs.length; i++) {
+               //indexof = 0, if prefix is present and -1 otherwise
+               while (strs[i].indexOf(prefix) != 0) {
+                  //no matching prefix
+                  prefix = prefix.substring(0, prefix.length()-1);
+                  if(prefix.isEmpty()) return "";
+               }
+           }
+           return prefix;
+    }
+
     public static void main(String[] args) {
         System.out.println(longestCommonPrefix(new String[]{"abc", "abcde", "abcd"}));
+        System.out.println(longestCommonPrefixOptimal(new String[]{"abc", "abcde", "abcd"}));
     }
 }

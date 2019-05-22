@@ -1,0 +1,55 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * Check of special characters + or - at beginning of string
+ * Check for negative number
+ * Iterate through string upto special characters
+ */
+public class Program {
+    public static int myAtoi(String str) {
+
+        if (str.isEmpty() || str.trim().length()==0)
+            return 0;
+
+        String s = str.trim();
+        double result = 0;
+
+        boolean isNegative = false;
+        int idx = 0;
+        if (s.charAt(0) == '-')
+        {
+            isNegative = true;
+            idx++;
+        }
+        else if(s.charAt(0) == '+')
+        {
+            idx++;
+        }
+
+        //If string contains any special characters return 0
+        //We stop if a special character is encountered and only return upto that
+        while(idx<s.length() && s.charAt(idx)>='0' && s.charAt(idx)<='9')
+        {
+            result = result*10 + s.charAt(idx)-'0';
+            idx++;
+        }
+
+        if (isNegative)
+            result = -result;
+
+        if (result > Integer.MAX_VALUE) {
+            result = Integer.MAX_VALUE;
+        }
+
+        if (result < Integer.MIN_VALUE) {
+            result = Integer.MIN_VALUE;
+        }
+
+        return (int) result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(myAtoi("9223372036854775808"));
+    }
+}

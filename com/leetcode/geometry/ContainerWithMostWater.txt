@@ -18,6 +18,7 @@ public class Program {
 
         while (left<right) {
             maxArea = Math.max(maxArea, Math.min(height[left], height[right]) * (right-left));
+             //Only move the index of smaller height because we want to maximize our area
             if(height[left] < height[right]) {
                 left++;
             } else {

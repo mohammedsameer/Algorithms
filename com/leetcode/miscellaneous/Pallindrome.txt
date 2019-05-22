@@ -26,3 +26,30 @@ public class Program {
         System.out.println(isPalindrome("abba"));
     }
 }
+
+
+/**
+ * Algo:
+ * 1. Edge cases if number is negative or if the last digit in a non-zero number is 0, then not a palindrome
+ * 2. Compute the half of number aka from right to left and then compare first half and second half
+ * if they match palindrome (account for odd number of elements by dividing by 10)
+ */
+public class Program {
+    public static boolean isPalindrome(int x) {
+
+        if(x<0 || (x%10==0 && x!=0))
+            return false;
+
+        int revertedNum = 0;
+        while(x > revertedNum) {
+            revertedNum = revertedNum * 10 + x%10;
+            x = x/10;
+        }
+
+        return x == revertedNum || x == revertedNum/10;
+    }
+
+    public static void main(String[] args) {
+        isPalindrome(10);
+    }
+}

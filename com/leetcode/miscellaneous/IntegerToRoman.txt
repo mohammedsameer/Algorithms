@@ -1,7 +1,11 @@
 package learning.main;
 
 /**
- * The Class Solution.
+ * Algo:
+ * 1. Maintain an array of number to roman mapping (Note: Also maintain X, IX for division)
+ * 2. Loop through number array until given number is >= numarray[i], this is to allow divisibility
+ * 3. If number match numarray[i] then we are done
+ * 4. If number > numArray[i] then divide until multiplier is 0
  */
 public class Solution {
 

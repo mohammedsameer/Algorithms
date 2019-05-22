@@ -1,0 +1,44 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo:
+ * 1. Iterate through string left to right
+ * 2. Add characters to the row they belong
+ * 3. Append each row characters to form result
+ */
+public class Program {
+    public static String convert(String s, int numRows) {
+        StringBuilder result = new StringBuilder();
+        List<StringBuilder> rows = new ArrayList<>();
+
+        if(numRows == 1) return s;
+
+        //Number of rows
+        for(int i=0; i<Math.min(s.length(), numRows); i++) {
+            rows.add(new StringBuilder());
+        }
+
+        //Iterate through string from left to right & append characters to row they belong
+        int curRow = 0;
+        boolean goingDown = false;
+        for(char c : s.toCharArray()) {
+            rows.get(curRow).append(c);
+            if(curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
+            curRow = goingDown ? curRow + 1: curRow - 1;
+        }
+
+        //Generate final string
+        for(int i=0; i<rows.size(); i++) {
+            result.append(rows.get(i));
+        }
+
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        convert("PAYPALISHIRING", 3);
+    }
+}

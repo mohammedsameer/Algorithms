@@ -15,7 +15,7 @@ public class Program {
             if(result > Integer.MAX_VALUE || result < Integer.MIN_VALUE) return 0;
         }
 
-        return Math.toIntExact(result);
+        return (int) result;
     }
 
     public static void main(String[] args) {

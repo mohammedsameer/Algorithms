@@ -44,7 +44,38 @@ public class Program {
         return result;
     }
 
+     public static List<List<Integer>> threeSumOptimal(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        Arrays.sort(nums);
+        for(int i=0; i<nums.length-2; i++) {
+            // Skip duplicate i's aka take the most recent i
+            if (i == 0 || (nums[i] != nums[i-1])) {
+                int j = i + 1;
+                int k = nums.length - 1;
+                int sum = 0 - nums[i];
+
+                while (j < k) {
+                    if (nums[j] + nums[k] == sum) {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                        //Skip duplicate j's and k's aka take the most recent j or k
+                        while (j < k && nums[j] == nums[j + 1]) j++;
+                        while (j < k && nums[k] == nums[k - 1]) k--;
+                        k--;
+                        j++;
+                    } else if (nums[j] + nums[k] > sum) {
+                        k--;
+                    } else {
+                        j++;
+                    }
+                }
+            }
+        }
+        return result;
+
+       }
+
     public static void main(String[] args) {
         System.out.println(threeSum(new int[]{1, 5, 4, 2, 7}, 9));
     }
 }
+

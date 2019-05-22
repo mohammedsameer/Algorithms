@@ -4,7 +4,7 @@ package com.leetcode;
  * Algo:
  * Number of unique tress with n nodes =>
  * 1,...i,....n
- * LeftSubTree(1,..), Root(i), .. RightSubTree(i+1...n)
+ * LeftSubTree(1,..i-1), Root(i), .. RightSubTree(i+1...n)
  * dp[i]+ = dp[number of nodes in lsubtree] * dp[number of nodes in rsubtree
  */
 public class Program {
