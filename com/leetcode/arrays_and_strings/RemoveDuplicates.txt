@@ -6,24 +6,18 @@ package com.leetcode;
  */
 public class Program {
 
-    public static int removeDuplicates(int[] nums) {
+     public static int removeDuplicates(int[] nums) {
+           //Index to track non-duplicate entries
+           int index = 0;
+           for(int i=1; i<nums.length; i++) {
+             //Increase index only when next non-duplicate number is found
+             if(nums[index] != nums[i]) {
+                 nums[++index] = nums[i];
+             }
+           }
 
-        if(nums == null || nums.length == 0)
-            return 0;
-
-        if(nums.length < 2)
-            return nums.length;
-
-        int index = 0;
-        for(int i = 1; i< nums.length; i++) {
-            if(nums[index] != nums[i]) {
-                //Copy the next element safely in the ++index
-                nums[++index] = nums[i];
-            }
+            return index+1;
         }
-
-        return index + 1;
-    }
 
 
     public static void main(String[] args) {

@@ -12,32 +12,29 @@ import java.util.Stack;
  */
 public class Program {
     public  static int longestValidParentheses(String s) {
-        int size = s.length(), length = 0;
-        if(size < 2)
-            return length;
+     Stack<Integer> stack = new Stack<>();
+           int maxLen = 0;
 
-        Stack<Integer> stack = new Stack<>();
-        for(int i = 0; i < size; i++) {
-            if( s.charAt(i) == '(') {
-                //Push when "("
-                stack.push(i);
-            } else {
-                //Push when stack is empty
-                if(stack.isEmpty())
-                    stack.push(i);
-                else {
-                    //Stack peek is "(", matching pair, so pop and keep track of max length
-                    if(s.charAt(stack.peek()) == '(') {
-                        stack.pop();
-                        // If empty stack then string is valid till now, hence + 1
-                        // else subtract the peek index from current index
-                        length = Math.max(i - (stack.isEmpty()? -1: stack.peek()), length);
-                    }
-                    else stack.push(i);
-                }
-            }
-        }
-        return length;
+           for(int i=0; i<s.length(); i++) {
+               //Open bracket always add on stack
+               if(s.charAt(i)== '(') {
+                   stack.push(i);
+               } else {
+                   if(stack.isEmpty()) {
+                       //When stack is empty simply add aka you cant form a pair here
+                       stack.push(i);
+                   } else if (s.charAt(stack.peek()) == '(') {
+                       //Found a matching opening pair
+                       stack.pop();
+                       //If stack is empty we have found all pairs so far so simply i+1, else i-stack.pop()
+                       maxLen = Math.max(maxLen, i - (stack.isEmpty() ? -1: stack.peek()));
+                   } else {
+                       //When two successive '(' in a row, simply add to stack
+                       stack.push(i);
+                   }
+               }
+           }
+        return maxLen;
     }
 
     public static void main(String[] args) {

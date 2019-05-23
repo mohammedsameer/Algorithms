@@ -8,31 +8,31 @@ import java.util.Stack;
 
 /**
  * Algorithm
- * 1. Push all opening brackets to stack
- * 2. On closing bracket check if stack non-empty and peek has matching opening bracket
+ * 1. Push all closing brackets to stack
+ * 2. On closing bracket check if stack non-empty and peek has matching closing bracket
  * 3. Open complete parsing of string if stack is empty true, else false
  */
 public class Program {
 
     public static boolean isValid(String str) {
-        Stack<Character> stack = new Stack<>();
-        Map<Character, Character> map = new HashMap<>();
-        map.put(')', '(');
-        map.put('}', '{');
-        map.put(']', '[');
+       Stack<Character> stack = new Stack();
+       Map<Character, Character> map = new HashMap<>();
+       map.put('(', ')');
+       map.put('[', ']');
+       map.put('{', '}');
 
-        for(Character c : str.toCharArray()) {
-            if(!map.containsKey(c)) {
-                stack.push(c);
-            } else {
-                if(!stack.isEmpty() && stack.peek() == map.get(c))
-                    stack.pop();
-                else
-                    return false;
-            }
-        }
+       for(char c: str.toCharArray()) {
+           if(map.containsKey(c)) {
+               stack.push(map.get(c));
+           } else {
+               if(!stack.isEmpty() && stack.peek() == c)
+                   stack.pop();
+               else
+                   return false;
 
-        return stack.isEmpty();
+           }
+       }
+       return stack.isEmpty();
     }
 
     public static void main(String[] args) {

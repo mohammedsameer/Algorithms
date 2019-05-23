@@ -1,0 +1,17 @@
+/**
+* Algo:
+* 1. Use index to track non-val number and override array[index] when array[i] != val
+**/
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        //Index to track non-val entries
+        int index = -1;
+        for(int i=0; i<nums.length; i++) {
+            //Increase index only when next non-val number is found
+            if(nums[i] != val) {
+                nums[++index] = nums[i];
+            }
+        }
+        return index+1;
+    }
+}

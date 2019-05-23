@@ -10,58 +10,50 @@ package com.leetcode;
  */
 public class Program {
     public static int[] nextPermutation(int[] nums) {
-        if(nums.length == 0) {
-            return null;
-        }
-
+        //Match from right to find a pair that breaks descending
         boolean isMatch = false;
-        int i = nums.length-2;
-        for( ; i>=0; ) {
-            if(nums[i] < nums[i+1]) {
+        int i=nums.length-2;
+        for(;i>=0;i--) {
+            if(nums[i]<nums[i+1]) {
                 isMatch = true;
                 break;
             }
-            i--;
         }
-
         if(isMatch) {
-            //Found an element that breaks the descending rule (1b)
-            //Find an element > nums[i+x] that is greater than num[i]
-            int j=nums.length - 1;
-            for(; j>i;) {
-                if(nums[j] > nums[i])
+            //Now swap the pair
+            int j=nums.length-1;
+            for(;j>i;j--) {
+                if(nums[i]<nums[j]) {
+                    swap(nums, i,j);
                     break;
-                j--;
+                }
             }
-            swap(nums, i, j);
-            //Note: Since i and j are swapped, reverse the elements to right of index i+1
+            //Reverse to the right of i till end
             reverse(nums, i+1, nums.length-1);
         } else {
-            //Not Found an element that breaks the descending rule (1a), i.e. we have reached the end of lexicographical order
-            //Reverse all elements to get the first element in lexicographical order
+            //No match simply reverse to get the next lexicographically order
             reverse(nums, 0, nums.length-1);
         }
 
         return nums;
     }
 
-    public static void reverse(int[] nums, int s, int e){
-        while(s < e){
+    private static void reverse(int[] nums, int s, int e) {
+        while (s<e) {
             swap(nums, s, e);
             s++;
             e--;
         }
     }
 
-    public static void swap(int[] nums, int s, int e){
-        int t = nums[s];
-        nums[s] = nums[e];
-        nums[e] = t;
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 
     public static void main(String[] args) {
         //Tests
-        nextPermutation(new int[] {1,3,2}); //2,1,3
-        nextPermutation(new int[] {3,2,1}); //1,2,3
+        nextPermutation(new int[] {1, 2, 5, 4}); //1, 4, 2, 5
     }
 }

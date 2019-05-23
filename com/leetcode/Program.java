@@ -1,48 +1,59 @@
-package com.leetcode;
 
-import java.util.Arrays;
+package com.leetcode;
 
 /**
  * Algo:
- * 1. Sort the array
- * 2. Use the technique of three sum, except instead of comparing sum to target
- *  a) Check the sum-target difference & if its < min, then result = sum
- * 3. Increment indexes when sum>target or sum<target
+ * 1. Traverse from right and identify the element such that num[i] < num[i+1] i.e. it breaks descending rule
+ * a) If match not found we have reached the last element, so reverse the order of all elements
+ * b) If match found, then traverse from right and identify the first element say num[i+x] that is greater than num[i].
+ *    Swap num[i] and num[i+x] and then reverse the order of elements to the right of num[i+x]
  */
 public class Program {
-    public static int threeSumClosest(int[] nums, int target) {
-        if(nums.length == 0)
-            return 0;
-
-        Arrays.sort(nums);
-        int min = Integer.MAX_VALUE;
-        int result = 0;
-        for(int i=0; i<nums.length-2; i++) {
-            int j = i+1;
-            int k = nums.length -1;
-            while (j<k) {
-                int sum = nums[i] + nums[j] + nums[k];
-                int difference = Math.abs(sum - target);
-
-                if (difference < min) {
-                    result = sum;
-                    min = difference;
-                }
-
-                if (sum > target) {
-                    k--;
-                } else if (sum < target) {
-                    j++;
-                } else {
-                    return result;
-                }
+    public static int[] nextPermutation(int[] nums) {
+        //Match from right to find a pair that breaks descending
+        boolean isMatch = false;
+        int i=nums.length-2;
+        for(;i>=0;i--) {
+            if(nums[i]<nums[i+1]) {
+                isMatch = true;
+                break;
             }
         }
+        if(isMatch) {
+            //Now swap the pair
+            int j=nums.length-1;
+            for(;j>i;j--) {
+                if(nums[i]<nums[j]) {
+                    swap(nums, i,j);
+                    break;
+                }
+            }
+            //Reverse to the right of i till end
+            reverse(nums, i+1, nums.length-1);
+        } else {
+            //No match simply reverse to get the next lexicographically order
+            reverse(nums, 0, nums.length-1);
+        }
 
-        return result;
+        return nums;
     }
 
-   public static void main(String[] args) {
-        threeSumClosest(new int[]{-1, 2, 1, -4}, 1);
-   }
+    private static void reverse(int[] nums, int s, int e) {
+        while (s<e) {
+            swap(nums, s, e);
+            s++;
+            e--;
+        }
+    }
+
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        //Tests
+        nextPermutation(new int[] {1, 2, 5, 4}); //1, 4, 2, 5
+    }
 }

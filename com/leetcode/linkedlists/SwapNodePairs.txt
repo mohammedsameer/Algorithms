@@ -1,0 +1,41 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+
+/**Algorithm
+* 1. Use prev, curr and next pointers
+* 2. Swap curr & next, curr.next = next.next & next.next = curr & finally adjust prev.next = curr;
+* 3. Move pointers forward prev = curr, curr = curr.next & next = curr.next.next;
+**/
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+
+        if(head == null || head.next == null)
+            return head;
+
+        ListNode preHead = new ListNode(-1);
+        preHead.next = head;
+        ListNode prev = preHead;
+        ListNode curr = head;
+        ListNode next = curr.next;
+
+        while(next!= null) {
+            //Swap
+            curr.next = next.next;
+            next.next = curr;
+            prev.next = next;
+
+            //Move forward
+            prev = curr;
+            curr = curr!=null?curr.next:null;
+            next = curr!=null?curr.next:null;
+        }
+
+        return preHead.next;
+    }
+}
