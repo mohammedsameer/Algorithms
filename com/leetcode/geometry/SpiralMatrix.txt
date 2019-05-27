@@ -6,67 +6,60 @@
 // Bottom to Top
 // Note: After each iteration completion increase index & check if it exceeds the bounds
 public class Solution {
-    public ArrayList<Integer> spiralOrder(int[][] matrix) {
+    class Solution {
+        public List<Integer> spiralOrder(int[][] matrix) {
 
-        ArrayList<Integer> result = new ArrayList<>();
+            boolean leftToRight = true;
+            boolean topToBottom = true;
+            List<Integer> result = new ArrayList<>();
 
-        if(matrix==null || matrix.length==0 || matrix[0].length==0)
-         return result;
+            if(matrix.length==0 || matrix[0].length==0)
+                return result;
 
-         int rows = matrix.length;
-         int cols = matrix[0].length;
+            int rows = matrix.length;
+            int cols = matrix[0].length;
 
-         int rBIndex = 0;
-         int rEIndex = rows-1;
-         int cBIndex = 0;
-         int cEIndex = cols-1;
+            int rBIndex=0;
+            int rEIndex=rows-1;
+            int cBIndex=0;
+            int cEIndex=cols-1;
 
+            while(true) {
 
-         while(true)
-         {
-             //Left to Right
-             for(int c=cBIndex;c<=cEIndex;c++)
-             {
-                 result.add(matrix[rBIndex][c]);
-             }
+                //Left to right
+                for(int c=cBIndex; c<=cEIndex; c++)
+                    result.add(matrix[rBIndex][c]);
 
-             //Check if rows greater than bound
-             if(++rBIndex>rEIndex)
-              break;
+                //Note: Increment the constant i.e. in above its rBIndex & check boundary condition
+                if(++rBIndex>rEIndex)
+                    break;
 
-             //Top to Bottom
-             for(int r=rBIndex; r<=rEIndex;r++)
-             {
-                 result.add(matrix[r][cEIndex]);
-             }
+                //Top to bottom
+                 for(int r=rBIndex; r<=rEIndex; r++)
+                    result.add(matrix[r][cEIndex]);
 
-             //Check if cols lesser than bound
-             if(--cEIndex<cBIndex)
-              break;
+                 //Note: Decrement the constant i.e. in above its cEIndex & check boundary condition
+                 if(--cEIndex<cBIndex)
+                    break;
 
-             //Right to Left
-             for(int c=cEIndex;c>=cBIndex;c--)
-             {
-                 result.add(matrix[rEIndex][c]);
-             }
+                //Right to left
+                for(int c=cEIndex; c>=cBIndex; c--)
+                    result.add(matrix[rEIndex][c]);
 
-             //Check if rows lesser than bound
-             if(--rEIndex<rBIndex)
-              break;
+                //Note: Decrement the constant i.e. in above its rEIndex & check boundary condition
+                if(--rEIndex<rBIndex)
+                    break;
 
-             //Bottom to Top
-             for(int r=rEIndex;r>=rBIndex;r--)
-             {
-                 result.add(matrix[r][cBIndex]);
-             }
+                //Bottom to top
+                for(int r=rEIndex; r>=rBIndex; r--)
+                   result.add(matrix[r][cBIndex]);
 
-             //Check if cols cols greater than bound
-             if(++cBIndex>cEIndex)
-              break;
+                //Note: Increment the constant i.e. in above its cBIndex & check boundary condition
+                if(++cBIndex>cEIndex)
+                    break;
+            }
 
-         }
-
-         return result;
-
+            return result;
+        }
     }
 }

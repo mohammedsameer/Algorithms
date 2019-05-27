@@ -1,0 +1,35 @@
+
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Maintain currJump, currEnd, and maxJump
+ * 2. Iterate through array and maintain maximum that can be made up to now
+ * 3. Once you have reached currEnd (aka maximum distance that can be reached) then reset currEnd = maxJump and increase jump
+ */
+public class Program {
+    public static int jump(int[] nums) {
+        int currJump = 0;
+        int currEnd = 0;
+        int maxJump = 0;
+        int totalJumps = 0;
+
+        //Dont need to go all the way, because it implies you have made required jumps
+        for(int i=0; i<nums.length-1; i++) {
+            currJump = i+nums[i];
+            maxJump = Math.max(maxJump, currJump);
+            //If we have already reached as far then we need to jump again based on maximum leap upto now
+            if(i==currEnd) {
+                totalJumps++;
+                //Maximum jump that can be made upto now
+                currEnd = maxJump;
+            }
+        }
+
+        return totalJumps;
+    }
+
+    public static void main(String[] args) {
+        jump(new int[]{2,3,1,1,4});
+    }
+}

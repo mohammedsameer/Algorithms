@@ -1,37 +1,36 @@
+
 package com.leetcode;
 
 /**
- * Algorithm
- * The sqrt should be between 1...n/2 for 1....n
+ * Algo:
+ * 1. Binary search based algorithm, 1......x/2.....x
+ *  Compute the mid and check
+ *  if mid == x/mid (i.e. mid*mid==x), if yes return true
+ *  else if mid < x/mid start=mid+1
+ *  else end=mid-1;
  */
 public class Program {
-
-    public static int mySqrt(int n) {
-        if(n==1)
+    public static int mySqrt(int x) {
+        if (x == 1)
             return 1;
 
         int start = 1;
-        int end = n;
-        int mid = n/2;
-
-        while(start <= end) {
+        int end = x;
+        while (start <= end) {
             //If square of mid = n, then mid is sqrt of n
-            int square = mid * mid;
-            if(square == n)
+            int mid = (start + end) / 2;
+            if (mid == x / mid)
                 return mid;
-
-            if(square < n)
+            if (mid < x / mid)
                 start = mid + 1;
             else
                 end = mid - 1;
 
-            mid = (start + end)/2;
         }
 
-        return mid;
+        return end;
     }
 
-    public static void main(String[] args) {
-        System.out.println(mySqrt(119));
+    public static void main(String[] args) {mySqrt(8);
     }
 }

@@ -10,25 +10,28 @@ import java.util.*;
  */
 public class Program {
 
+class Solution {
     public static List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> anagramMap = new HashMap<>();
 
-        if(strs.length == 0)
-            return new ArrayList<>();
+        for(String str : strs) {
+            //Sort current string to add as a key into map
+            char[] curr = str.toCharArray();
+            Arrays.sort(curr);
+            String sortedCurr = new String(curr);
 
-        Map<String, List<String>> result = new HashMap<>();
-        for(String str: strs) {
-            char[] currArr = str.toCharArray();
-            Arrays.sort(currArr);
-            String currStr = String.valueOf(currArr);
-
-            if(!result.containsKey(currStr)) {
-                result.put(currStr, new ArrayList<>());
+            //If current key is missing initialize it
+            if(!anagramMap.containsKey(sortedCurr)) {
+                anagramMap.put(sortedCurr, new ArrayList<>());
             }
-            result.get(currStr).add(str);
+
+            //Add anagram into map
+            anagramMap.get(sortedCurr).add(str);
         }
 
-        return new ArrayList<>(result.values());
+        return new ArrayList<>(anagramMap.values());
     }
+}
 
     public static void main(String[] args) {
         System.out.println(groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}));

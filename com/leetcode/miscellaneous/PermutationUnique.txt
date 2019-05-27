@@ -1,0 +1,45 @@
+
+package com.leetcode;
+
+import java.util.*;
+
+/**
+ * Algo:
+ * 1. Start with empty list
+ * 2. Maintain currResult and for every prevResult insert the current number at all positions
+ * Note: For uniqueness use a set to determine if we need to add into currResult
+ */
+public class Program {
+    public static List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        if(nums == null || nums.length == 0)
+            return result;
+
+        //Add empty list to result
+        result.add(new ArrayList<>());
+
+        for(int i=0; i <nums.length; i++) {
+            List<List<Integer>>  currResult = new ArrayList<>();
+            Set<String> currSet = new HashSet<>();
+
+            //Iterate over every prev in current result and add nums[i] at all position
+            for(List<Integer> prev : result) {
+
+                //Indexed from 0 to len, as we need to add to the end
+                for(int j=0; j<= prev.size(); j++) {
+                    List<Integer> curr = new ArrayList<>(prev);
+                    curr.add(j, nums[i]);
+                    if(currSet.add(curr.toString())) currResult.add(curr);
+                }
+            }
+            result = currResult;
+        }
+
+        return result;
+    }
+
+
+    public static void main(String[] args) {permuteUnique(new int[] {1,1,2});
+    }
+}

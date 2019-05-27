@@ -1,0 +1,48 @@
+
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Move elements to their rightful index nums[nums[i]] == nums[i] {0,1,2} nums[nums[0]] = nums[0] => nums[0] = nums[0]
+ * 2. Iterate from k=1 to see if numbers are not at their rightful position
+ * 3. If n==0 (nums is empty) or k<n then we have the first missing positive number otherwise if nums[0] == k, k+1
+ */
+public class Program {
+    public static int firstMissingPositive(int[] nums) {
+        //Move elements to their matching index if possible
+        int i=0, n = nums.length;
+        while (i<n) {
+            if(nums[i] >=0 && nums[i] < n && nums[nums[i]] != nums[i] ) {
+                //E.g: i=0, nums[i]=2, then swap 2 to its rightful index of 2
+                swap(nums, i, nums[i]);
+            } else {
+                i++;
+            }
+        }
+
+        //Starting k find the first missing positive number
+        //Note: k is initialized to 1 as thats the first positive number
+        int k=1;
+        while (k<n && nums[k] == k) {
+            k++;
+        }
+
+
+        if(n==0 || k<n)
+            //if k < n or n is empty then return k (k==1 is the smallest missing positive number)
+            return k;
+        else
+            //if k is at zero index then k+1 otherwise k
+            return nums[0] == k ? k+1 : k;
+    }
+
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        firstMissingPositive(new int[]{1, 3, 4});
+    }
+}

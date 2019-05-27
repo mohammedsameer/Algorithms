@@ -1,0 +1,41 @@
+
+package com.leetcode;
+
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Algo: Maintain a set and validate
+ * 1. Validate row
+ * 2. Validate column
+ * 3. Validate 3*3 boxes
+ * Note: set.add -> true if successful aka not already present, false otherwise
+ */
+public class Program {
+    public boolean isValidSudoku(char[][] board) {
+        for(int r=0; r<9; r++) {
+            Set<Character> rowSet = new HashSet<>();
+            Set<Character> colSet = new HashSet<>();
+            Set<Character> cubeSet = new HashSet<>();
+            for(int c=0; c<9; c++) {
+                //Check row
+                if(board[r][c] != '.' && !rowSet.add(board[r][c]))
+                    return false;
+                //Check column (swap r&c)
+                if(board[c][r] != '.'  && !colSet.add(board[c][r]))
+                    return false;
+                //Check cube(for every row we compute one cube
+                int rIndex = 3*(r/3) + c/3; // row
+                int cIndex = 3*(r%3) + c%3; // col
+                if(board[rIndex][cIndex] != '.' && !cubeSet.add(board[rIndex][cIndex]))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+
+    }
+}

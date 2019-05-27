@@ -8,24 +8,21 @@ package com.leetcode;
 public class Program {
 
     public void rotate(int[][] matrix) {
-        if(matrix.length == 0)
-            return;
-
+    //90 degree
+    }
         int rows = matrix.length;
-        int cols = rows;
-
+        int cols = matrix[0].length;
         int[][] temp = new int[rows][cols];
-        for(int r=0; r<rows -1; r++) {
-            for(int c=0; c<cols-1; c++) {
-                temp[c][rows-1-r] = matrix[r][c];
-            }
-        }
 
-        for(int r=0; r<rows -1; r++) {
-            for(int c=0; c<cols-1; c++) {
+        //Copy elements from source into destination at right location
+        for(int r=0; r<rows; r++)
+            for(int c=0; c<cols; c++)
+                temp[c][rows-1-r] = matrix[r][c];
+
+        //Copy the result int original matrix
+        for(int r=0; r<rows; r++)
+            for(int c=0; c<cols; c++)
                 matrix[r][c] = temp[r][c];
-            }
-        }
     }
 
     public static void main(String[] args) {

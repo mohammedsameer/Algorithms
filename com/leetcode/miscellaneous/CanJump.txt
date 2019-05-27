@@ -8,32 +8,28 @@ package com.leetcode;
 public class Program {
 
     public static boolean canJump(int[] nums) {
-        if(nums.length == 0)
-            return true;
+        int maxJump=0;
+        int steps=0;
 
-        int maxReach = 0;
-        int steps = 0;
-        int end = nums.length -1;
-        for(int i=0; i< end; i++) {
-            //From where you are is your reach > max reach
-            if(nums[i] + i > maxReach) {
-                maxReach = nums[i] + i;
-                steps = nums[i];
+        for(int i=0; i<nums.length; i++) {
+            int currJump = i+nums[i];
+            //If current jump better than max jump
+            if(maxJump<currJump) {
+                maxJump=currJump;
+                steps=nums[i];
             }
 
-            //Reached end or beyond i.e. from current do you have a max reach to end,
-            // if yes go ahead and jump
-            if(maxReach >= end)
+            //You have reached the end
+            if(maxJump>=nums.length-1)
                 return true;
 
-            //Run out of steps
-            if(steps == 0)
+            //You cant jump any further because you have no steps left
+            if(steps<=0)
                 return false;
 
-            //Reduce one step
+            //Take next step
             steps--;
         }
-
         return true;
     }
 

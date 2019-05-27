@@ -1,36 +1,33 @@
-import java.io.*;
-import java.util.*;
 
-/*
- * To execute Java, please define "static void main" on a class
- * named Solution.
- *
- * If you need more classes, simply define them inline.
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. If n==0, return 1
+ * 2. If n==Integer.MIN x=x*x and n = n/2
+ * 3. If n<0, x= 1/x and n=-n
+ * Recursively call function x*x & n/2, for odd use another x multiplier
  */
-
-class Solution {
-  
-  public static int pow(int x, int n){
-    
-    if(x==0 || n==0)
-      return 1;
-    
-    if(n==1)
-     return x;
-      
-    int curr = x;
-    int prev = x;
-    for(int i=2;i<=n;i++)
-    {
-      curr = x * prev;
-      prev = curr;
+public class Program {
+    public static double myPow(double x, int n) {
+        //n==0, result=1 
+        if(n == 0)
+            return 1;
+        //Multiply the number by itself and make n=n/2  
+        if(n == Integer.MIN_VALUE) {
+            x = x * x;
+            n = n/2;
+        }
+        //If n<0, simply make x=1/x and reset n=-n
+        if(n<0) {
+            n = -n;
+            x = 1/x;
+        }
+        //Recursively call x*x & make n/2 because we have already computed twice, for odd use another x multiplier
+        return (n%2 == 0) ? myPow(x*x, n/2) : x*myPow(x*x, n/2);
     }
-    
-    return curr;
-    
-  }
-  public static void main(String[] args) {
-    int n=7;
-    int x=2;
-    System.out.println("Pow of n:"+ pow(x,n));
+
+    public static void main(String[] args) {
+        myPow(2.0, -2);
+    }
 }

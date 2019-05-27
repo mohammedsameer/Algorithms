@@ -1,44 +1,45 @@
+
 package com.leetcode;
+
 
 /**
  * Algo:
  * 1. Keep track of leftMax and rightMax i.e. max on either side of array
- * 2. If left max < right max it implies at that index i we can store atleast leftMax - arr[i]
+ * 2. If left max < right max it implies at that index leftIndex we can store atleast leftMax - arr[leftIndex]
  * (Reason: the right boundary is higher than left)
- * 3. If left max > right max it implies at that index j we can store atleast rightMax - arr[j]
+ * 3. If left max > right max it implies at that index rightIndex we can store atleast rightMax - arr[rightIndex]
  * (Reason: the left boundary is higher than right)
- * Note: 2 & 3 do not worry about whats happening b/w i & j, & are only concerned up to particular index, hence run the index
- * up to i<=j
+ * Note: 2 & 3 do not worry about whats happening b/w leftIndex & rightIndex, & are only concerned up to particular index, hence run the index
+ * up to leftIndex<=rightIndex
  */
 public class Program {
-
-    public static int trap(int[] height){
-        if(height.length == 0)
-            return 0;
-
-        int amount = 0;
-        int i = 0;
-        int j = height.length - 1;
+    public static int trap(int[] height) {
         int leftMax = 0;
         int rightMax = 0;
+        int leftIndex = 0;
+        int rightIndex = height.length - 1;
+        int result = 0;
 
-        while (i<=j) {
-            leftMax = Math.max(leftMax, height[i]);
-            rightMax = Math.max(rightMax, height[j]);
+        while (leftIndex <= rightIndex) {
+            //Get the max height on either ends
+            leftMax = Math.max(leftMax, height[leftIndex]);
+            rightMax = Math.max(rightMax, height[rightIndex]);
 
             if(leftMax < rightMax) {
-                amount+= leftMax - height[i];
-                i++;
+                result+= leftMax - height[leftIndex];
+                //Move cursor because we have computed result till now
+                leftIndex++;
             } else {
-                amount+= rightMax - height[j];
-                j--;
+                result+= rightMax - height[rightIndex];
+                //Move cursor because we have computed result till now
+                rightIndex--;
             }
         }
 
-        return amount;
+        return result;
     }
 
     public static void main(String[] args) {
-        trap(new int[]{0,1,0,2});
+        trap(new int[]{0, 1, 0, 2, 0, 2});
     }
 }

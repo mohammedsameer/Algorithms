@@ -1,0 +1,43 @@
+
+package com.leetcode;
+
+/**
+ * Algo:
+ * The product two indexes nums[i] & nums[j] ends up at result[i+j]  and result[i+j+1]
+ * https://leetcode.com/problems/multiply-strings/discuss/17605/Easiest-JAVA-Solution-with-Graph-Explanation
+ */
+public class Program {
+    public static String multiply(String num1, String num2) {
+       int[] result = new int[num1.length()+num2.length()];
+
+       //Multiply num1 & num2 from right to left
+       for(int i=num2.length()-1; i>=0; i--) {
+           for (int j = num1.length() - 1; j >= 0; j--) {
+               int curr = (num1.charAt(j)-'0') * (num2.charAt(i)-'0');
+               int p1 = i+j;
+               int p2 = i+j+1;
+               //Compute sum from multiplier and previous carry
+               int sum = curr + result[p2];
+
+               //prepare next carry aka 12/10 = 1, 19/10= 1 & 5/10 = 0
+               result[p1] += sum/10;
+               //prepare result aka remainder
+               result[p2] = sum%10;
+           }
+       }
+
+       StringBuilder sb = new StringBuilder();
+       for(int curr : result)
+        if(!(curr == 0 && sb.length() == 0)) {
+           //Only add curr==0 if sb is non empty i.e. we dont want zeros at beginning
+            sb.append(curr);
+        }
+
+        //if non-empty result simply return result otherwise return 0
+        return sb.length() !=0 ? sb.toString(): "0";
+    }
+
+    public static void main(String[] args) {
+        multiply("2", "3");
+    }
+}
