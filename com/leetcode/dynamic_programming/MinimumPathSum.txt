@@ -1,0 +1,33 @@
+//Algo, same as unique paths
+class Solution {
+    public int minPathSum(int[][] grid) {
+        if(grid.length==0 || grid[0].length==0)
+            return 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int[][] result = new int[rows][cols];
+
+        //Min sum along row=0
+        int currSum = 0;
+        for(int c=0; c<cols; c++) {
+            result[0][c] = grid[0][c] + currSum;
+            currSum = result[0][c];
+        }
+
+        //Min sum along col=0
+        currSum = 0;
+        for(int r=0; r<rows; r++) {
+            result[r][0] = grid[r][0] + currSum;
+            currSum = result[r][0];
+        }
+
+        //Min sum in other cells of grid
+        for(int r=1; r<rows; r++) {
+            for(int c=1; c<cols; c++) {
+                result[r][c] = grid[r][c] + Math.min(result[r-1][c], result[r][c-1]);
+            }
+        }
+
+        return result[rows-1][cols-1];
+    }
+}

@@ -1,0 +1,48 @@
+/**
+Algo:
+1. Initialize row=0 & col=0 based on obstacle grid
+2. Iterate through grid and set paths[r][c] = paths[r-1][c] + paths[r][c-1] only if obstacleGrid[r][c] == 0 otherwise set it to 0
+**/
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+       if(obstacleGrid.length == 0 || obstacleGrid[0].length == 0)
+           return 0;
+
+       int rows = obstacleGrid.length;
+       int cols = obstacleGrid[0].length;
+       int[][] paths = new int[rows][cols];
+
+       //Unique paths on col=0
+       for(int r=0; r<rows; r++) {
+           //Only add paths if no obstacle in grid
+           if(obstacleGrid[r][0] == 0) {
+             if(r==0) {
+                paths[r][0] = 1;
+             } else {
+                paths[r][0] = paths[r-1][0];
+             }
+           }
+       }
+
+        //Unique paths on row=0
+        for(int c=0; c<cols; c++) {
+           //Only add paths if no obstacle in grid
+           if(obstacleGrid[0][c] == 0) {
+             if(c==0) {
+                paths[0][c] = 1;
+             } else {
+                paths[0][c] = paths[0][c-1];
+             }
+           }
+       }
+
+       for(int r=1; r<rows; r++) {
+           for(int c=1; c<cols; c++) {
+               if(obstacleGrid[r][c] == 0)
+                   paths[r][c] = paths[r-1][c]+paths[r][c-1];
+           }
+       }
+
+       return paths[rows-1][cols-1];
+    }
+}

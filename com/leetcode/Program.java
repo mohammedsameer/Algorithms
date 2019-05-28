@@ -3,69 +3,51 @@ package com.leetcode;
 
 import java.util.*;
 
-/**
- * Algo:
- * 1. Loop through intervals and add the new interval at right index
- * 2. Loop through and merge intervals
- */
 public class Program {
-    public static class Interval {
-        int start;
-        int end;
+    public static String getPermutation(int n, int k) {
+        List<Integer> numbers = new ArrayList<>();
+        int[] factorial = new int[n+1];
+        StringBuilder sb = new StringBuilder();
 
-        Interval(int start, int end) {
-            this.start = start;
-            this.end = end;
+        // create an array of factorial lookup
+        // factorial[] = {1, 1, 2, 6, 24, ... n!}
+        int sum = 1;
+        factorial[0] = 1;
+        for(int i=1; i<=n; i++){
+            sum *= i;
+            factorial[i] = sum;
         }
+
+
+        // create a list of numbers to get indices
+        // numbers = {1, 2, 3, 4}
+        for(int i=1; i<=n; i++){
+            numbers.add(i);
+        }
+
+
+        //k indexed from 0
+        k--;
+
+        for(int i = 1; i <= n; i++){
+            //Divide the permutations into groups of factorial[n-1]
+            int index = k/factorial[n-i];
+            sb.append(String.valueOf(numbers.get(index)));
+            numbers.remove(index);
+            //Eliminate all possible permutations using n-1
+            k=k-index*factorial[n-i];
+        }
+
+        return String.valueOf(sb);
+
     }
 
-    public static List<Interval> insert(List<Interval> intervals, Interval newInterval) {
-        List<Interval> tempResult = new ArrayList<>();
-        List<Interval> result = new ArrayList<>();
-        tempResult.add(intervals.get(0));
-        boolean isInserted = false;
-
-        //Simply insert new interval at right location
-        for(int index=1; index<intervals.size(); index++) {
-            Interval prev = tempResult.get(tempResult.size()-1);
-            Interval curr = intervals.get(index);
-            //If new interval is smaller
-            if(!isInserted && newInterval.start<=prev.start) {
-                tempResult.remove(tempResult.size() - 1);
-                tempResult.add(newInterval);
-                tempResult.add(prev);
-                isInserted = true;
-            }
-
-            tempResult.add(curr);
-        }
-
-        //Merge intervals
-        result.add(tempResult.get(0));
-        for (int index=1; index<tempResult.size(); index++) {
-            Interval prev = result.get(result.size()-1);
-            Interval curr = tempResult.get(index);
-            if(prev.end >= curr.start) {
-                //Pop up and merge the intervals
-                Interval merge = new Interval(prev.start, Math.max(prev.end, curr.end));
-                result.remove(result.size()-1);
-                result.add(merge);
-            } else {
-                //No overlap add new entry
-                result.add(curr);
-            }
-        }
-
-        return result;
-    }
-
-
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
     public static void main(String[] args) {
-        List<Interval> intervals = new ArrayList<>();
-        intervals.add(new Interval(1,4));
-        intervals.add(new Interval(6,9));
-        intervals.add(new Interval(17,18));
-
-        insert(intervals, new Interval(3, 7));
+        System.out.println("Permutation Sequence:"+ getPermutation(4,4));
     }
 }

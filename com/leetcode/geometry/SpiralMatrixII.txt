@@ -1,0 +1,52 @@
+//Algo: Loop through array as
+// Left to Left
+// Top to Bottom
+// Right to Left
+// Bottom to Top
+// Note: After each iteration completion increase index & check if it exceeds the bounds
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] spiral = new int[n][n];
+        int num = 0;
+
+        int cBIndex=0;
+        int cEIndex=n-1;
+        int rBIndex=0;
+        int rEIndex=n-1;
+
+        //Iterate over matrix and add elements into it
+        while(true) {
+            //Left to Right
+            for(int c=cBIndex; c<=cEIndex; c++)
+                spiral[rBIndex][c] = ++num;
+
+            if(++rBIndex>rEIndex)
+                break;
+
+            //Top to Bottom
+            for(int r=rBIndex; r<=rEIndex; r++)
+                spiral[r][cEIndex] = ++num;
+
+            if(--cEIndex<cBIndex)
+                break;
+
+            //Right to Left
+            for(int c=cEIndex; c>=cBIndex;c--)
+                spiral[rEIndex][c] = ++num;
+
+            if(--rEIndex<rBIndex)
+                break;
+
+            //Bottom to Top
+            for(int r=rEIndex; r>=rBIndex; r--)
+                spiral[r][cBIndex] = ++num;
+
+            if(++cBIndex>cEIndex)
+                break;
+        }
+
+        return spiral;
+
+    }
+
+}
