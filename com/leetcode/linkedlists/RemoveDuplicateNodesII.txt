@@ -1,0 +1,40 @@
+
+//Algo: Keep track of repeated values using a boolean variable
+//Another idea by moving cursor https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/discuss/28335/My-accepted-Java-code
+public ListNode deleteDuplicates(ListNode head) {
+    ListNode result = new ListNode(-1);
+    ListNode preHead = new ListNode(-1);
+    preHead.next = result;
+
+    if(head == null)
+        return head;
+
+    ListNode curr = head;
+    ListNode next = curr.next;
+    boolean isRepeated = false;
+    while (curr.next != null) {
+        int currValue = curr.val;
+        int nextValue = next.val;
+        if(!isRepeated && currValue != nextValue) {
+            //Non repeating, so go ahead and add curr value
+            result.next = new ListNode(currValue);
+            result = result.next;
+        } else if(isRepeated && currValue != nextValue) {
+            //We have moved away from repeating nodes
+            isRepeated = false;
+        } else {
+            //Aka we have repeating nodes
+            isRepeated = true;
+        }
+
+        //Move curr and next cursor
+        curr = next;
+        next = curr.next;
+    }
+
+    //At the end if we have had non-repeating values, then go ahead and add the last value
+    if(!isRepeated)
+        result.next = new ListNode(curr.val);
+
+    return preHead.next.next;
+}

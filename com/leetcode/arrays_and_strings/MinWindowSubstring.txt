@@ -1,0 +1,65 @@
+
+package com.leetcode;
+
+
+public class Program {
+
+    public static String minWindow(String s, String t) {
+        String result = "";
+
+        //If the needle is longer than haystack
+        if (s.isEmpty() || t.length() > s.length())
+            return result;
+
+
+        //Indexes, note start=end=0 to beging with
+        int start = 0;
+        int minStart = 0;
+        int end = 0;
+
+        //count is used to track whether we have consumed all t characters hence initialized to t's length
+        int count = t.length();
+        int minLength = Integer.MAX_VALUE;
+
+        //Map to keep track of every character occurance in t
+        int[] map = new int[128];
+        for (char c : t.toCharArray()) {
+            map[c]++;
+        }
+
+        //Iterate using end index
+        while (end < s.length()) {
+            //If character found in t aka if map[t's character] count > 0, decrease counter as one character match found
+            if (map[s.charAt(end)] > 0)
+                count--;
+            map[s.charAt(end)]--;
+            //Move the end index
+            end++;
+
+            //If all characters of t found, the count is 0
+            while (count == 0) {
+                //Maintain the min length
+                if (end - start < minLength) {
+                    minStart = start;
+                    minLength = end - start;
+                }
+                // We increase start count as now we shall move ahead to find the start character again
+                map[s.charAt(start)]++;
+                if (map[s.charAt(start)] > 0)
+                    count++;
+                //Move the start index
+                start++;
+            }
+        }
+        return (minLength == Integer.MAX_VALUE) ? "" : s.substring(minStart, minStart + minLength);
+    }
+
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
+    public static void main(String[] args) {
+        minWindow("ABECD", "ABC");
+    }
+}

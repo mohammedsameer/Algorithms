@@ -3,9 +3,12 @@ package com.leetcode;
 /**
  * Algorithm
  * Start from every cell of board and try to match the word
+ * Key is to maintain visited characters, either use new visited board or reset existing board[r][c] = 0, if you have visited the cell
+ * and reset it back after recursively moving in all directions
  */
 public class Program {
 
+    //Solution - 1
     public boolean exist(char[][] board, String word) {
         if(board.length == 0 || word.length() == 0)
             return false;
@@ -57,6 +60,48 @@ public class Program {
 
         return false;
     }
+
+
+
+    //Solution - 2
+    public boolean existOptimal(char[][] board, String word) {
+           //Iterate from every cell of board to see if matching word found
+           char[] w = word.toCharArray();
+           int rows = board.length;
+           int cols = board[0].length;
+            for (int r=0; r<rows; r++) {
+        	    for (int c=0; c<cols; c++) {
+        		    if (existOptimal(board, w, rows, cols, r, c, 0)) return true;
+        	    }
+            }
+            return false;
+        }
+
+        private boolean existOptimal(char[][] board, char[] word, int rows, int cols, int r, int c, int index) {
+            if(index == word.length)
+                //We have matched all characters of word
+                return true;
+            else if (r<0 || c<0 || r==rows || c==cols) {
+                 //We have exceeded the board boundaries
+                return false;
+            }
+            else if (board[r][c] != word[index]) {
+                //Current character does not match word character
+                return false;
+            }
+           else {
+            //We have found matching character at index
+            //Reset the board cell so we dont visit again
+            board[r][c] = 0;
+            boolean exist = exist(board, word, rows, cols, r+1, c, index+1) ||
+                exist(board, word, rows, cols, r, c+1, index+1) ||
+                exist(board, word, rows, cols, r-1, c, index+1) ||
+                exist(board, word, rows, cols, r, c-1, index+1);
+            //Undo the board cell reset if we need to visit this again
+            board[r][c] = word[index];
+            return exist;
+           }
+        }
 
     public static void main(String[] args) {
        System.out.println();

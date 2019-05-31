@@ -1,0 +1,51 @@
+
+package com.leetcode;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algorithm:
+ * 1. Recursively call combination
+ *  a) Start with empty curr result
+ *  b) Check if curr result size is matching desired size if yes add to result as new list (because we are continously modifying curr list)
+ *  c) Check if current start is > n, if yes skip this because we want to be up to n only
+ *  d) Loop through start to n and add elements to curr list, make recursive call and remove last element of curr list
+ */
+public class Program {
+    public static List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> currResult = new ArrayList<>();
+        combine(result, currResult, 1, n, k);
+        return result;
+    }
+
+    public static void combine(List<List<Integer>> result, List<Integer> currResult, int start, int n, int k) {
+        //We have reached our desire size, lets add to result
+        if(currResult.size() == k)
+            //We initialize new arraylist because currResult is constantly being modified
+            result.add(new ArrayList(currResult));
+        else if (start>n)
+            //If start > n, then we need to skip
+            return;
+        else {
+            //Iterate through all elements from start to end.
+            for(int i=start; i<=n; i++) {
+                currResult.add(i);
+                combine(result, currResult, ++start, n, k);
+                //Remove last element so next time we get a new combination
+                currResult.remove(currResult.size() - 1);
+            }
+        }
+    }
+
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
+    public static void main(String[] args) {
+        combine(4, 2);
+    }
+}

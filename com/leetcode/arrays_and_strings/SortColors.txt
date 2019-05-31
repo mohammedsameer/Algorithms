@@ -30,7 +30,8 @@ class Solution {
        bCount++;
     }
     
-    
+
+    //One pass
     int rIndex =0;
     int wIndex = rCount;
     int bIndex = rCount+wCount;
@@ -44,12 +45,35 @@ class Solution {
      else if(arr[i]==2)
        res[bIndex++]=arr[i];
     }
-    
-     for(int i=0;i<res.length;i++)
-     {
-       System.out.println(res[i]);
-     }
+
   }
+
+  public static void sortColorsOptimal(int[] nums) {
+      int start = 0;
+      int end = nums.length - 1;
+      int index = 0;
+      //We move i only till end because we have set end value to 2's
+      while (index <= end) {
+          if (nums[index] == 0) {
+              //Move the current 0 element to start
+              //We initialize i with i=1 because for all entries neither in start or end they should be 1
+              nums[index] = 1;
+              nums[start] = 0;
+              start++;
+              //Move index as we have already initialized index with 1
+              index++;
+          } else if (nums[index] == 2) {
+              //Move the current 2 element to end
+              nums[index] = nums[end];
+              nums[end] = 2;
+              end--;
+          } else {
+              //Move to next index
+              index++;
+          }
+      }
+  }
+
   public static void main(String[] args) {
    int[] arr = {0,1,1,2,0,1,2};
    int[] res = new int[arr.length];

@@ -1,48 +1,29 @@
 public class Solution {
     public void setZeroes(int[][] matrix) {
-        
-        if(matrix==null ||matrix.length==0||matrix[0].length==0)
-         return;
-         
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        int[] zeroRows = new int[rows];
-        int[] zeroCols = new int[cols];
-        
-        //Identify zero rows
-        for(int r=0;r<rows;r++)
-        {
-         for(int c=0;c<cols;c++)
-         {
-             if(matrx[r][c]==0)
-             {
-                 zeroRows[r]=-1;
+         if(matrix.length == 0 || matrix[0].length == 0)
+             return;
+
+         int rows = matrix.length;
+         int cols = matrix[0].length;
+         int[] rMatrix = new int[rows];
+         int[] cMatrix = new int[cols];
+
+         //Track all zero rows and cols
+         for(int r=0; r<rows; r++) {
+             for(int c=0; c<cols; c++) {
+                 if(matrix[r][c] == 0) {
+                     rMatrix[r] = -1;
+                     cMatrix[c] = -1;
+                 }
              }
          }
-        }
-         
-        for(int c=0;c<cols;c++)
-        {
-         for(int r=0;r<rows;r++)
-         {
-             if(matrx[r][c]==0)
-             {
-                 zeroCols[c]=-1;
+
+         //Set the matrix cell to zero when either row or col is zero
+         for(int r=0; r<rows; r++) {
+             for(int c=0; c<cols; c++) {
+                 if(rMatrix[r] == -1 || cMatrix[c] == -1)
+                     matrix[r][c] = 0;
              }
          }
-        }
-        
-        for(int r=0;r<rows;r++)
-        {
-         for(int c=0;c<cols;c++)
-         {
-             //Check if given row or col is set to be zero
-             if(zeroRows[r]==-1||zeroCols[c]==-1)
-             {
-                 matrix[r][c]=0;
-             }
-         }
-        }
-        
-    }
+     }
 }

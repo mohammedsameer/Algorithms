@@ -11,32 +11,25 @@ import java.util.*;
 //1. For every iteration loop through all elements from previous and insert the new element
 class Solution {
   public static ArrayList<ArrayList<Integer>> subsets(int[] numarr){
-    
-    HashSet<ArrayList<Integer>> currResult = new HashSet<ArrayList<Integer>>();
-    ArrayList<ArrayList<Integer>> prevResult = new ArrayList<ArrayList<Integer>>();
-    
-    prevResult.add(new ArrayList<Integer>());
-    
-    if(numarr.length==0)
-      return prevResult;
-    
-    for(int i=0;i<numarr.length;i++)
-    {
-      int n = numarr[i];
-      //Initialize currResult with prevResult & loop through to add new element across all elements
-      currResult = new HashSet<ArrayList<Integer>>(prevResult);
-      for(ArrayList<Integer> prevEntry: prevResult)
-      {
-        ArrayList<Integer> currEntry = new ArrayList<Integer>(prevEntry);
-        currEntry.add(n);
-        currResult.add(currEntry);
-      }
-      
-      //At the end of iteration reset prevResult with currResult
-      prevResult = new ArrayList<ArrayList<Integer>>(currResult);
-    }
-    
-    return prevResult;
+        List<List<Integer>> result = new ArrayList<>();
+        //Currset helps eliminate duplicates
+        Set<List<Integer>> currSet = new HashSet<>();
+        currSet.add(new ArrayList<>());
+
+        result.addAll(currSet);
+        for(int i=0; i<nums.length; i++) {
+            //Initialize currset from prev result
+            currSet = new HashSet<>(result);
+            for(List<Integer> prev : result) {
+                List<Integer> curr = new ArrayList<>(prev);
+                curr.add(nums[i]);
+                currSet.add(curr);
+            }
+            //We re-initialize and not addall because, add all appends where as re-initializes resets
+            result = new ArrayList<>(currSet);
+        }
+
+        return result;
   }
   
   public static void main(String[] args) {
