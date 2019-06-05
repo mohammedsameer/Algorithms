@@ -28,11 +28,9 @@ public class Program {
 
      int k = 0;
      TreeNode root = new TreeNode(preorder[preStart]);
-     while (k < inEnd) {
-         if(inorder[k] == root.val)
-             break;
+      while (inorder[k] != root.val) {
          ++k;
-     }
+       }
 
      //Length of left subtree is k - instart (Reason: k is at root aka mid)
      root.left = buildTree(preStart+1, preStart+1+k-inStart-1, preorder, inStart, k-1, inorder);

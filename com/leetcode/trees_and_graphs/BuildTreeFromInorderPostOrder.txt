@@ -29,9 +29,7 @@ public class Program {
 
         int k = 0;
         TreeNode root = new TreeNode(postOrder[postEnd]);
-        while (k < inEnd) {
-            if(inorder[k] == root.val)
-                break;
+        while (inorder[k] != root.val) {
             ++k;
         }
 

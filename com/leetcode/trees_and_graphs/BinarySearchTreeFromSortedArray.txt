@@ -30,7 +30,9 @@ public class Program {
 
      int mid = (start + end)/2;
      TreeNode root = new TreeNode(nums[mid]);
+     //Compute left node from left subarray
      root.left = binarySearchTree(start, mid-1, nums);
+     //Compute right node from right subarray
      root.right = binarySearchTree(mid+1, end, nums);
 
      return root;

@@ -1,0 +1,58 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+
+ //Algo:
+ //Maintain two lists small and large
+ //Move the cursor of small when number < x, move the cursor of large when number > x
+ //Initialize the preHead's and eventually join them
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        if(head==null || head.next==null)
+            return head;
+
+        ListNode curr = head;
+        ListNode smallPre = new ListNode(-1);
+        ListNode largePre = new ListNode(-1);
+        ListNode large = largePre;
+        ListNode small = smallPre;
+
+        //Nodes smaller than x before and equal to greater than after
+        while(curr != null) {
+            if(curr.val < x) {
+                //Node smaller than x
+                small.next = new ListNode(curr.val);
+                if(smallPre.next == null) {
+                    //If preHead not initialized, initialize it
+                   smallPre.next = small.next;
+                }
+                small = small.next;
+
+            } else {
+                //Node larger than x
+                large.next = new ListNode(curr.val);
+                if(largePre.next == null) {
+                    //If preHead not initialized, initialize it
+                   largePre.next = large;
+               }
+                large = large.next;
+            }
+            //Move the cursor along
+            curr = curr.next;
+        }
+
+        if(smallPre.next != null) {
+            //We have nodes lower than x
+            small.next = largePre.next;
+        } else {
+            //We have no nodes lower than x
+            smallPre.next = largePre.next;
+        }
+        return smallPre.next;
+    }
+}

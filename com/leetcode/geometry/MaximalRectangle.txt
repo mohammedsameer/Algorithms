@@ -14,48 +14,55 @@ public class Program {
 
 
     public static int maximalRectangle(char[][] matrix) {
-        if(matrix == null)
+        //Note: Similar maximal area rectangle histogram
+        //Trick, maintain another heights array same as size of columns
+
+        if(matrix.length == 0)
             return 0;
 
         int rows = matrix.length;
         int cols = matrix[0].length;
         int[] heights = new int[cols];
-        int max = 0;
-        for(int r = 0; r < rows; r++) {
-            for( int c = 0; c < cols; c++) {
+        int max = Integer.MIN_VALUE;
+
+        for(int r=0; r<rows; r++) {
+            for(int c=0; c<cols; c++) {
+                //Iterate every row and update heights array
                 if(matrix[r][c] == '0') {
                     heights[c] = 0;
                 } else {
                     heights[c] += 1;
                 }
             }
+            //Compute max area rectangle from heights
             max = Math.max(max, largestRectangleArea(heights));
         }
+
         return max;
     }
 
     public static int largestRectangleArea(int[] heights) {
-        if(heights.length == 0)
-            return 0;
-
         Stack<Integer> stack = new Stack<>();
-        int i = 0;
         int max = Integer.MIN_VALUE;
-        while (i<heights.length) {
+
+        //Compute largest rectangle area by stepping across heights
+        int i=0;
+        while(i<heights.length) {
             if(stack.isEmpty() || heights[i] > heights[stack.peek()]) {
+                //Stack is empty or current height greater than previous height
                 stack.push(i);
                 i++;
             } else {
-                int h = heights[stack.pop()];
-                int w = stack.isEmpty()?i:i-1-stack.peek();
-                max = Math.max(max, h*w);
+                int height = heights[stack.pop()];
+                int width = stack.isEmpty() ? i: i-1-stack.peek();
+                max = Math.max(max, height*width);
             }
         }
 
-        while (!stack.isEmpty()) {
-            int h = heights[stack.pop()];
-            int w = stack.isEmpty()?i:i-1-stack.peek();
-            max = Math.max(max, h*w);
+        while(!stack.isEmpty()) {
+             int height = heights[stack.pop()];
+             int width = stack.isEmpty() ? i: i-1-stack.peek();
+             max = Math.max(max, height*width);
         }
 
         return max;

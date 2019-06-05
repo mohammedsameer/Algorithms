@@ -2,35 +2,44 @@
 package com.leetcode;
 
 
-import java.util.*;
+import java.util.Stack;
 
 /**
  * Algorithm:
  */
 public class Program {
 
-    public static List<List<Integer>> subsetsWithDup(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        //Currset helps eliminate duplicates
-        Set<List<Integer>> currSet = new HashSet<>();
-        currSet.add(new ArrayList<>());
+    public static int largestRectangle(int[] heights) {
 
-        result.addAll(currSet);
-        for(int i=0; i<nums.length; i++) {
-            //Initialize currset from prev result
-            currSet = new HashSet<>(result);
-            for(List<Integer> prev : result) {
-                List<Integer> curr = new ArrayList<>(prev);
-                curr.add(nums[i]);
-                currSet.add(curr);
+        if(heights.length == 0)
+            return 0;
+
+        //Maintain stack with indexes for computing width
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = Integer.MIN_VALUE;
+        int index = 0;
+        while (index<heights.length) {
+            if(stack.isEmpty() || heights[index] > heights[stack.peek()]) {
+                //If empty stack or curr height is greater than prev height in stack, continue adding on stack and move to next index
+                stack.push(index);
+                index++;
+            } else {
+                //If stack is non-empty and current element smaller than previous element compute area
+                int h = heights[stack.pop()];//Previous height
+                int w = stack.isEmpty() ? index : index-1-stack.peek();
+                maxArea = Math.max(maxArea, h * w);
             }
-            //We re-initialize and not addall because, add all appends where as re-initializes resets
-            result = new ArrayList<>(currSet);
         }
 
-        return result;
-    }
+        while (!stack.isEmpty()) {
+            int h = heights[stack.pop()];//Previous height
+            int w = stack.isEmpty() ? index : index-1-stack.peek();
+            maxArea = Math.max(maxArea, h * w);
+        }
 
+        return maxArea;
+
+    }
 
     /**
      * The main method.
@@ -38,6 +47,6 @@ public class Program {
      * @param args the arguments
      */
     public static void main(String[] args) {
-        subsetsWithDup(new int[]{1,2,2});
+        largestRectangle(new int[]{2,3,1});
     }
 }

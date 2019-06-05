@@ -1,0 +1,46 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+//Algo:
+//1. Identify the begining of reversal aka prev
+//2. Compute start and next from prev
+//3. Swap node pairs (Key: Maintain the prev node in same place move next along)
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+
+        if(head==null || head.next==null)
+            return head;
+
+        ListNode preHead = new ListNode(-1);
+        preHead.next = head;
+        ListNode prev = preHead;
+
+        //Move prev along m-1 times
+        for(int i=0; i<m-1; i++) {
+            prev = prev.next;
+        }
+
+        //Set the curr and next
+        ListNode curr = prev.next;
+        ListNode next = curr.next;
+
+        for(int i=0; i<n-m; i++) {
+            //Swap node pairs but maintain prev to always the same position
+            //Same as node swap
+            curr.next = next.next;
+            next.next = prev.next;
+            prev.next = next;
+
+            //Move the next to end of start
+            next = curr.next;
+
+        }
+
+        return preHead.next;
+    }
+}

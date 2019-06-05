@@ -18,22 +18,22 @@ public class Program {
      }
 
     public List<Integer> inorderTraversal(TreeNode root) {
-        if(root == null)
-            return new ArrayList<>();
-
         List<Integer> result = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<>();
 
         TreeNode curr = root;
-        while (!stack.isEmpty() || curr != null) {
+        //Run the loop until both stack is empty and curr is null
+        while(!stack.isEmpty() || curr != null) {
             if(curr != null) {
+                //If curr is not null then keep adding to stack and move to the left
                 stack.push(curr);
                 curr = curr.left;
             } else {
-                TreeNode node = stack.pop();
-                result.add(node.val);
-                //Move the cursor the node's right
-                curr = node.right;
+                //If curr is null then we have reached end of left branch so pop prev node (aka prev root), add
+                // to result and move to its right
+                TreeNode prev = stack.pop();
+                result.add(prev.val);
+                curr = prev.right;
             }
         }
 

@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(root == null)
+            return result;
+
+        List<TreeNode> currNodes = new ArrayList<>();
+        List<Integer> currValues = new ArrayList<>();
+        currNodes.add(root);
+        currValues.add(root.val);
+        result.add(currValues);
+
+        while(true) {
+            List<TreeNode> prevNodes = new ArrayList<>(currNodes);
+            currNodes = new ArrayList<>();
+            currValues = new ArrayList<>();
+
+            for(TreeNode prev : prevNodes) {
+                if(prev.left != null) {
+                    currNodes.add(prev.left);
+                    currValues.add(prev.left.val);
+                }
+
+                if(prev.right != null) {
+                    currNodes.add(prev.right);
+                    currValues.add(prev.right.val);
+                }
+            }
+
+            if(currValues.isEmpty())
+                break;
+            else
+                result.add(currValues);
+        }
+        //Same as BinaryLevelOrderTraversal, except reverse at the end
+        Collections.reverse(result);
+        return result;
+    }
+}

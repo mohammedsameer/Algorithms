@@ -15,18 +15,25 @@ public class Program {
     }
 
     public ListNode reverseList(ListNode head) {
-        ListNode prev = null;
-        ListNode next = null;
+            if(head==null || head.next== null)
+                return head;
 
-        while (head != null) {
-            next = head.next;
-            head.next = prev;
-            prev = head;
-            head = next;
+            //Maintain prev, curr, next
+            ListNode prev = new ListNode(-1);
+            ListNode curr = head;
+            ListNode next = curr.next;
+            prev.next = curr;
+
+            //Move till the end
+            while(next!=null) {
+                curr.next = next.next;
+                next.next = prev.next;
+                prev.next = next;
+                next = curr.next;
+            }
+
+            return prev.next;
         }
-
-        return prev;
-    }
 
     public static void main(String[] args) {
         System.out.println();

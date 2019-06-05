@@ -19,13 +19,31 @@ public class Program {
     private TreeNode prev = null;
 
     public void flatten(TreeNode root) {
-        if (root == null)
+        if(root==null)
             return;
-        flatten(root.right);
-        flatten(root.left);
-        root.right = prev;
-        root.left = null;
-        prev = root;
+
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+
+        //Only time curr is null when root is null
+        while(!stack.isEmpty() || curr!=null) {
+            //Add right node on stack
+            if(curr.right != null) {
+                stack.push(curr.right);
+            }
+
+            if(curr.left != null) {
+                //Add left child as right child & reset left child as null
+                curr.right = curr.left;
+                curr.left = null;
+            } else if(!stack.isEmpty()){
+                //Pop out most recent right child and add as right child
+                curr.right = stack.pop();
+            }
+
+            //Move to right
+            curr = curr.right;
+        }
     }
 
     public static void main(String[] args) {
