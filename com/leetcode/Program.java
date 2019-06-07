@@ -2,43 +2,32 @@
 package com.leetcode;
 
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Algorithm:
  */
 public class Program {
 
-    public static int largestRectangle(int[] heights) {
+    public static int maxProfit(int[] prices) {
+        int firstBuy = Integer.MAX_VALUE;
+        int secondBuy = Integer.MAX_VALUE;
+        int firstSell = 0;
+        int secondSell = 0;
 
-        if(heights.length == 0)
-            return 0;
+        for(int i=0; i<prices.length; i++) {
+            //First time: You buy and you sell
+            firstBuy = Math.min(firstBuy, prices[i]);
+            firstSell = Math.max(firstSell, prices[i] - firstBuy);
 
-        //Maintain stack with indexes for computing width
-        Stack<Integer> stack = new Stack<>();
-        int maxArea = Integer.MIN_VALUE;
-        int index = 0;
-        while (index<heights.length) {
-            if(stack.isEmpty() || heights[index] > heights[stack.peek()]) {
-                //If empty stack or curr height is greater than prev height in stack, continue adding on stack and move to next index
-                stack.push(index);
-                index++;
-            } else {
-                //If stack is non-empty and current element smaller than previous element compute area
-                int h = heights[stack.pop()];//Previous height
-                int w = stack.isEmpty() ? index : index-1-stack.peek();
-                maxArea = Math.max(maxArea, h * w);
-            }
+            //Second time: You buy after first sell
+            secondBuy = Math.min(secondBuy, prices[i] - firstSell);
+            secondSell = Math.max(secondSell, prices[i] - secondBuy);
         }
 
-        while (!stack.isEmpty()) {
-            int h = heights[stack.pop()];//Previous height
-            int w = stack.isEmpty() ? index : index-1-stack.peek();
-            maxArea = Math.max(maxArea, h * w);
-        }
-
-        return maxArea;
-
+        return secondSell;
     }
 
     /**
@@ -47,6 +36,6 @@ public class Program {
      * @param args the arguments
      */
     public static void main(String[] args) {
-        largestRectangle(new int[]{2,3,1});
+        maxProfit(new int[]{3,3,5,0,0,3,1,4});
     }
 }

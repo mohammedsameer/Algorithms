@@ -1,0 +1,35 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algorithm
+ * Bottom up approach that modifies curr row by adding minValue from next row
+ */
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        //Bottom up approach
+        List<Integer> currRow = new ArrayList<>();
+        List<Integer> nextRow = new ArrayList<>();
+
+        int size = triangle.size();
+        int index = size-2;
+
+        while(index>=0) {
+            currRow = triangle.get(index);
+            for(int i=0; i<currRow.size(); i++) {
+                nextRow = triangle.get(index+1);
+                //Compute min at every index of currRow
+                int currValue = currRow.get(i);
+                int nextMinValue = Math.min(nextRow.get(i), nextRow.get(i+1));
+                currRow.set(i, currValue+nextMinValue);
+            }
+            index--;
+        }
+
+        //CurrRow is first row
+        return triangle.get(0).get(0);
+    }
+}

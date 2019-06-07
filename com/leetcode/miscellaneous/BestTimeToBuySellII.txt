@@ -18,7 +18,6 @@ public class Program {
 
         for(int price : prices) {
             min = Math.min(price, min);
-
             int currDiff = price - min;
             if(currDiff > 0) {
                 maxProfit += currDiff;

@@ -8,21 +8,23 @@ package com.leetcode;
  */
 public class Program {
   
-   public int maxProfit(int[] prices) {
+ public static int maxProfit(int[] prices) {
+      if(prices.length==0)
+           return 0;
 
-          if(prices.length == 0)
-              return 0;
+       int minBuy =  Integer.MAX_VALUE;
+       int maxProfit = 0;
+       for(int i=0; i<prices.length; i++) {
+           //Compute if current buy is cheapest
+           minBuy = Math.min(prices[i], minBuy);
+           //Compute if prices[i]-minBuy i.e. diff of current price and min
+           int currDiff = prices[i] - minBuy;
+           //Compute maxProfit
+           maxProfit = Math.max(maxProfit, currDiff);
+       }
 
-          int min = Integer.MAX_VALUE;
-          int profit = 0;
-
-          for(int price : prices) {
-              min = Math.min(price, min);
-              int currDiff = price - min;
-              profit = Math.max(profit, currDiff);
-          }
-          return profit;
-      }
+       return maxProfit;
+   }
   
   public static void main(String[] args) {
    System.out.println();

@@ -5,27 +5,24 @@ import java.util.List;
 
 /**
  * Algorithm
- * 1. Number of elements in a row is equal to rowNumber
- * 2. The boundary elements in every row are 1, all other elements curr.add(index, prev.get(index - 1) + prev.get(index))
+ * 1. Same as Pascals traingle, except use an rows index i.e. 4rd row has 3nd index
  */
-public class Program {
-
-    public static List<List<Integer>> generate(int numRows) {
+public List<Integer> getRow(int rowIndex) {
         List<List<Integer>> result = new ArrayList<>();
         List<Integer> currRow = new ArrayList<>();
 
-        if(numRows<=0)
-            return result;
+        if(rowIndex<0)
+            return currRow;
 
         currRow.add(1);
         result.add(currRow);
         //index to track rows
-        int n = 1;
-        while(n<numRows) {
+        int n = 0;
+        while(n<rowIndex) {
             n++;
             List<Integer> prevRow = new ArrayList<>(currRow);
             currRow = new ArrayList<>();
-            for(int i=0; i<n; i++) {
+            for(int i=0; i<(n+1); i++) {
                 if(i==0 || i==prevRow.size()) {
                      //Boundary index
                     currRow.add(1);
@@ -38,10 +35,5 @@ public class Program {
             result.add(currRow);
         }
 
-        return result;
+        return result.get(n);
     }
-
-    public static void main(String[] args) {
-       System.out.println(generate(3));
-    }
-}

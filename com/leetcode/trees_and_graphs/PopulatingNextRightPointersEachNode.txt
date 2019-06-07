@@ -1,0 +1,64 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algorithm
+ * 1. Level order traversal
+ * 2. At every level loop through nodes and set the next pointer
+ */
+public class Program {
+
+ public class TreeLinkNode {
+      int val;
+     TreeLinkNode left;
+     TreeLinkNode right;
+     TreeLinkNode next;
+     TreeLinkNode(int x) { val = x; }
+    }
+
+ public Node connect(Node root) {
+    if(root == null)
+        return root;
+
+    List<Node> currNodes = new ArrayList<>();
+    List<Node> nextNodes = new ArrayList<>();
+    currNodes.add(root);
+
+    while(true) {
+        int currSize = currNodes.size();
+        for(int i=0; i<currSize; i++) {
+            //Iterate through curr nodes and link next node
+            Node currNode = currNodes.get(i);
+             if(i<currSize-1) {
+                 Node nextNode = currNodes.get(i+1);
+                 currNode.next = nextNode;
+             }
+
+            //Iterate through curr nodes and prepare next nodes
+            Node currLeft = currNode.left;
+            Node currRight = currNode.right;
+
+            if(currLeft != null)
+                nextNodes.add(currLeft);
+            if(currRight != null)
+                nextNodes.add(currRight);
+        }
+
+        //Exit condition or next iteration
+        if(nextNodes.isEmpty()) {
+            break;
+        } else {
+            currNodes = new ArrayList<>(nextNodes);
+            nextNodes = new ArrayList<>();
+        }
+    }
+
+    return root;
+ }
+
+    public static void main(String[] args) {
+       System.out.println();
+    }
+}

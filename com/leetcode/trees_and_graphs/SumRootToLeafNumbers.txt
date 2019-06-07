@@ -1,0 +1,36 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+//Algo:
+//1. Append numbers to string builder as you step through tree
+//2. Add sum t leaf node
+class Solution {
+    int sum = 0;
+    public int sumNumbers(TreeNode root) {
+        StringBuilder curr = new StringBuilder();
+        sumNumbers(root, curr);
+        return sum;
+    }
+
+    public void sumNumbers(TreeNode root, StringBuilder curr) {
+        if(root==null)
+            return;
+
+        if(root.left == null && root.right == null) {
+            //Leaf node
+            curr.append(root.val);
+            sum +=  Integer.parseInt(curr.toString());
+        }
+
+        //Intermediary nodes
+        curr.append(root.val);
+        sumNumbers(root.left, new StringBuilder(curr.toString()));
+        sumNumbers(root.right, new StringBuilder(curr.toString()));
+    }
+}
