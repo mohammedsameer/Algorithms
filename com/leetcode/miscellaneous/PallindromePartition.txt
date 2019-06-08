@@ -1,58 +1,54 @@
+
 package com.leetcode;
 
-import java.util.ArrayList;
-import java.util.List;
-//TODO: Revisit
+
+import java.util.*;
+
 /**
- * Algorithm
- * 1. Compute all substrings
- * 2. Check if every substring is palindrome, if yes add to result list
- * */
+ * Algorithm:
+ */
 public class Program {
 
     public static List<List<String>> partition(String s) {
-        if(s.isEmpty())
-            return new ArrayList<>();
-
-        int currLen = 1;
         List<List<String>> result = new ArrayList<>();
-        //Iterate over for every length until the string length
-        while (currLen <= s.length()) {
-
-            List<String> curr = new ArrayList<>();
-            for(int start=0; start < s.length(); start++) {
-                int end = start + currLen > s.length() ? s.length(): start + currLen;
-                String subString = s.substring(start, end);
-                if(isPalindrome(subString))
-                    curr.add(subString);
-            }
-
-            if(!curr.isEmpty()) {
-                result.add(curr);
-            }
-
-            currLen++;
-        }
-
+        List<String> currResult = new ArrayList<>();
+        dfs(s,0,currResult,result);
         return result;
     }
 
-    public static boolean isPalindrome(String s) {
-        if(s.isEmpty())
-            return true;
-
-        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        int mid = s.length()/2;
-        for(int i = 0; i < mid; i++) {
-            if(s.charAt(i) != s.charAt(s.length() - 1 - i)) {
-                return false;
+    public static void dfs(String s, int pos, List<String> currResult, List<List<String>> result) {
+        if(pos==s.length()) {
+            result.add(new ArrayList<>(currResult));
+        } else {
+            for(int i=pos;i<s.length();i++) {
+                if(isPalindrome(s,pos,i)) {
+                    //If palindrome add to curr result
+                    currResult.add(s.substring(pos,i+1));
+                    //Recursively call next character
+                    dfs(s,i+1,currResult,result);
+                    currResult.remove(currResult.size()-1);
+                }
             }
         }
+    }
 
+    public static boolean isPalindrome(String s, int start, int end) {
+        while(start<end) {
+            if(s.charAt(start)!=s.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
         return true;
     }
 
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
     public static void main(String[] args) {
-        System.out.println(partition("aab"));
+        partition("aab");
     }
 }

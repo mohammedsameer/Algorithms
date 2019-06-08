@@ -34,8 +34,33 @@ public class Program {
             }
         }
 
+        max = Math.max(count, max);
         return max;
     }
+
+     public static int longestConsecutiveOptimal(int[] nums) {
+            int maxCount = 0;
+            Map<Integer, Integer> map = new HashMap<>();
+            for (int n : nums) {
+                if (!map.containsKey(n)) {
+                    int left = map.getOrDefault(n-1, 0);
+                    int right = map.getOrDefault(n+1, 0);
+                    // Sum of length of sequence till n
+                    int sum = left + right + 1;
+                    map.put(n, sum);
+
+                    // Max length
+                    maxCount = Math.max(maxCount, sum);
+
+                    //Apply length to the boundaries
+                    map.put(n - left, sum);
+                    map.put(n + right, sum);
+                }
+            }
+            return maxCount;
+
+        }
+
 
     public static void main(String[] args) {
         System.out.println(longestConsecutive(new int[] {9,1,4,7,3,-1,0,5,8,-1,6}));
