@@ -1,0 +1,104 @@
+
+package com.leetcode;
+
+
+import java.util.Stack;
+
+/**
+ * Algorithm:
+ */
+public class Program {
+
+    public static int infixExpression(String exp)
+    {
+        //Append "=" to allow computation at end
+        String expression = exp+"=";
+        Stack<String> opStack= new Stack();
+        Stack<Integer> numStack= new Stack();
+        //Note: = operator helps with recomputing the final expression
+        String operator="*/+-=";
+        for (Character c : expression.toCharArray())
+        {
+            String token = Character.toString(c);
+            if(!operator.contains(token))
+                //Add operand to numStack
+                numStack.push(Integer.parseInt(token));
+            else
+                //Add operator to opStack
+                opStack.push(token);
+
+            //Perform outstanding operations
+            resolve(numStack, opStack);
+        }
+
+        //return the top of the value stack
+        return numStack.pop();
+    }
+
+    public static int getPriority(String op)
+    {
+        if(op.equals("*") || op.equals("/"))
+            return 1;
+        else if(op.equals("+") || op.equals("-"))
+            return 2;
+        else if(op.equals("="))
+            return 3;
+        else
+            return Integer.MIN_VALUE;
+    }
+
+    public static void resolve(Stack<Integer> numStack, Stack<String> opStack)
+    {
+        while(opStack.size()>=2)
+        {
+            String op1 = opStack.pop();
+            String op2 = opStack.pop();
+            if(getPriority(op1) < getPriority(op2))
+            {
+                //Add op2 to the top so its computed first
+                opStack.push(op2);
+                opStack.push(op1);
+                return;
+            }
+            else
+            {
+                int num1= numStack.pop();
+                int num2= numStack.pop();
+                numStack.push(compute(num2, op2, num1));
+                //Add op1 to the top so its computed first
+                opStack.push(op1);
+            }
+        }
+    }
+
+    public static int compute(int num1, String symbol, int num2)
+    {
+        int result = 0;
+        switch (symbol) {
+            case "+":
+                result = num1 + num2;
+                break;
+            case "-":
+                result = num1 - num2;
+                break;
+            case "*":
+                result = num1 * num2;
+                break;
+            case "/":
+                result = num1 / num2;
+                break;
+            default:
+                break;
+        }
+
+        return result;
+    }
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
+    public static void main(String[] args) {
+        infixExpression("2*3/2");
+    }
+}
