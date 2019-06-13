@@ -8,27 +8,32 @@ import java.util.*;
  * E.g: (12, 9), returns (9, 12)
  */
 public class Program {
-    static Comparator<String> stringComparator = (s1, s2) -> {
-        String str1 = s1 + s2;
-        String str2 = s2 + s1;
-        return str2.compareTo(str1);
-    };
+        //Comparator<T> is functional interface
+        public static Comparator<String> stringComparator = (s1, s2) -> {
+            String str1 = s1 + s2; // 20 + 3
+            String str2 = s2 + s1; // 3 + 20
+            return str2.compareTo(str1); //Descending sort 3, 20 descending order
+        };
 
-    public static String largestNumber(int[] nums) {
-        String[] numStrArr = new String[nums.length];
-        for(int i = 0; i < nums.length ; i++) {
-            numStrArr[i] = String.valueOf(nums[i]);
+        public static String largestNumber(int[] nums) {
+            StringBuilder sb = new StringBuilder();
+            String[] strArr = new String[nums.length];
+            for (int i = 0; i < strArr.length; i++) {
+                strArr[i] = String.valueOf(nums[i]);
+            }
+
+            //Sort
+            Arrays.sort(strArr, stringComparator);
+
+            //Append
+            for (int i=0; i<strArr.length; i++) {
+                sb.append(strArr[i]);
+            }
+
+            //Remove any leading zero's & return result
+            String result = sb.toString().replaceFirst("^0*", "");
+            return result.isEmpty() ? "0" : result;
         }
-
-        Arrays.sort(numStrArr, stringComparator);
-        StringBuilder sb = new StringBuilder();
-        for(String n: numStrArr) {
-            sb.append(String.valueOf(n));
-        }
-
-        String result = sb.toString().replaceFirst("^0*", "");
-        return  result.isEmpty() ? "0" : result;
-    }
 
     public static void main(String[] args) {
         System.out.println(largestNumber(new int[] {824,938,1399,5607,6973,5703,9609,4398,8247}));

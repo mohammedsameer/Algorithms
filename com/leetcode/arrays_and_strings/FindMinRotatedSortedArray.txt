@@ -1,0 +1,17 @@
+class Solution {
+    public int findMin(int[] nums) {
+        //Initialize min as curr
+        int min = nums[0];
+        for(int i=1; i<nums.length; i++) {
+            //Iterate and check if prev>curr, if it is then we have reached the rotation point
+            int prev = nums[i-1];
+            int curr = nums[i];
+
+            if(prev>curr) {
+                min = curr;
+                break;
+            }
+        }
+        return min;
+    }
+}

@@ -1,50 +1,61 @@
+
 package com.leetcode;
 
 import java.util.*;
 
+
 class Program {
 
-    public Stack<Integer> stack = new Stack<>();
-    public Stack<Integer> minStack = new Stack<>();
+    Stack<Integer> stack;
+    Stack<Integer> minStack;
 
-    public void push(int e){
-        stack.add(e);
-        if((!minStack.isEmpty() && minStack.peek() > e) || minStack.isEmpty())
-        {
-            minStack.add(e);
-        }
-
+    /** initialize your data structure here. */
+    public Program() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
     }
 
-    public int pop() {
-        int value = -1;
-        if(!stack.isEmpty()) {
-            value = stack.pop();
-            if(!minStack.isEmpty() && minStack.peek() == value) {
-                minStack.pop();
+    public void push(int x) {
+        stack.push(x);
+        if(minStack.isEmpty()) {
+            minStack.add(x);
+        } else {
+            if(minStack.peek() >=x) {
+                minStack.push(x);
             }
         }
+    }
 
-        return value;
+    public void pop() {
+        if(!stack.empty()) {
+            if(stack.peek().equals(minStack.peek())) {
+                minStack.pop();
+            }
+            stack.pop();
+        }
+    }
+
+    public int top() {
+        return stack.peek();
     }
 
     public int getMin() {
-        int value = -1;
-        if(!minStack.isEmpty()) {
-            value = minStack.peek();
-        }
-        return value;
-    }
-
-    public int top(){
-        if(!stack.isEmpty()) {
-            return stack.peek();
-        }
-
-        return -1;
+        return minStack.peek();
     }
 
     public static void main(String[] args) {
-
+       //["MinStack","push","push","push","push","pop","getMin","pop","getMin","pop","getMin"]
+        //[[],[512],[-1024],[-1024],[512],[],[],[],[],[],[]]
+        Program obj = new Program();
+        obj.push(512);
+        obj.push(-1024);
+        obj.push(-1024);
+        obj.push(512);
+        obj.pop();
+        obj.getMin();
+        obj.pop();
+        obj.getMin();
+        obj.pop();
+        obj.getMin();
     }
 }

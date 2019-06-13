@@ -4,7 +4,7 @@ package com.leetcode;
  * Algorithm
  * 1. Compute the length of each of two lists
  * 2. Move the cursor of longer list to match the size of smaller list
- * 3. Move both the cursors in unison to find a match
+ * 3. Move both the cursors in unison to find intersecting node
  */
 public class Program {
 
@@ -18,49 +18,53 @@ public class Program {
     }
 
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        if(headA == null || headB == null)
-            return null;
+            ListNode result = null;
+            ListNode curr = null;
+            int aLen = 0;
+            int bLen = 0;
 
-        int aLen=0, bLen=0;
-        ListNode curr = headA;
-        while (curr != null) {
-            aLen++;
-            curr = curr.next;
-        }
-
-        curr = headB;
-        while (curr != null) {
-            bLen++;
-            curr = curr.next;
-        }
-
-        ListNode p1 = headA;
-        ListNode p2 = headB;
-        if(aLen > bLen) {
-            int diff = aLen - bLen;
-            while (diff != 0) {
-                p1 = p1.next;
-                diff--;
+            curr = headA;
+            while(curr != null) {
+                aLen++;
+                curr = curr.next;
             }
-        }
-        if (bLen > aLen) {
-            int diff = bLen - aLen;
-            while (diff != 0) {
-                p2 = p2.next;
-                diff--;
-            }
-        }
 
-        while (p1!=null && p2!=null) {
-            if(p1.val != p2.val) {
-                p1 = p1.next;
-                p2 = p2.next;
+            curr = headB;
+            while(curr != null) {
+                bLen++;
+                curr = curr.next;
+            }
+
+            //Move the large list by aLen-bLen
+            ListNode p = headA;
+            ListNode q = headB;
+            if(aLen>bLen) {
+                int diff = aLen - bLen;
+                while(diff != 0) {
+                    p = p.next;
+                    diff--;
+                }
+            } else if(bLen>aLen) {
+                int diff = bLen - aLen;
+                while(diff != 0) {
+                    q = q.next;
+                    diff--;
+                }
             } else {
-                return p1;
+                //Do nothing as lists are same length
             }
-        }
 
-        return null;
+            //Iterate and find intersecting node
+            while(p != null && q != null) {
+                if(p == q) {
+                    result = p;
+                    break;
+                }
+                p = p.next;
+                q = q.next;
+            }
+
+            return result;
     }
 
     public static void main(String[] args) {

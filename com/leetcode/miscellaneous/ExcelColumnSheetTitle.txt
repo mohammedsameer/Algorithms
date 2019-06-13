@@ -6,6 +6,7 @@ class Program {
         StringBuilder sb = new StringBuilder();
 
         while (n > 0) {
+            //The subtraction allows Z's to be handled as 25%26 = 'A' + 25
             n--;
             char c = (char) ('A' + n%26);
             sb.append(c);

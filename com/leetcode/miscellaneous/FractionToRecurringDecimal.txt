@@ -1,0 +1,60 @@
+package com.leetcode;
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+//Algo:
+//1. Compute sign
+//2. Compute integral part
+//3. Compute fractional part
+//   a) Multiply num = num * 10
+//   b) Compute num/den
+//   c) Compute num = num % den
+//Note: Map is useful to see if the number is being repeated
+class Program {
+
+    public static String fractionToDecimal(int numerator, int denominator) {
+        StringBuilder result = new StringBuilder();
+        String sign = (numerator < 0 == denominator < 0 || numerator == 0) ? "" : "-";
+
+        //Integral part
+        long num = Math.abs((long) numerator);
+        long den = Math.abs((long) denominator);
+        result.append(sign);
+        result.append(num / den);
+
+        //Fractional part
+        num = num % den;  //num is now the remainder
+        if (num == 0)
+            return result.toString();
+
+        result.append(".");
+        Map<Long, Integer> map = new HashMap<>();
+        //Note: You add result length to be afforded an opportunity to add () around recurring number
+        map.put(num, result.length());
+        while (num != 0) {
+            num = num * 10;
+            result.append(num/den);
+            //num is now the remainder
+            num = num % den;
+            if(map.containsKey(num)) {
+                //Found our recurring fractional number
+                int index = map.get(num);
+                result.insert(index, "(");
+                result.append(")");
+                break;
+            } else {
+                //Continue adding remainder
+                map.put(num, result.length());
+            }
+        }
+
+        //(0) to avoid 0 ending fractional part
+        return result.toString().replace("(0)", "");
+    }
+
+    public static void main(String[] args) {
+        fractionToDecimal(2, 6);
+    }
+}

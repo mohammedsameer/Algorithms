@@ -1,0 +1,56 @@
+
+package com.leetcode;
+
+
+//Algo:
+//1. Check if two string lengths are > 1 length apart
+//2. Iterate through strings and count how many times you need to change a character
+class Program {
+
+    public static boolean oneEditDistance(String word1, String word2) {
+        int word1Len = word1.length();
+        int word2Len = word2.length();
+
+        if(Math.abs(word1Len - word2Len) > 1)
+            return false;
+
+        int i = 0;
+        int j = 0;
+        int count = 0;
+
+        while (i < word1Len && j < word2Len) {
+            if(word1.charAt(i) == word2.charAt(j)) {
+                i++;
+                j++;
+            } else {
+                //Either add/delete/replace character
+                count++;
+
+                //Already more than one distance apart
+                if(count > 1)
+                    return false;
+
+                if(word1Len > word2Len) {
+                    i++; //Delete a character in word1
+                } else if (word2Len > word1Len) {
+                    j++; //Delete a character in word2
+                } else {
+                    //Replace a character
+                    i++;
+                    j++;
+                }
+            }
+        }
+
+        //Count the last extra character that need to be deleted
+        if(i<word1Len || j<word2Len)
+            count++;
+
+        return count == 1;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(oneEditDistance("hello", "hollo"));
+        System.out.println(oneEditDistance("hello", "hi"));
+    }
+}

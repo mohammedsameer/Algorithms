@@ -1,50 +1,41 @@
-
 package com.leetcode;
 
-import java.util.*;
 
+import java.util.Arrays;
+import java.util.Comparator;
 
+//Algo:
+//1. Sort in descending order but by concatinating two numbers and determining what comes first
 class Program {
-    // Evaluates the string expr returning the boolean value
-    // using left to right evaluation with no order of operations
-    private boolean evaluate(String expr) {
-        Stack<String> stack = new Stack<>();
-        //Split on space
-        String[] exprArr = expr.split(" ");
-        String leftOperand, rightOperand, op;
 
-        for(String exp : exprArr) {
-            stack.push(exp);
+    //Comparator<T> is functional interface
+    public static Comparator<String> stringComparator = (s1, s2) -> {
+        String str1 = s1 + s2; // 20 + 3
+        String str2 = s2 + s1; // 3 + 20
+        return str2.compareTo(str1); //Descending sort 3, 20 descending order
+    };
 
-            if (stack.size() > 2) {
-                // pop everything off
-                rightOperand = stack.pop();
-                op = stack.pop();
-                leftOperand = stack.pop();
-
-                // evaluate & push
-                String result;
-                if(op == "|") {
-                    result = String.valueOf(Boolean.valueOf(leftOperand) || Boolean.valueOf(rightOperand));
-                } else {
-                    result = String.valueOf(Boolean.valueOf(leftOperand) && Boolean.valueOf(rightOperand));
-                }
-                stack.push(result);
-            }
+    public static String largestNumber(int[] nums) {
+        StringBuilder sb = new StringBuilder();
+        String[] strArr = new String[nums.length];
+        for (int i = 0; i < strArr.length; i++) {
+            strArr[i] = String.valueOf(nums[i]);
         }
-        //Only result on top of stack
-        return Boolean.valueOf(stack.peek());
+
+        //Sort
+        Arrays.sort(strArr, stringComparator);
+
+        //Append
+        for (int i=0; i<strArr.length; i++) {
+            sb.append(strArr[i]);
+        }
+
+        //Remove any leading zero's & return result
+        String result = sb.toString().replaceFirst("^0*", "");
+        return result.isEmpty() ? "0" : result;
     }
 
-    // A helper for printing out results, do not modify.
-    private void printEvaluate(String expr, boolean expected) {
-        System.out.println("Evaluating " + expr + " -- Actual: " + evaluate(expr) + " Expected: " + expected);
-    }
-
-    public static void main(String[] args) {
-        Program s = new Program();
-        s.printEvaluate("true | false & false", false);
-        s.printEvaluate("true", true);
-        s.printEvaluate("false", false);
+    public static void main(String[] nums) {
+        largestNumber(new int[] {0, 0});
     }
 }
