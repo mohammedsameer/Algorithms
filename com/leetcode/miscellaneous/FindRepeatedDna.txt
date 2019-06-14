@@ -1,0 +1,31 @@
+package com.leetcode;
+
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+//Algo:
+//1. Select 10 length substrings and add to set, if already exists add to result
+class Program {
+
+    public static List<String> findRepeatedDnaSequences(String s) {
+        Set<String> result = new HashSet<>();
+        Set<String> sequenceSet = new HashSet<>();
+
+        for (int i = 0; i < s.length()-9; i++)  {
+            String curr = s.substring(i, i+10);
+            if(!sequenceSet.add(curr)) {
+                //If set already contains element add to result aka .add -> false, if entry already exists, true otherwise
+                result.add(curr);
+            }
+        }
+
+        return new ArrayList<>(result);
+    }
+
+    public static void main(String[] nums) {
+        findRepeatedDnaSequences("AAAAAAAAAAA");
+    }
+}
