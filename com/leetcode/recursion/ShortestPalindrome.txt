@@ -1,0 +1,34 @@
+package com.leetcode;
+
+//Algo:
+//1. Find matching characters i & j
+//2. Get the suffix aka j..s.length-1 (beyond matching characters)
+//3. Reverse suffix + substring 0..j + suffix (recursively call)
+class Program {
+
+    public static String shortestPalindrome(String s) {
+        int j = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == s.charAt(j)) {
+                //Matching i & j character
+                j++;
+            }
+        }
+
+        if (j == s.length()) {
+            //j length is same as string length, you have your palindrome
+            return s;
+        }
+
+        //Substring (0..j..s.length-1)
+        String suffix = s.substring(j); //Divide string at j
+        return
+                new StringBuilder(suffix).reverse().toString() //Reverse the suffix aka j to end of string
+                        + shortestPalindrome(s.substring(0, j)) //Substring 0..j (we know this is palindrome)
+                        + suffix; //Append suffix
+    }
+
+    public static void main(String[] nums) {
+        System.out.println(shortestPalindrome("abcd"));
+    }
+}

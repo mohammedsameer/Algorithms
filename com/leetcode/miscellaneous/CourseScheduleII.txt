@@ -1,0 +1,64 @@
+package com.leetcode;
+
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+//Algo:
+//prereq: [course, prereq]
+//Outdegree[] to track all outgoing edges for course
+//Add nodes with zero outgoing edges to queue
+//For every node in queue check if its a prereq of another node if yes reduce the dependency count
+//Finally check the outdegree of every node is zero aka no prereq's if yes you can finish them all
+//Note: Keep track of order. For each and every course thats done add to list
+class Program {
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+         //No courses to take, so all good!
+         if (numCourses <= 0)
+             return null;
+
+         //Queue for tracking zero incoming edges nodes
+         Queue<Integer> queue = new LinkedList<>();
+         //Indegree for tracking number of incoming edges
+         int[] outDegree = new int[numCourses];
+         //Result
+         int order[] = new int[numCourses];
+         int index = 0;
+
+         //Vertex outdegree aka number of prerequisite nodes
+         for (int i=0; i <prerequisites.length; i++) {
+             //[course, prerreq]
+             outDegree[prerequisites[i][0]]++;
+         }
+
+         //Nodes with no incoming edges aka zero indegree, add them to queue
+         for (int i=0; i<outDegree.length; i++) {
+             if(outDegree[i] == 0) {
+                 order[index++] = i; //You can finish this course as it has no pre-req
+                 queue.offer(i); //Adds to the end
+             }
+         }
+
+         // How many courses don't need prerequisites.
+         while (!queue.isEmpty()) {
+             int prereq = queue.poll(); //You just finished a pre-req, lets see what course can be finished now
+             for (int i=0; i<prerequisites.length; i++) {
+                 if (prereq == prerequisites[i][1]) {
+                     outDegree[prerequisites[i][0]]--;
+                    if(outDegree[prerequisites[i][0]] == 0) {
+                        order[index++] = prerequisites[i][0];
+                        queue.offer(prerequisites[i][0]);
+                    }
+                 }
+             }
+         }
+
+        return (index == numCourses) ? order : new int[0];
+      }
+
+    public static void main(String[] nums) {
+        int[][] prerequisites = new int[][] {{1,0}};
+        canFinish(2, prerequisites);
+    }
+}

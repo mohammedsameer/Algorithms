@@ -1,0 +1,28 @@
+package com.leetcode;
+
+
+import java.util.*;
+
+//Algo:
+//1.Maintain sliding window to track window
+//2.Check if the new element - existing elements is <= t
+class Program {
+
+    public static boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        Set<Integer> set = new HashSet<>();
+        //Note: difference between indices at most k
+        for(int i=0; i<nums.length; i++) {
+            if(i>k) set.remove(nums[i-k-1]); //Move the window start by remove num
+            Iterator<Integer> iterator = set.iterator();
+            while(iterator.hasNext()) {
+                if(Math.abs(Long.valueOf(iterator.next())-nums[i]) <= t) return true;
+            }
+            set.add(nums[i]);
+        }
+        return false;
+    }
+
+    public static void main(String[] nums) {
+        containsNearbyAlmostDuplicate(new int[]{1,2,3,1}, 3, 0);
+    }
+}

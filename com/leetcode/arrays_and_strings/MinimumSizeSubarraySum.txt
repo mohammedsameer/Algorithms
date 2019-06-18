@@ -1,0 +1,28 @@
+package com.leetcode;
+
+
+//Algo:
+//Maintain start and end pointers for tracking window
+class Program {
+
+    public static int minSubArrayLen(int s, int[] nums) {
+         //Window based solution
+         int start = 0, sum = 0, minCount = Integer.MAX_VALUE;
+
+        //Loop through array and use index for keeping track of start of window
+        for (int end = 0; end < nums.length; end++) {
+            sum += nums[end];
+            while (sum >= s) {
+                minCount = Math.min(minCount, end - start + 1); //+1 because its count
+                sum -= nums[start];
+                start++;
+            }
+        }
+
+        return minCount == Integer.MAX_VALUE ? 0 : minCount;
+    }
+
+    public static void main(String[] nums) {
+        minSubArrayLen(7, new int[] {2,3,1,2,4,3});
+    }
+}

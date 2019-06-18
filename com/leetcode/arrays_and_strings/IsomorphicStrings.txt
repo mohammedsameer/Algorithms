@@ -1,0 +1,53 @@
+package com.leetcode;
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+class Program {
+
+//Algo:
+//Store the index position of occurrence of character
+    public static boolean isIsomorphic(String s, String t) {
+      int[] isMatching = new int[512]; //Maintain 0-252 twice
+      for(int i=0; i<s.length(); i++) {
+          if(isMatching[s.charAt(i)] != isMatching[t.charAt(i)+256]) return false;
+          isMatching[s.charAt(i)] = isMatching[t.charAt(i)+256] = i+1; //Set the position of character
+      }
+      return true;
+    }
+
+//Algo:
+//Use a map to maintain the mapping b/w source - target character
+    public static boolean isIsomorphic(String s, String t) {
+        int size = s.length();
+        StringBuilder sb = new StringBuilder();
+        Map<Character, Character> cMap = new HashMap<>();
+
+        for(int i=0; i<size; i++) {
+            //Current index matching character
+            char currChar = s.charAt(i);
+            char newChar = t.charAt(i);
+
+            if(cMap.containsKey(currChar)) {
+                //Previously repeated currChar should already have matching newChar
+                newChar = cMap.get(currChar);
+            } else if (cMap.containsValue(newChar)){
+               //Previously repeated nextVal, but missing key simply use incorrect mapping or return false
+                newChar = currChar; //or simply return false;
+            } else {
+                //Never seen char, so add new char mapping
+                cMap.put(currChar, newChar);
+            }
+
+            sb.insert(i, newChar);
+        }
+
+        //Match replaced string with target string
+        return sb.toString().equals(t);
+    }
+
+    public static void main(String[] nums) {
+        isIsomorphic("aa", "ab");
+    }
+}

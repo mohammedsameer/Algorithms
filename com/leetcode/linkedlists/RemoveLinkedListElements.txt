@@ -1,0 +1,26 @@
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+//Algo: Maintain curr and prev, if curr val is val then skip past it
+public ListNode removeElements(ListNode head, int val) {
+    ListNode preHead = new ListNode(-1);
+    preHead.next = head;
+
+    ListNode curr = head;
+    ListNode prev = preHead;
+
+    while(curr != null) {
+        if(curr.val == val) {
+            //Skip past curr element by pointing prev.next to curr.next
+            prev.next = curr.next;
+        } else {
+            prev=curr;
+        }
+        curr = curr.next;
+    }
+
+    return preHead.next;
+}

@@ -22,19 +22,21 @@ public class Program {
     int rows;
     int cols;
     public int numIslands(char[][] grid) {
-        if(grid == null)
+        if(grid==null)
             return 0;
 
-        mygrid = grid;
-        rows = grid.length;
-        cols = grid[0].length;
+        //Check boundary conditions
+        int rows = grid.length;
+        if(rows==0) return 0;
+        int cols = grid[0].length;
         int count = 0;
 
-        for(int r = 0; r < rows; r++) {
-            for( int c = 0; c < cols; c++) {
+        //Locate islands
+        for(int r=0; r<rows; r++) {
+            for(int c=0; c<cols; c++) {
                 if(grid[r][c] == '1') {
-                    count++;
-                    markNeighbours(r, c);
+                    count++; //Found an island
+                    markNeighbours(grid, r, c, rows, cols);
                 }
             }
         }
@@ -42,15 +44,16 @@ public class Program {
         return count;
     }
 
-    private void markNeighbours(int r, int c) {
-        if(r < 0 || r >= rows || c < 0 || c >= cols || mygrid[r][c] != '1')
+    //Makes small island a large island
+    public void markNeighbours(char[][] grid, int r, int c, int rows, int cols) {
+        if(r>=rows || c>=cols || r<0 || c<0 || grid[r][c] != '1')
             return;
 
-        mygrid[r][c] = '0';
-        markNeighbours(r+1, c);
-        markNeighbours(r-1, c);
-        markNeighbours(r, c+1);
-        markNeighbours(r, c-1);
+        grid[r][c] = '0';
+        markNeighbours(grid, r+1, c, rows, cols);
+        markNeighbours(grid, r-1, c, rows, cols);
+        markNeighbours(grid, r, c+1, rows, cols);
+        markNeighbours(grid, r, c-1, rows, cols);
     }
 
     public static void main(String[] args) {

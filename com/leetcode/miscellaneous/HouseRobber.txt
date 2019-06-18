@@ -8,19 +8,16 @@ package com.leetcode;
 public class Program {
 
     public static int rob(int[] nums) {
-        if(nums.length == 0)
-            return 0;
-
-        int evenSum = 0;
         int oddSum = 0;
-        for(int i=0; i<nums.length; i++){
-            if(i % 2 == 0)
+        int evenSum = 0;
+        for(int i=0; i<nums.length; i++) {
+            //At every index we check if adding currnumber will make sum will make it better than even or odd sums
+            if(i%2==0)
                 evenSum = Math.max(evenSum + nums[i], oddSum);
             else
                 oddSum = Math.max(oddSum + nums[i], evenSum);
         }
-
-        return Math.max(evenSum, oddSum);
+        return Math.max(oddSum, evenSum);
     }
 
     public static void main(String[] args) {

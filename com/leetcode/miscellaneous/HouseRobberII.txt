@@ -1,0 +1,38 @@
+package com.leetcode;
+
+
+import java.util.Arrays;
+
+//Algo:
+//https://leetcode.com/problems/house-robber-ii/discuss/59934/Simple-AC-solution-in-Java-in-O(n)-with-explanation
+class Program {
+
+    public static int robHelper(int[] nums) {
+        int oddSum = 0;
+        int evenSum = 0;
+        for(int i=0; i<nums.length; i++) {
+            //At every index we check if adding currnumber will make sum will make it better than even or odd sums
+            if(i%2==0)
+                evenSum = Math.max(evenSum + nums[i], oddSum);
+            else
+                oddSum = Math.max(oddSum + nums[i], evenSum);
+        }
+        return Math.max(oddSum, evenSum);
+    }
+
+    public static int rob(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+
+        if(nums.length == 1)
+            return nums[0];
+
+        return Math.max(
+                robHelper(Arrays.copyOfRange(nums, 0, nums.length-1)), //You rob first home, so now you cant rob last home
+                robHelper(Arrays.copyOfRange(nums, 1, nums.length))); //You skipped first home, so now you can rob last home
+    }
+
+    public static void main(String[] nums) {
+        rob(new int[]{1,2,3,1});
+    }
+}
