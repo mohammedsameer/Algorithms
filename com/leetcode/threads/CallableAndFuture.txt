@@ -1,0 +1,58 @@
+package com.leetcode;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+//Callable & Future
+class Program {
+
+   static class SumCallable implements Callable<Integer> {
+
+        int num;
+
+        public SumCallable(int num) {
+            this.num = num;
+        }
+
+        @Override
+        public Integer call() throws InterruptedException {
+            Thread.sleep(10000);
+            int sum = 0;
+            for (int i=1; i<=num; i++)
+                sum += i;
+            return sum;
+        }
+    }
+
+    static class VoidCallable implements Callable<Void> {
+
+        @Override
+        public Void call() throws InterruptedException {
+            System.out.println("Random task");
+            Thread.sleep(3600 * 1000);
+            return null;
+        }
+    }
+
+    public static void main(String[] nums) throws Exception {
+
+       ExecutorService threadpool = Executors.newFixedThreadPool(1);
+
+       //Submit sum task
+       Future<Integer> sumFuture = threadpool.submit(new SumCallable(10));
+
+       //Cancel random task
+       Future<Void> randomFuture = threadpool.submit(new VoidCallable());
+       randomFuture.cancel(true);
+
+       //Poll sumtask (aka callable)
+        if(!sumFuture.isDone()) {
+            System.out.println("Waiting for task");
+        }
+        System.out.println(sumFuture.get());
+
+       threadpool.shutdown();
+    }
+}

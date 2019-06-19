@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+//Algo: Instead of simply conting nodes, we optimize because of our knowledge of complete tree
+class Solution {
+    public int countNodes(TreeNode root) {
+        TreeNode left = root;
+        TreeNode right = root;
+        int height = 0;
+
+        //We check right because in complete tree nodes are dense on left
+        while(right != null) {
+            left = left.left;
+            right = right.right;
+            height++;
+        }
+
+        if(left==null) {
+            //Both left and right same height so total nodes = 2h-1
+            return (1<<height)-1; //left shift 1 height times
+        }
+
+        //Recursively call left and right childs
+        return 1+countNodes(root.left)+countNodes(root.right);
+    }
+}

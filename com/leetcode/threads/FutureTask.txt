@@ -1,0 +1,29 @@
+package com.leetcode;
+
+import java.util.concurrent.*;
+
+//FutureTask
+class Program {
+
+    @SuppressWarnings("unchecked")
+    public static void main( String args[] ) throws Exception{
+
+        FutureTask<Integer> futureTask = new FutureTask(new Callable() {
+
+            public Integer call() throws Exception {
+                return 5;
+            }
+        });
+
+        ExecutorService threadPool = Executors.newSingleThreadExecutor();
+        threadPool.submit(futureTask); //Note: Here, your wrapping your callable into a futureTask already, hence you can check on futureTask.isDone()
+
+        while (!futureTask.isDone()) {
+            System.out.println("Waiting");
+        }
+       System.out.println((int)futureTask.get());
+
+        threadPool.shutdown();
+    }
+}
+

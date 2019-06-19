@@ -1,0 +1,25 @@
+/**
+ * Algorithm
+ * 1. If n <=0  return false
+ * 2. Loop through on n/2 > 1 by checking n%2==0, then n = n/2
+ */
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+      if(n<=0)
+          return false;
+     if(n==1)
+         return true;
+
+     boolean isPowerOfTwo = true;
+     while(n>1) {
+        if(n%2 == 0) {
+            n = n/2;
+        } else {
+            isPowerOfTwo = false;
+            break;
+        }
+     }
+
+     return isPowerOfTwo;
+   }
+}

@@ -35,6 +35,60 @@ public class Program {
         return isPalindrome;
     }
 
+
+    //Algo:
+    //1. Slow and fast pointer to move along the list
+    //2. Reverse the slow pointer
+    //3. Compare left and right side
+    public static boolean isPalindromeOptimal(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        //Algo: Slow and Fast nodes
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        //Odd nodes, so move the slow further so the right half is smaller
+        if(fast != null) {
+            slow = slow.next;
+        }
+        //Reverse slow node
+        ListNode right = reverse(slow);
+        ListNode left = head;
+
+        while(right!=null) {
+            if(left.val != right.val) {
+                return false;
+            }
+            left = left.next;
+            right = right.next;
+        }
+        return true;
+    }
+
+    public static ListNode reverse(ListNode curr) {
+        ListNode preHead = new ListNode(-1);
+        preHead.next = curr;
+        ListNode prev = preHead;
+
+        if(curr != null) {
+
+            ListNode next = curr.next;
+
+            while(next != null) {
+                curr.next = next.next;
+                next.next = prev.next;
+                prev.next = next;
+
+                next = curr.next;
+            }
+        }
+
+        return prev.next;
+    }
+
     public static void main(String[] args) {
         ListNode node1 = new ListNode(-129);
         ListNode node2 = new ListNode(-129);

@@ -1,0 +1,33 @@
+package com.leetcode;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+//Runnable threadpool
+class Program {
+
+
+   static class MyRunnableTask implements Runnable {
+
+        int taskNum;
+
+        public MyRunnableTask(int taskNum) {
+            this.taskNum = taskNum;
+        }
+
+        @Override
+        public void run() {
+            System.out.println("Hello, I am taskNum:" + taskNum);
+        }
+    }
+
+    public static void main(String[] nums) {
+        ExecutorService threapool = Executors.newFixedThreadPool(10);
+
+        for(int i=0; i<5; i++) {
+            threapool.submit(new MyRunnableTask(i));
+        }
+
+        threapool.shutdown();
+    }
+}

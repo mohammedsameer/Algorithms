@@ -1,0 +1,28 @@
+//Algo:
+//1. Same as combination sum, except prepare your candidates 1-9
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> currList = new ArrayList<>();
+        //Initialize candidate[0] = 1, candidate[1] = 2;
+        int[] candidates = new int[9]; //Only 1-9 numbers
+        for(int i=0; i<candidates.length; i++) {
+            candidates[i] = i+1;
+        }
+
+        combinationSum3(result, currList, candidates, n, k, 0);
+        return result;
+    }
+
+    public void combinationSum3(List<List<Integer>> result, List<Integer> currList, int[] candidates, int remain, int size, int start) {
+        if(remain < 0 || currList.size() > size) return;
+        if(remain==0 && currList.size() == size) {
+            result.add(new ArrayList<>(currList));
+        }
+        for(int i=start; i<candidates.length; i++) {
+            currList.add(candidates[i]);
+            combinationSum3(result, currList, candidates, remain-candidates[i], size, i+1);
+            currList.remove(currList.size()-1);
+        }
+    }
+}

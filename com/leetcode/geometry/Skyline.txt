@@ -15,54 +15,57 @@ import java.util.*;
 public class Program {
 
     public static List<int[]> getSkyline(int[][] buildings) {
-        List<int[]> result = new ArrayList<>();
-        List<int[]> height = new ArrayList<>();
-        for(int[] b:buildings) {
-            // start point has negative height value
-            height.add(new int[]{b[0], -b[2]});
-            // end point has normal height value
-            height.add(new int[]{b[1], b[2]});
-        }
+       List<List<Integer>> result = new ArrayList<>();
+       List<int[]> height = new ArrayList<>();
+       for(int[] b: buildings) {
+           // start point has negative height value
+           height.add(new int[]{b[0], -b[2]});
+           // end point has normal height value
+           height.add(new int[]{b[1], b[2]});
+       }
 
-        // sort $height, based on the first value, if necessary, use the second to
-        // break ties
-        Comparator<int[]> heightComparator = (a,b) -> {
-            if(a[0] != b[0])
-                return a[0] - b[0];
-            return a[1] - b[1];
-        };
-        Collections.sort(height, heightComparator);
+       // sort $height, based on the first value, if necessary, use the second to
+       // break ties
+       Comparator<int[]> heightComparator = (a,b) -> {
+           if(a[0] != b[0])
+               return a[0] - b[0];
+           return a[1] - b[1];
+       };
+       Collections.sort(height, heightComparator);
 
-        //Queue for managing heights
-        Queue<Integer> pq = new PriorityQueue<>((a,b) -> b-a);
+       //Queue for managing heights & stores results in descending order
+       Queue<Integer> pq = new PriorityQueue<>((a, b) -> b-a);
 
-        //Initial height
-        pq.offer(0);
+       //Initial height
+       pq.offer(0);
 
-        //Prev and Curr heights
-        int prev = 0;
-        int curr = 0;
+       //Prev and Curr heights
+       int prev = 0;
+       int curr = 0;
 
-        for(int[] h: height) {
-            //Index 0 has x axis and index 1 has height
-            if(h[1] < 0) {
-                //Add the height (Note: - of - is +ve)
-                pq.offer(-h[1]);
-            } else {
-                //Remove when the building ends, as the start of next building will pick up next
-                pq.remove(h[1]);
-            }
+       for(int[] h: height) {
+           //Index 0 has x axis and index 1 has height
+           if(h[1] < 0) {
+               //Add the height (Note: - of - is +ve)
+               pq.offer(-h[1]);
+           } else {
+               //Remove when the building ends, as the start of next building will pick up next
+               pq.remove(h[1]);
+           }
 
-            //Highest/Lowest building (aka when the max height changes simply add to result)
-            curr = pq.peek();
+           //Highest/Lowest building (aka when the max height changes simply add to result)
+           curr = pq.peek();
 
-            if(prev != curr) {
-                result.add(new int[]{h[0], curr});
-                prev = curr;
-            }
-        }
+           if(prev != curr) {
+               List<Integer> currList = new ArrayList<>();
+               currList.add(h[0]);
+               currList.add(curr);
+               result.add(currList);
+               prev = curr;
+           }
+       }
 
-        return result;
+       return result;
     }
 
     public static void main(String[] args) {
