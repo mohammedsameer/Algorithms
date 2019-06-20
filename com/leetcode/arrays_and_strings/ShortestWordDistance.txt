@@ -1,0 +1,34 @@
+package com.leetcode;
+
+class Program {
+
+
+    public static int shortestDistance(String[] words, String word1, String word2) {
+        int minDistance = Integer.MAX_VALUE;
+        int m=-1;
+        int n=-1;
+        for (int i=0; i<words.length; i++) {
+            String currWord = words[i];
+            if(currWord.equals(word1)) {
+                m = i;
+                if (n != -1) {
+                    //aka we already have word2 match
+                    minDistance = Math.min(minDistance, m - n);
+                }
+            } else if (currWord.equals(word2)) {
+                n = i;
+                if(m != -1) {
+                    //aka we already have word1 match
+                    minDistance = Math.min(minDistance, n-m);
+                }
+            }
+        }
+        return minDistance;
+    }
+
+
+    public static void main(String[] args) {
+        shortestDistance(new String[]{"practice", "makes", "perfect", "coding", "makes"}, "coding", "practice");
+    }
+
+}

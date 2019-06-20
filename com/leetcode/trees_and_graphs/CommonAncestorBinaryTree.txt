@@ -19,10 +19,20 @@ public class Program {
     }
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-            if (root == null || root == p || root == q)
-                return root;
-            TreeNode left = lowestCommonAncestor(root.left, p, q);
-            TreeNode right = lowestCommonAncestor(root.right, p, q);
-            return left != null && right != null ? root: left == null ? right : left;
+           if(root == null || root == p || root == q)
+                       return root;
+
+           TreeNode left = lowestCommonAncestor(root.left, p, q);
+           TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+           if(left != null && right != null)
+               //Found matching p & q, so root is the ancestor
+               return root;
+           else if (left != null)
+               //Only found p's ancestor, so lets return that
+               return left;
+           else
+               //Only found q's ancestor, so lets return that
+               return right;
    }
 }

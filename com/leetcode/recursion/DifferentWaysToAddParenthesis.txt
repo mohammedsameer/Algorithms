@@ -1,0 +1,31 @@
+//Algo:
+//Recursively compute subparts when you encounter a symbol
+public List<Integer> diffWaysToCompute(String input) {
+    List<Integer> result = new ArrayList<>();
+    for(int i=0; i<input.length(); i++) {
+        char c = input.charAt(i);
+        if(c == '+' || c == '-' || c == '*') {
+            //Compute subparts recursively
+            List<Integer> l1 =  diffWaysToCompute(input.substring(0, i));
+            List<Integer> l2 =  diffWaysToCompute(input.substring(i+1));
+            for(int a : l1) {
+                for(int b: l2) {
+                    //Compute all possiblities
+                    int curr = 0;
+                    switch(c) {
+                            case '+': curr = a + b; break;
+                            case '-': curr = a - b; break;
+                            case '*': curr = a * b; break;
+                    }
+                    result.add(curr);
+                }
+            }
+        }
+    }
+
+    //Note: result is empty if input is number
+    if(result.isEmpty())
+        result.add(Integer.valueOf(input));
+
+    return result;
+}

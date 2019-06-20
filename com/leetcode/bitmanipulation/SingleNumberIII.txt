@@ -1,0 +1,35 @@
+package com.leetcode;
+
+class Program {
+
+    public static int[] singleNumber(int[] nums) {
+        //Two pass
+        //Pass-1: Find the XOR of two distinct elements(Note: Since all elements appear twice the result will be XOR of two distinct elements)
+        int curr = 0;
+        for(int num: nums) {
+            curr ^= num;
+        }
+
+        //Find a least significant 1 bit from curr. You can use any bit.. Why do we need this one bit: Its because we know our two distinct numbers differ on this one bit
+        //i.e. one of the two distinct number has it as 1, other has it as 0. Remember 1^0 = 1
+        curr &= ~(curr-1); //Note: If curr = 10, then 10-01=01, ~01 = 10, thus least significant 1 bit is found
+
+        //Pass-2: Divide elements in two groups by & with 1 bit. Our distinct numbers will fall in two different groups. XOR the individual groups as SingleNumberI, thus
+        //you will have one distinct element in each group
+        int[] result = new int[2];
+        for(int num: nums) {
+            if((num & curr) == 0) {
+                result[0] ^=num;
+            } else {
+                result[1] ^=num;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        //Test
+        singleNumber(new int[]{1,2,1,3,2,5});
+    }
+}

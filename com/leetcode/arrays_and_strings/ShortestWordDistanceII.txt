@@ -1,0 +1,47 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+//Algo:
+//Initialize map with word & its index, so that we can call shortestDistance as many times as needed & we shall not have to iterate through wordlist
+//Compute mindistance by looping through the indexes of word1 and word2
+class Program {
+
+    public Map<String, List<Integer>> wordIndexMap = new HashMap<>();
+
+    //Initialize map with word & its index, so that we can call shortestDistance as many times as needed & we shall not have to iterate through wordlist
+    public Program(String[] words) {
+        for(int i=0; i<words.length; i++) {
+            String currWord = words[i];
+            if(wordIndexMap.containsKey(currWord)) {
+                wordIndexMap.get(currWord).add(i);
+            } else {
+                List<Integer> wordIndexList = new ArrayList<>();
+                wordIndexList.add(i);
+                wordIndexMap.put(currWord, wordIndexList);
+            }
+        }
+    }
+
+    public int shortestDistance(String word1, String word2) {
+       List<Integer> word1List = wordIndexMap.get(word1);
+       List<Integer> word2List = wordIndexMap.get(word2);
+       int minDistance = Integer.MAX_VALUE;
+       for(int word1Index : word1List) {
+           for (int word2Index : word2List) {
+               minDistance = Math.min(minDistance, Math.abs(word1Index-word2Index));
+           }
+       }
+       return minDistance;
+    }
+
+
+    public static void main(String[] args) {
+        Program program = new Program(new String[]{"practice", "makes", "perfect", "coding", "makes"});
+        program.shortestDistance("coding", "practice");
+    }
+
+}

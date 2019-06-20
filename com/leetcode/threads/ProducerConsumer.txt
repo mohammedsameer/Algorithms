@@ -1,0 +1,122 @@
+package com.leetcode;
+
+
+class BlockingQueue<T> {
+   T[] array;
+   int capacity;
+   int size = 0;
+   int head = 0;
+   int tail = 0;
+
+   //Initialize queue with capacity and buffer
+   BlockingQueue(int capacity) {
+       array = (T[]) new Object[capacity];
+       this.capacity = capacity;
+   }
+
+   public synchronized void enqueue(T elem) throws InterruptedException {
+       while (size == capacity) {
+           wait();
+       }
+
+       //Reset tail to beginning if its already at the end
+       if(tail == capacity)
+           tail = 0;
+
+
+       //Add item to buffer
+       array[tail] = elem;
+       size++;
+       tail++;
+
+       //Let other waiting consumer threads know
+       notify();
+   }
+
+   public synchronized T dequeue() throws InterruptedException {
+        T elem;
+
+        while (size == 0) {
+            wait();
+        }
+
+        //Reset head to beginning if its already at the end
+        if(head == capacity)
+           head=0;
+
+        //Remove element from buffer
+        elem = array[head];
+        array[head] = null; //Reset the element to null
+        size--;
+        head++;
+
+        //Let other waiting producer threads know
+        notify();
+
+        return elem;
+   }
+}
+
+
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+        //Test
+        BlockingQueue<Integer> blockingQueue = new BlockingQueue<>(5);
+
+        //Producer
+        Thread producer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    try {
+                        System.out.println("Producer enqueue: " + i);
+                        blockingQueue.enqueue(i);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        //Consumer
+        Thread consumer1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    try {
+                        System.out.println("Consumer1 dequeue: " + i);
+                        blockingQueue.dequeue();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
+        Thread consumer2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    try {
+                        System.out.println("Consumer2 dequeue: " + i);
+                        blockingQueue.dequeue();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        producer.start();
+        Thread.sleep(1000);
+
+        consumer1.start();
+        consumer1.join();
+
+        consumer2.start();
+        producer.join(); //Producer keeps producing while consumer 1 finishes consuming
+        consumer2.join();
+    }
+}

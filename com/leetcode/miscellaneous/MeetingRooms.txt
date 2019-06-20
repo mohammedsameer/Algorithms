@@ -1,0 +1,38 @@
+package com.leetcode;
+
+import java.util.Arrays;
+
+class Interval {
+    int start;
+    int end;
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+}
+
+class Program {
+
+    public static boolean canAttendMeetings(Interval[] intervals) {
+        // Check if overlapping intervals
+        Arrays.sort(intervals, (a, b) -> a.start - b.start);
+
+        for(int i=0; i<intervals.length-1; i++) {
+            Interval curr = intervals[i];
+            Interval next = intervals[i+1];
+
+            if(curr.end>next.start){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        //Test
+        //[0, 30], [5, 10], [15, 20]
+        canAttendMeetings(new Interval[]{new Interval(0, 30), new Interval(5, 10), new Interval(15, 20)});
+    }
+}

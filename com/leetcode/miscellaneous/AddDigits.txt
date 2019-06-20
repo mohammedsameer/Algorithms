@@ -1,0 +1,23 @@
+//Algo: Compute the sum incrementally and make sure its under 10 by performing sum % 10 + sum / 10;
+public int addDigits(int num) {
+        int sum = 0;
+        while(num > 0) {
+            sum = sum + num % 10;//Add to sum
+            sum = sum % 10 + sum / 10; //Makes sure sum is single digit
+            num = num/10;
+        }
+
+        return sum;
+}
+
+public int addDigitsOptimal(int num) {
+        if (num == 0){
+            return 0;
+        }
+        if (num % 9 == 0){
+            return 9;
+        }
+        else {
+            return num % 9;
+        }
+}

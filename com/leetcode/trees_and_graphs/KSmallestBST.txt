@@ -5,7 +5,7 @@ import java.util.Stack;
 /**
  * Algorithm
  * 1. Push all nodes until the left most node & then pop node and move to their right
- * 2. On popping check if kCounter == 0
+ * 2. On popping check if --k == 0
  */
 public class Program {
 
@@ -17,25 +17,27 @@ public class Program {
      }
 
     public TreeNode kthSmallest(TreeNode root, int k) {
-        if(root == null)
-            return root;
-
-        int kCounter  = k;
-        Stack<TreeNode> stack = new Stack<>();
+        //Inorder traversal
         TreeNode curr = root;
-        while (!stack.isEmpty() || curr != null) {
+        Stack<TreeNode> stack = new Stack<>();
+        int result = -1;
+
+        while(!stack.isEmpty() || curr!=null) {
             if(curr != null) {
                 stack.push(curr);
                 curr = curr.left;
             } else {
-                TreeNode node = stack.pop();
-                if(--kCounter == 0) break;
-                //Move the cursor the node's right
-                curr = node.right;
+                TreeNode prev = stack.pop();
+                k--;
+                if(k==0) {
+                    result = prev.val;
+                    break;
+                }
+                curr = prev.right;
             }
         }
 
-        return curr;
+       return result;
     }
 
     public static void main(String[] args) {

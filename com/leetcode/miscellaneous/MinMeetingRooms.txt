@@ -26,32 +26,27 @@ public class Program {
 
     public static int minMeetingRooms(Interval[] intervals) {
 
-        if(intervals.length == 0)
-            return 0;
+       Arrays.sort(intervals, (a, b) -> a.start-b.start);
+       Queue<Integer> pq = new PriorityQueue<>(); //Priority queue ensure items are ordered
+       int count = 1;
 
-        Comparator<Interval> intervalComparator = (i1, i2) -> {
-            return i1.start - i2.start;
-        };
+       pq.add(intervals[0].end); //Add the first meeting end time, so we can check the next meetings start time
 
-        Arrays.sort(intervals, intervalComparator);
-        Queue<Integer> pq = new PriorityQueue<>();
-        int count = 1;
-        pq.offer(intervals[0].end);
+       for (int i=1; i < intervals.length; i++) {
+           //Check all remaining meetings and determine if they need a new room or can use existing room
+           Interval curr = intervals[i];
+           if(curr.start < pq.peek()) {
+               count++;
+           } else {
+               //Looks like preexisting meeting is over remove from queue
+               pq.poll();
+           }
 
-        for(int i = 1; i < intervals.length; i++) {
-            if(intervals[i].start < pq.peek()) {
-                //The next meeting start time is before current meeting, need a new room
-                count++;
-            } else {
-                //Free up meeting room
-                pq.poll();
-            }
+           //Add the current meeting end time to the queue
+           pq.add(curr.end);
+       }
 
-            //Add the current meeting
-            pq.offer(intervals[i].end);
-        }
-
-        return count;
+       return count;
     }
 
     public static void main(String[] args) {

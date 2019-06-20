@@ -8,24 +8,20 @@ package com.leetcode;
 public class Program {
 
     public static int[] maxSlidingWindow(int[] nums, int k) {
-        int len = nums.length;
-        if(len == 0)
-            return nums;
+        if(nums.length == 0)
+           return new int[]{};
 
-        int[] maxArr = new int[len-k+1];
-        int maxIndex = -1;
-        int max;
-        for(int i=0; i<len-k+1; i++) {
-         int start = i;
-         int end = start+k-1;
-         max = Integer.MIN_VALUE;
-         for(int j=start; j<=end; j++) {
-                max = Math.max(max, nums[j]);
-         }
-         maxArr[++maxIndex] = max;
+        int[] maxWindow = new int[nums.length-k+1];
+        for(int i=0; i<=nums.length-k; i++) {
+            int start = i;
+            int end = start+k;
+            int max = Integer.MIN_VALUE;
+            for(int j=start; j<end; j++) {
+                max = Math.max(nums[j], max);
+            }
+            maxWindow[start] = max;
         }
-
-        return maxArr;
+        return maxWindow;
     }
 
     public static void main(String[] args) {
