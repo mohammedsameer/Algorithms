@@ -1,0 +1,51 @@
+package com.leetcode;
+
+
+//Algo:
+//Maintain two iterators that alternate between v1 and v2
+//Boundary condition: If either v1 or v2 indexes have reached the list size, simply consume from other list
+
+import java.util.List;
+
+class ZigzagIterator {
+    int v1Index=0;
+    int v2Index=0;
+    List<Integer> v1;
+    List<Integer> v2;
+    boolean flag = true;
+
+    public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
+        this.v1 = v1;
+        this.v2 = v2;
+    }
+
+    public int next() {
+        int result;
+        if(v1Index == v1.size() && v2Index == v2.size()) {
+            result = -1; //No mor elements present
+        } else if(v1Index == v1.size()) {
+            result = v2.get(v2Index++);
+        } else if (v2Index == v2.size()) {
+            result = v1.get(v1Index++);
+        } else {
+            if(flag) {
+                result = v1.get(v1Index++);
+            } else {
+                result = v2.get(v2Index++);
+            }
+            flag = !flag;
+        }
+
+        return result;
+    }
+
+    public boolean hasNext() {
+        return v1Index < v1.size() && v2Index < v2.size();
+    }
+}
+
+
+class Program {
+    public static void main(String[] args) {
+    }
+}

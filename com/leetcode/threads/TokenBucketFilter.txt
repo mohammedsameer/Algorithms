@@ -1,0 +1,75 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class TokenBucketFilter{
+
+    private int MAX_TOKENS;
+
+    private int currentTokens = 0;
+
+    private long lastTokenRequestTime = System.currentTimeMillis();
+
+    public TokenBucketFilter(int max) {
+        this.MAX_TOKENS = max;
+    }
+
+    public synchronized void getToken() throws InterruptedException {
+
+        //Update current token bucket
+        long possibleTokens = (lastTokenRequestTime - System.currentTimeMillis())/1000;
+        if(currentTokens + possibleTokens > MAX_TOKENS) {
+            currentTokens = MAX_TOKENS;
+        } else {
+            currentTokens += possibleTokens;
+        }
+
+        //Check if we have tokens to proceed else pause
+        if(currentTokens < 0) {
+            //Pause for 1sec, because we know we will have token ready by then
+            Thread.sleep(1000);
+        } else {
+            currentTokens--;
+        }
+
+        //Update last request time
+        lastTokenRequestTime = System.currentTimeMillis();
+        System.out.println("Granting " +  Thread.currentThread().getName() + "token at " + lastTokenRequestTime);
+    }
+}
+
+
+class Program {
+    public static void main(String[] args) throws InterruptedException {
+
+        TokenBucketFilter tokenBucketFilter = new TokenBucketFilter(5);
+        List<Thread> threads = new ArrayList<>();
+
+        for(int i=0; i<10; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        tokenBucketFilter.getToken();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            threads.add(thread);
+        }
+
+        //Start all threads
+        for(Thread thread : threads) {
+            thread.start();
+        }
+
+        //Join all threads
+        for(Thread thread : threads) {
+            thread.join();
+        }
+
+    }
+}

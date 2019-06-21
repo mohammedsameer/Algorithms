@@ -1,0 +1,39 @@
+package com.leetcode;
+
+
+//Algo:
+//Count the characters
+//If you have more than one character with odd count, then you cannot form a palindrome
+
+class Program {
+
+    public static boolean canPermutePalindrome(String s) {
+        int[] count = new int[26];
+
+        if(s==null || s.isEmpty())
+            return true;
+
+        String str = s.trim().toLowerCase();
+        for(int i=0; i<str.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+        }
+
+        int oddCount = 0;
+        for(int i=0; i<26; i++) {
+            if(count[i] %2 != 0) {
+                ++oddCount;
+            }
+
+            if(oddCount > 1)
+                return false;
+        }
+
+        return true;
+    }
+
+
+    public static void main(String[] args) {
+        canPermutePalindrome("abbcbba");
+        canPermutePalindrome("abbcdbba");
+    }
+}

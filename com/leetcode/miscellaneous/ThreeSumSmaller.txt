@@ -1,0 +1,44 @@
+package com.leetcode;
+
+import java.util.Arrays;
+
+//Algo:
+//Similar to 3 sum, except instead of tracking sum==target
+//If sum>=target
+//   k--
+//else
+// count += k-j (Note: Total number of k's for given i and j)
+// j++
+class Program {
+
+     public static int countTriplets(int[] num, int sum) {
+         if(num.length == 0)
+             return 0;
+
+         int count = 0;
+         Arrays.sort(num);
+
+         for (int i=0; i<num.length-2; i++) {
+             int j = i+1;
+             int k = num.length-1;
+
+             while (j<k) {
+                 int curr = num[i] + num[j] + num[k];
+
+                 if(curr >= sum) {
+                     k--;
+                 } else {
+                     //Note: For current i & j combination total number of k elements are k-j
+                     count += k-j;
+                     j++;
+                 }
+             }
+         }
+
+         return count;
+     }
+
+    public static void main(String[] args) {
+        countTriplets(new int[]{5, 1, 3, 4, 7}, 12);
+    }
+}

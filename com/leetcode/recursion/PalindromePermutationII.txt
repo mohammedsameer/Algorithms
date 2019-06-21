@@ -1,0 +1,82 @@
+package com.leetcode;
+
+
+//Algo:
+//Count the characters
+//If you have more than one character with odd count, then you cannot form a palindrome
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+class Program {
+
+    Set< String > set = new HashSet< >();
+
+    public List< String > generatePalindromes(String s) {
+        int[] map = new int[128];
+        //Divide the string into half
+        char[] st = new char[s.length() / 2];
+
+        //Check if you can get a palindrome, if not no bother generating permutations
+        if (!canPermutePalindrome(s, map))
+            return new ArrayList< >();
+
+
+        char ch = 0; //odd character
+        int k = 0;
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] % 2 == 1) {
+                //Note: We will only have one odd character
+                ch = (char) i;
+            }
+
+            for (int j = 0; j < map[i] / 2; j++) {
+                //Get only half the number of characters for i
+                st[k++] = (char) i;
+            }
+        }
+
+        permute(st, 0, ch);
+        return new ArrayList<>(set);
+    }
+
+    public boolean canPermutePalindrome(String s, int[] map) {
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            map[s.charAt(i)]++;
+            if (map[s.charAt(i)] % 2 == 0)
+                count--;
+            else
+                count++;
+        }
+        return count <= 1;
+    }
+
+    public void swap(char[] s, int i, int j) {
+        char temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+
+
+    public void permute(char[] s, int start, char ch) {
+        if (start == s.length) {
+            //Apply odd character + reverse
+            set.add(new String(s) + (ch == 0 ? "" : ch) + new StringBuffer(new String(s)).reverse());
+        } else {
+            for (int i = start; i < s.length; i++) {
+                if (s[start] != s[i] || start == i) {
+                    swap(s, start, i);
+                    permute(s, start + 1, ch);
+                    swap(s, start, i);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+
+    }
+}

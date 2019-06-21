@@ -6,15 +6,20 @@
 public class Program {
 
     public int missingNumber(int[] nums) {
-        int n = nums.length;
-        Arrays.sort(nums);
-
-        for (int i = 0; i < n; i++) {
-         if(nums[i] != i)
-             return i;
+        int[] count = new int[nums.length+1];
+        for(int i=0; i<count.length-1; i++) {
+            count[nums[i]]++;
         }
 
-        return n;
+        int result = nums.length;
+        for(int i=0; i<count.length-1; i++) {
+            if(count[i] == 0) {
+                result = i;
+                break;
+            }
+        }
+
+        return result;
     }
 }
 

@@ -1,0 +1,117 @@
+package com.leetcode;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+class Callback {
+    long executeAt;
+    String message;
+
+    public Callback(long executeAfter, String message) {
+        this.executeAt = System.currentTimeMillis() + executeAfter * 1000;
+        this.message = message;
+    }
+
+    public void run() {
+        System.out.println("I am executing at: " + executeAt);
+    }
+}
+
+class DeferredCallbackExecutor {
+
+    //Order callbacks based on execution time
+    Queue<Callback> pq = new PriorityQueue<>((a, b) -> (int) (a.executeAt - b.executeAt));
+
+    //Reentrant lock with execution condition
+    ReentrantLock lock = new ReentrantLock();
+    Condition executionCondition = lock.newCondition();
+
+    public void start() throws InterruptedException {
+        long sleepFor = 0;
+        int lastSeenQueueSize = 0;
+        int num = 1;
+
+        //Run all the time
+        while (num == 1) {
+            lock.lock();
+
+            //Wait to be notified if an item is in the queue
+            while (pq.size() == 0) {
+                executionCondition.await();
+            }
+
+            //Wait till next task is to be executed
+            while (lastSeenQueueSize == pq.size()) {
+                executionCondition.await(sleepFor, TimeUnit.MILLISECONDS);
+            }
+
+            long currTime = System.currentTimeMillis();
+            while (!pq.isEmpty() && pq.peek().executeAt < currTime) {
+                //Execute the callback
+                Callback cb = pq.poll();
+                cb.run();
+            }
+
+            //Update sleepFor & lastQueueSize
+            sleepFor = pq.isEmpty() ? 0 : pq.peek().executeAt - currTime;
+            lastSeenQueueSize = pq.size();
+
+            lock.unlock();
+        }
+    }
+
+    public void registerCallbacks(Callback cb) {
+        lock.lock();
+
+        //Add to priority queue and signal the executor to act on the new registered callback
+        pq.add(cb);
+        executionCondition.signal();
+
+        lock.unlock();
+    }
+}
+
+
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+        DeferredCallbackExecutor deferredCallbackExecutor = new DeferredCallbackExecutor();
+        //Start executor thread
+        Thread executor = new Thread(() ->  {
+            try {
+                deferredCallbackExecutor.start();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+        }});
+
+        //Start executor thread
+        executor.start();
+
+
+        List<Thread> threads = new ArrayList<>();
+        //Register callbacks
+        for(int i=0; i<10; i++ ){
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int random = new Random().nextInt() % 10;
+                    Callback callback = new Callback(random, "Hello from callback");
+                    deferredCallbackExecutor.registerCallbacks(callback);
+                }
+            });
+
+            thread.start();
+            threads.add(thread);
+        }
+
+        //Join consumer threads
+        for(Thread thread : threads) {
+            thread.join();
+        }
+
+        //Join executor thread
+        executor.join();
+    }
+}
