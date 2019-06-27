@@ -1,0 +1,29 @@
+package com.leetcode;
+
+import java.util.*;
+
+//Algo:
+//Move along and flip when you encounter two ++'s then reset them for next iteration
+//Note: String is immutable, hence we cannot modify in place
+class Program {
+
+    public static List<String> flip(String s) {
+        List<String> result = new ArrayList<>();
+
+        char[] sArr = s.toCharArray();
+        for(int i=0; i<sArr.length-1; i++) {
+            if(sArr[i] == '+' && sArr[i+1]== '+') {
+                sArr[i] = '-';
+                sArr[i+1] = '-';
+                result.add(new String(sArr));
+                sArr[i] = '+';
+                sArr[i+1] = '+';
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        flip("++++");
+    }
+}

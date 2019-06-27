@@ -1,0 +1,37 @@
+package com.leetcode;
+
+//Algo:
+//1. Recursively iterate left and right nodes and check if nextval = matches root val if yes increase count else reset count to 1
+class Program {
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+    }
+
+    Integer MAX_COUNT = 0;
+
+    public int longestConsecutive(TreeNode root) {
+        longestConsecutiveHelper(root, 0, 0);
+        return MAX_COUNT;
+    }
+
+
+    private void longestConsecutiveHelper(TreeNode root, int currCount, int nextVal) {
+        if(root == null)
+            return;
+
+        if(root.val == nextVal) {
+            currCount++;
+        } else {
+            currCount = 1;
+        }
+
+        MAX_COUNT = Math.max(currCount, MAX_COUNT);
+        longestConsecutiveHelper(root.left, currCount, root.val+1);
+        longestConsecutiveHelper(root.right, currCount, root.val+1);
+    }
+
+    public static void main(String[] args) {
+    }
+}

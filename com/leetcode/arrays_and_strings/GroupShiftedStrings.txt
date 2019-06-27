@@ -1,0 +1,55 @@
+package com.leetcode;
+
+import java.util.*;
+
+//Algo:
+//abc -> 11
+//xyz -> 11
+//thus they are shifted strings with same difference
+//az -> 25
+//xw -> 25
+//ba -> 25
+class Program {
+
+    public static List<List<String>> groupStrings(String[] strings) {
+        List<List<String>> result = new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+
+        for(String s: strings) {
+            char[] sArr = s.toCharArray();
+            if(sArr.length > 0) {
+                int diff = sArr[0] - 'a'; //Difference with 0th index
+                for(int i=0; i<sArr.length; i++) {
+                    //Store shifted strings
+                    if(sArr[i] - diff < 'a') {
+                        sArr[i] = (char) (sArr[i] - diff + 26);
+                    } else {
+                        sArr[i] = (char) (sArr[i] - diff);
+                    }
+                }
+
+                //Check if the shifted string key is already present
+                String str = new String(sArr);
+                if(map.containsKey(str)) {
+                    map.get(str).add(s);
+                } else {
+                    List<String> list = new ArrayList<>();
+                    list.add(s);
+                    map.put(str, list);
+                }
+            }
+        }
+
+        //Sort your result (Optional)
+        for(List<String> currValues: map.values()) {
+            Collections.sort(currValues);
+            result.add(currValues);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        groupStrings(new String[]{"abc", "xyz", "a", "az", "xw", "ba", "x"});
+    }
+}

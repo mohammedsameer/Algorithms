@@ -1,0 +1,76 @@
+package com.leetcode;
+
+//Algo:
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Semaphore {
+
+    private int USED_PERMITS;
+    private int MAX_PERMITS;
+
+    public Semaphore(int totalPermits) {
+        MAX_PERMITS = totalPermits;
+    }
+
+    public synchronized void acquire() throws InterruptedException {
+        //Wait for permits to be available
+        while(USED_PERMITS == MAX_PERMITS)
+            wait();
+
+        USED_PERMITS++;
+        notify();
+    }
+
+    public synchronized void release() throws InterruptedException {
+        //Wait if accidentally thread called release
+        while(USED_PERMITS == 0)
+            wait();
+
+        USED_PERMITS--;
+        notify();
+    }
+}
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+        Semaphore semaphore = new Semaphore(2);
+        List<Thread> lockThreads = new ArrayList<>();
+        List<Thread> releaseThreads = new ArrayList<>();
+
+        Thread lockThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    for (int i = 0; i < 5; i++) {
+                        semaphore.acquire();
+                        System.out.println("Acquiring lock " + i);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread releaseThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    for (int i = 0; i < 5; i++) {
+                        semaphore.release();
+                        System.out.println("Releasing lock " + i);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        lockThread.start();
+        releaseThread.start();
+
+        releaseThread.join();
+        lockThread.join();
+    }
+}

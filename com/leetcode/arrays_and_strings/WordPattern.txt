@@ -1,0 +1,63 @@
+package com.leetcode;
+
+import java.util.HashMap;
+import java.util.Map;
+
+//Algo:
+class Program {
+
+    //Algo:
+    //If last value of given key does not match, then false else continue.
+    //Note: The value here is index, hence if the when am adding the same i if the return previous value of i does not match the false
+    public static boolean wordPatternOptimal(String pattern, String str) {
+        Map indexMap = new HashMap<>();
+        String[] wordArr = str.split(" ");
+
+        if(pattern.length() != wordArr.length)
+            return false;
+
+        //Note: Integer here prevents autoboxing same i value to different objects
+        for(Integer i=0; i<pattern.length(); i++) {
+            String c = String.valueOf(pattern.charAt(i));
+            String word = wordArr[i];
+            //HashMap put returns previous value associated with key else null. Hence add the index
+            if (indexMap.put(c, i) != indexMap.put(word, i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean wordPattern(String pattern, String str) {
+        if((pattern==null && str==null) || (pattern.isEmpty() && str.isEmpty()))
+            return true;
+
+        Map<Character, String> map = new HashMap<>();
+        char[] patternArr = pattern.toCharArray();
+        String[] wordArr = str.split(" ");
+
+        if(patternArr.length != wordArr.length)
+            return false;
+
+        for(int i=0; i<patternArr.length; i++) {
+            char c = patternArr[i];
+            String word = wordArr[i];
+
+            if(map.containsValue(word) && !map.containsKey(c)) {
+                return false;
+            } else if (map.containsKey(c) && !map.containsValue(word)) {
+                return false;
+            } else if (map.containsKey(c) && map.containsValue(word)) {
+               if(!map.get(c).equals(word))
+                   return false;
+            } else {
+                map.put(c, word);
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        wordPattern("aba", "dog cat cat");
+    }
+}

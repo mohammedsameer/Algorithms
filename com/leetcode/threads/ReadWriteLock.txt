@@ -1,0 +1,100 @@
+package com.leetcode;
+
+//Algo:
+class ReadWriteLock {
+
+    boolean isWriteLockAcquired = false;
+    int readerCount = 0;
+
+    public synchronized void acquireReadLock() throws InterruptedException {
+        while (isWriteLockAcquired) {
+            wait();
+        }
+
+        readerCount++;
+    }
+
+    public synchronized void releaseReadLock() {
+        readerCount--;
+        notify();
+    }
+
+    public synchronized void acquireWriteLock() throws InterruptedException {
+        while (isWriteLockAcquired || readerCount != 0) {
+            wait();
+        }
+
+        isWriteLockAcquired = true;
+    }
+
+    public synchronized void releaseWriteLock() {
+        isWriteLockAcquired = false;
+        notify();
+    }
+}
+
+
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        ReadWriteLock readWriteLock = new ReadWriteLock();
+
+        Thread readThread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("Acquiring read lock");
+                    readWriteLock.acquireReadLock();
+                    System.out.println("Acquired read lock");
+                    Thread.sleep(1000);
+                    readWriteLock.releaseReadLock();
+                    System.out.println("Released read lock");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread writeThread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("Acquiring write lock writeThread1");
+                    readWriteLock.acquireWriteLock();
+                    System.out.println("Acquired write lock writeThread1");
+                    Thread.sleep(1000);
+                    readWriteLock.releaseWriteLock();
+                    System.out.println("Released write lock writeThread1");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        Thread writeThread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("Acquiring write lock writeThread2");
+                    readWriteLock.acquireWriteLock();
+                    System.out.println("Acquired write lock writeThread2");
+                    Thread.sleep(1000);
+                    readWriteLock.releaseWriteLock();
+                    System.out.println("Released write lock writeThread2");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        writeThread1.start();
+        writeThread2.start();
+        readThread1.start();
+
+        writeThread1.join();
+        writeThread2.join();
+        readThread1.join();
+    }
+}

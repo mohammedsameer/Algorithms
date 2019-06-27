@@ -1,0 +1,127 @@
+package com.leetcode;
+
+import java.util.concurrent.Semaphore;
+
+//Algo:
+class UnisexBathroom {
+
+    String MALE = "MALE";
+    String FEMALE = "FEMALE";
+    String NONE = "NONE";
+    String inUseBy = NONE;
+
+    int empInBathroom = 0;
+    Semaphore semaphore = new Semaphore(2);
+
+    public void useBathroom() throws InterruptedException {
+        System.out.println(Thread.currentThread().getName() + " started  using bathroom, employees in bathroom " + empInBathroom);
+        Thread.sleep(1000);
+        System.out.println(Thread.currentThread().getName() + " completed  using bathroom, employees in bathroom " + empInBathroom);
+    }
+
+    public void maleUseBathRoom() throws InterruptedException {
+        synchronized (this) {
+            while (inUseBy.equals(FEMALE)) {
+                this.wait();
+            }
+            semaphore.acquire();
+            empInBathroom++;
+            inUseBy = MALE;
+        }
+
+        useBathroom();
+        semaphore.release(); //Release here so blocking male thread releases the monitor to allow the current thread to enter the second sync block
+
+        synchronized (this) {
+            empInBathroom--;
+            if(empInBathroom == 0)
+                inUseBy = NONE;
+            notifyAll();
+        }
+    }
+
+    public void femaleUseBathroom() throws InterruptedException {
+        synchronized (this) {
+            while (inUseBy.equals(MALE)) {
+                this.wait();
+            }
+            semaphore.acquire();
+            empInBathroom++;
+            inUseBy = FEMALE;
+        }
+
+        useBathroom();
+        semaphore.release(); //Release here so blocking female thread releases the monitor to allow the current thread to enter the second sync block
+
+        synchronized (this) {
+            empInBathroom--;
+            if(empInBathroom == 0)
+                inUseBy = NONE;
+            notifyAll();
+        }
+    }
+
+
+}
+
+
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        UnisexBathroom unisexBathroom = new UnisexBathroom();
+        Thread maleThread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    unisexBathroom.maleUseBathRoom();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread maleThread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    unisexBathroom.maleUseBathRoom();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread maleThread3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    unisexBathroom.maleUseBathRoom();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread femaleThread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    unisexBathroom.femaleUseBathroom();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        maleThread1.start();
+        maleThread2.start();
+        maleThread3.start();
+        femaleThread1.start();
+
+        maleThread1.join();
+        maleThread2.join();
+        maleThread3.join();
+        femaleThread1.join();
+    }
+}

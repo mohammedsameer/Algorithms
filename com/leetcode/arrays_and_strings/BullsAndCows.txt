@@ -1,0 +1,76 @@
+//Algo:
+//Three passes
+//1. Pass-1: Count the number of occurances of secret character
+//2. Pass-2: Match characters, decrease count
+//3. Pass-3: Unmatching characters, decrease count
+class Solution {
+    public String getHint(String secret, String guess) {
+        char[] sArr = secret.toCharArray();
+        char[] gArr = guess.toCharArray();
+
+
+        //Track number of occurances of character
+        int[] count = new int[10];
+        for(int i=0; i<sArr.length; i++) {
+            count[Character.getNumericValue(sArr[i])]++;
+        }
+
+        int bCount = 0;
+        int cCount = 0;
+        //Matches
+        for(int i=0; i<sArr.length; i++)  {
+            int index = Character.getNumericValue(gArr[i]);
+            if(sArr[i] == gArr[i]) {
+                bCount++;
+                count[index]--;
+            }
+        }
+
+        //Non-Matches
+        for(int i=0; i<sArr.length; i++)  {
+            int index = Character.getNumericValue(gArr[i]);
+            if(sArr[i] != gArr[i] && count[index] > 0) {
+                cCount++;
+                count[index]--;
+            }
+        }
+
+        return bCount+"A"+cCount+"B";
+    }
+}
+
+-- Optimal
+
+package com.leetcode;
+
+import java.util.*;
+
+//Algo:
+class Program {
+
+    public static String getHint(String secret, String guess) {
+        int bulls = 0;
+        int cows = 0;
+        int[] count = new int[10];
+        for (int i = 0; i<secret.length(); i++) {
+            int s = secret.charAt(i) - '0';
+            int g = guess.charAt(i) - '0';
+            if (s == g) bulls++;
+            else {
+                //Have you already seen that character in guess and if  secret character now matches count[s] < 0
+                if (count[s] < 0) cows++;
+                //Have you already seen that character in secret and if guess character now matches count[g] > 0
+                if (count[g] > 0) cows++;
+                count[s]++;
+                count[g]--;
+            }
+        }
+        return bulls + "A" + cows + "B";
+    }
+
+    public static void main(String[] args) {
+        //"1122"
+        //"1222"
+        getHint("11223", "13221");
+    }
+}

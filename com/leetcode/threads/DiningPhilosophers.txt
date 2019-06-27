@@ -1,0 +1,120 @@
+package com.leetcode;
+
+import java.util.concurrent.Semaphore;
+
+class DiningPhilosopher {
+
+    Semaphore[] forks = new Semaphore[5];
+    Semaphore maxDiners = new Semaphore(4);//Max 4 diners will allow at-least one philosopher to eat
+
+    public DiningPhilosopher() {
+        forks[0] = new Semaphore(1);
+        forks[1] = new Semaphore(1);
+        forks[2] = new Semaphore(1);
+        forks[3] = new Semaphore(1);
+        forks[4] = new Semaphore(1);
+    }
+
+    public void lifeOfPhilosopher(int id) throws InterruptedException {
+        int index = 1;
+        while (index==1) {
+            contemplate();
+            eat(id);
+        }
+    }
+
+    private void contemplate() throws InterruptedException {
+        System.out.println("Philosopher " + Thread.currentThread().getName() + " is contemplating");
+        Thread.sleep(500);
+    }
+
+    private void eat(int id) throws InterruptedException {
+        maxDiners.acquire();
+
+        //Fetch both forks
+        forks[id].acquire();
+        forks[(id+4)%5].acquire();
+
+        System.out.println("Philosopher " + Thread.currentThread().getName() + " is munching!");
+
+        //Release both forks
+        forks[id].release();
+        forks[(id+4)%5].release();
+
+        maxDiners.release();
+    }
+}
+
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+        DiningPhilosopher diningPhilosopher = new DiningPhilosopher();
+        Thread p1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    diningPhilosopher.lifeOfPhilosopher(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread p2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    diningPhilosopher.lifeOfPhilosopher(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread p3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    diningPhilosopher.lifeOfPhilosopher(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread p4 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    diningPhilosopher.lifeOfPhilosopher(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread p5 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    diningPhilosopher.lifeOfPhilosopher(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        p1.start();
+        p2.start();
+        p3.start();
+        p4.start();
+        p5.start();
+
+        p1.join();
+        p2.join();
+        p3.join();
+        p4.join();
+        p5.join();
+    }
+}

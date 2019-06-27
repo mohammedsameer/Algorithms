@@ -1,0 +1,142 @@
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
+
+class UberSeatingProblem {
+    int democrats;
+    int republicans;
+
+    CyclicBarrier barrier = new CyclicBarrier(4);
+    Semaphore democratSempahore = new Semaphore(4);
+    Semaphore republicanSemaphore = new Semaphore(4);
+
+    public void seatDemocrats() throws InterruptedException, BrokenBarrierException {
+        boolean rideLeader = false;
+
+        synchronized (this) {
+            democrats++;
+            if (democrats == 4) {
+                rideLeader = true;
+                democratSempahore.release(3);
+                democrats = democrats - 4;
+            } else if (democrats == 2 && republicans >= 2) {
+                rideLeader = true;
+                democratSempahore.release(1);
+                republicanSemaphore.release(2);
+                democrats = democrats - 2;
+                republicans = republicans - 2;
+            } else {
+                democratSempahore.acquire();
+            }
+        }
+
+        seated();
+        barrier.await();
+
+        if (rideLeader) {
+            drive();
+        }
+    }
+
+    public void seatRepublicans() throws BrokenBarrierException, InterruptedException {
+
+        boolean rideLeader = false;
+        synchronized (this) {
+            republicans++;
+            if (republicans == 4) {
+                rideLeader = true;
+                republicanSemaphore.release(3);
+                republicans = republicans - 4;
+            } else if (republicans == 2 && democrats >= 2) {
+                rideLeader = true;
+                republicanSemaphore.release(1);
+                democratSempahore.release(2);
+                republicans = republicans - 2;
+                democrats = democrats - 2;
+            } else {
+                republicanSemaphore.acquire();
+            }
+        }
+
+        seated();
+        barrier.await();
+
+        if (rideLeader) {
+            drive();
+        }
+    }
+
+    public void seated() {
+        System.out.println(Thread.currentThread().getName() + " is seated");
+        System.out.flush();
+    }
+
+    public void drive() {
+        System.out.println("Driver lets ride!!!");
+    }
+}
+
+
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        UberSeatingProblem uberSeatingProblem = new UberSeatingProblem();
+        List<Thread> demThreads = new ArrayList<>();
+        List<Thread> repThreads = new ArrayList<>();
+
+        for (int i = 0; i < 2; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        uberSeatingProblem.seatDemocrats();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+            demThreads.add(thread);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        uberSeatingProblem.seatRepublicans();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+            repThreads.add(thread);
+        }
+
+        for(Thread demThread: demThreads) {
+            demThread.start();
+        }
+
+        for(Thread repThread: repThreads) {
+            repThread.start();
+        }
+
+        for(Thread demThread: demThreads) {
+            demThread.join();
+        }
+
+        for(Thread repThread: repThreads) {
+            repThread.join();
+        }
+    }
+}
