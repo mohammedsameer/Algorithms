@@ -10,6 +10,7 @@ class Barbarshop {
     int hairCutsGiven = 0;
 
     ReentrantLock lock = new ReentrantLock();
+    //Note: Zero permits at the beginning means the thread cannot acquire until something is released
     Semaphore waitForCustomerToEnter = new Semaphore(0);
     Semaphore waitForBarbarToFinish = new Semaphore(0);
     Semaphore waitForBarbarToGetReady = new Semaphore(0);

@@ -1,0 +1,92 @@
+package com.leetcode;
+
+import java.util.concurrent.Semaphore;
+
+interface Callback {
+    public void done();
+}
+
+
+//Asynchronous
+class Executor {
+
+    public void asynchronousExecution(Callback callback) throws Exception {
+        Thread t = new Thread(() -> {
+            // Do some useful work
+            try {
+                // Simulate useful work by sleeping for 5 seconds
+                Thread.sleep(5000);
+            } catch (InterruptedException ie) {
+            }
+            callback.done();
+        });
+        t.start();
+    }
+}
+
+//Synchronous with Semaphore
+class SynchronousExecutorWithSemaphore extends Executor {
+
+    @Override
+    public void asynchronousExecution(Callback callback) throws Exception {
+        Semaphore semaphore = new Semaphore(0);
+        Callback cb = new Callback() {
+            @Override
+            public void done() {
+                callback.done();
+                semaphore.release();
+            }
+        };
+        //Pass something that base class can notify back on
+        super.asynchronousExecution(cb);
+        //Wait on something that base class will notify on
+        semaphore.acquire();
+    }
+}
+
+//Synchronous without Semaphore
+class SynchronousExecutor extends Executor {
+
+    @Override
+    public void asynchronousExecution(Callback callback) throws Exception {
+        final boolean[] isDone = new boolean[1];
+        isDone[0] = false;
+        Object lock = new Object();
+
+        Callback cb = new Callback() {
+            @Override
+            public void done() {
+                callback.done();
+                synchronized (lock) {
+                    lock.notify();
+                    isDone[0] = true;
+                }
+            }
+        };
+        //Pass something that base class can notify back on
+        super.asynchronousExecution(cb); //Call base class asynchronous function
+        //Wait on something that base class will notify on
+        synchronized (lock) {
+            while (!isDone[0]) {
+                lock.wait();
+            }
+        }
+    }
+}
+
+class Program {
+
+    public static void main(String[] args) throws Exception {
+//        Executor executor = new Executor();
+//        executor.asynchronousExecution(() -> System.out.println("I am done"));
+//        System.out.println("main thread exiting...");
+
+//        Executor synchronousExecutor = new SynchronousExecutorWithSemaphore();
+//        synchronousExecutor.asynchronousExecution(() -> System.out.println("I am done"));
+//        System.out.println("Synchronous main thread is exiting");
+
+        Executor synchronousExecutor = new SynchronousExecutor();
+        synchronousExecutor.asynchronousExecution(() -> System.out.println("I am done"));
+        System.out.println("Synchronous main thread is exiting");
+    }
+}

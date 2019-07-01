@@ -1,0 +1,58 @@
+package com.leetcode;
+
+class Superman {
+
+    //Volatile keyword ensure a thread that does not half initialized the object by flushing the CPU cache changes to Memory
+    //Volatile works fine when 1 thread is manipulating others are simply reading
+    private static volatile Superman superman;
+
+    private Superman() {
+    }
+
+    public static Superman getInstance() {
+        if(superman == null) {
+            synchronized (Superman.class) {
+                //Another check to make sure no other thread has initialized it
+                if(superman==null) {
+                    superman = new Superman();
+                    System.out.println("New instance created by " + Thread.currentThread().getName());
+                }
+            }
+        }
+        return superman;
+    }
+}
+
+class Program {
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Superman.getInstance();
+            }
+        });
+
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Superman.getInstance();
+            }
+        });
+
+        Thread thread3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Superman.getInstance();
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+
+        thread1.join();
+        thread2.join();
+        thread3.join();
+    }
+}

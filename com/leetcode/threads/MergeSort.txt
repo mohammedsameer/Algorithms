@@ -1,0 +1,87 @@
+package com.leetcode;
+
+class MergeSort {
+    public static int[] result;
+
+    private MergeSort(int[] input) {
+        result = input;
+    }
+
+    //Core function
+    private void mergeSort(int[] array, int start, int end) {
+        if(start==end)
+            return;
+
+        int mid = start+(end-start)/2;
+
+        //Sort first half
+        Thread first = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mergeSort(array, 0, mid);
+            }
+        });
+
+        //Sort second half
+        Thread second = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mergeSort(array, mid+1, end);
+            }
+        });
+
+        try {
+            first.start();
+            second.start();
+
+            //Wait before we merge
+            first.join();
+            second.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //Merge
+        int[] sortedArr = new int[array.length];
+        int k = start;
+        int i = start;
+        int j = mid+1;
+        while (k<=end) {
+            if(i<=mid && j<=end) {
+                if(array[i] <= array[j]) {
+                    sortedArr[k++] = array[i++];
+                } else if (array[i] > array[j]) {
+                    sortedArr[k++] = array[j++];
+                }
+            } else if (i<=mid) {
+                sortedArr[k++] = array[i++];
+            } else {
+                sortedArr[k++] = array[j++];
+            }
+        }
+
+        //Copy result
+        for(int index=start; index<=end; index++) {
+            result[index] =  sortedArr[index];
+        }
+    }
+
+    private static void printArray() {
+        for (int index=0; index<result.length; index++) {
+            System.out.print(result[index] + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        int[] input = new int[] {1, 4, 2, 3 , 5, 8, 6, 7, 15, 11, 13, 12};
+        MergeSort mergeSort = new MergeSort(input);
+        printArray();
+        long start = System.currentTimeMillis();
+        mergeSort.mergeSort(input, 0, 11);
+        long end = System.currentTimeMillis();
+        printArray();
+        long duration = end-start;
+        System.out.println("Duration:" + duration);
+    }
+}
