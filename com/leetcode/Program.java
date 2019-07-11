@@ -3,27 +3,36 @@ package com.leetcode;
 
 /**
  * Algo:
+ *     IF the set "ones" does not have num[i]
+ *      Add num[i] to the set "ones" if and only if its not there in set "twos"
+ *     ELSE
+ *      Remove it from the set "ones"
+ *
+ *     IF the set "twos" does not have num[i]
+ *      Add num[i] to the set "twos" if and only if its not there in set "ones"
+ *     ELSE
+ *      Remove it from the set "twos"
+ *
+ *  Hence, if the element appears once its in ones, if the element appears twice its in twos but not in ones
+ *  If the element appears thrice then its not in either because
+ *  a) Ones does not have it but its in twos, hence do not add to ones
+ *  b) Twos has it so remove it from twos
  */
 public class Program {
-    public static int minCut(String s) {
-        int n = s.length();
-        boolean dp[][] = new boolean[n+1][n+1];
-        int min[] = new int[n];
-        for(int i=0; i<n; i++) {
-            //Number of cuts at a given index is always atleast default is the index i.e. one character at a time
-            int minCut = i;
-            for(int j=0; j<=i; j++) {
-                if(s.charAt(i) == s.charAt(j) && (i <= j+1 || dp[i-1][j+1])) {
-                    dp[i][j] = true;
-                    minCut = Math.min(minCut, j == 0 ? 0 : 1 + min[j - 1]);
-                }
-            }
-            min[i] = minCut;
+    public static int singleNumber(int[] nums) {
+        int ones = 0;
+        int twos = 0;
+        //first bit: 0->1->0
+        //sec bit:   0->0->1
+        for(int i=0; i<nums.length; i++) {
+            ones = (ones ^ nums[i]) & ~twos;
+            twos = (twos ^ nums[i]) & ~ones;
         }
-        return min[n-1];
+
+        return ones;
     }
 
     public static void main(String[] args) {
-        minCut("aab");
+        singleNumber(new int[] {2,2,3,2});
     }
 }
