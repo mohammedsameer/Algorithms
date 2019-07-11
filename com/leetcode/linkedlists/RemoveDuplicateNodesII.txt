@@ -1,40 +1,41 @@
 
-//Algo: Keep track of repeated values using a boolean variable
 //Another idea by moving cursor https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/discuss/28335/My-accepted-Java-code
-public ListNode deleteDuplicates(ListNode head) {
-    ListNode result = new ListNode(-1);
-    ListNode preHead = new ListNode(-1);
-    preHead.next = result;
+//Algo:
+//Point prev to curr only if curr is non-duplicate node
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode preHead = new ListNode(-1);
+        ListNode prev = preHead;
+        ListNode curr = head;
+        prev.next = curr;
 
-    if(head == null)
-        return head;
+        if(head == null || head.next==null)
+            return head;
 
-    ListNode curr = head;
-    ListNode next = curr.next;
-    boolean isRepeated = false;
-    while (curr.next != null) {
-        int currValue = curr.val;
-        int nextValue = next.val;
-        if(!isRepeated && currValue != nextValue) {
-            //Non repeating, so go ahead and add curr value
-            result.next = new ListNode(currValue);
-            result = result.next;
-        } else if(isRepeated && currValue != nextValue) {
-            //We have moved away from repeating nodes
-            isRepeated = false;
-        } else {
-            //Aka we have repeating nodes
-            isRepeated = true;
+        while(curr != null) {
+            while(curr.next != null && curr.val == curr.next.val) {
+                //Match nodes, so skip them
+                curr = curr.next;
+            }
+
+            if(prev.next == curr) {
+                //Prev is correctly pointing to non-duplicate curr
+                prev = prev.next;
+            } else {
+                //Skip the duplicate curr and point to next node
+                prev.next = curr.next;
+            }
+            curr = curr.next;
         }
 
-        //Move curr and next cursor
-        curr = next;
-        next = curr.next;
+        return preHead.next;
     }
-
-    //At the end if we have had non-repeating values, then go ahead and add the last value
-    if(!isRepeated)
-        result.next = new ListNode(curr.val);
-
-    return preHead.next.next;
 }

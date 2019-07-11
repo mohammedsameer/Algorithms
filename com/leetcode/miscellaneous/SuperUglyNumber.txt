@@ -1,0 +1,26 @@
+//Algo:
+//Similar to UglyNumberII, instead maintain the index array and upon match bump up the index
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] index = new int[primes.length];
+        int[] factors = new int[primes.length];
+        int[] ugly = new int[n];
+        Arrays.fill(factors, 1);
+
+        int next = 1;
+        for(int i=0; i<n; i++) {
+            ugly[i] = next;
+            next = Integer.MAX_VALUE;
+            for(int j=0; j<primes.length; j++) {
+                if(factors[j] == ugly[i]) {
+                    //Aka the above match
+                    factors[j] = primes[j]*ugly[index[j]++];
+                    //Post increment because 2*1, as ugly[0] is used as first index
+                }
+                next = Math.min(next, factors[j]);
+            }
+        }
+
+        return ugly[n-1];
+    }
+}

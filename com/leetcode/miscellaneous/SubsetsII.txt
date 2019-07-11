@@ -18,11 +18,11 @@ class Solution {
 
         result.addAll(currSet);
         for(int i=0; i<nums.length; i++) {
-            //Initialize currset from prev result
             currSet = new HashSet<>(result);
             for(List<Integer> prev : result) {
                 List<Integer> curr = new ArrayList<>(prev);
                 curr.add(nums[i]);
+                Collections.sort(curr); //Sorting prevents duplicates to be inserted
                 currSet.add(curr);
             }
             //We re-initialize and not addall because, add all appends where as re-initializes resets

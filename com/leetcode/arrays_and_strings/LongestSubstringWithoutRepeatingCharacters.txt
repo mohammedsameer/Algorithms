@@ -2,10 +2,6 @@ package com.leetcode;
 
 import java.util.*;
 
-package com.leetcode;
-
-import java.util.*;
-
 /**
  * Algorithm
  * Sliding window

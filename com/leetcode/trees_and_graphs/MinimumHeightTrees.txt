@@ -1,0 +1,46 @@
+//Algo:
+//1. Track all neighbours and subsequently identify all leaves
+//2. Remove leaves every iteration and add continue this until we have no more than 2 nodes
+class Solution {
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if(n == 1) {
+            return Collections.singletonList(0);
+        }
+
+        //Add neighbours for every node
+        List<Set<Integer>> neighbours = new ArrayList<>();
+        for(int i=0; i<n; i++) {
+            neighbours.add(new HashSet<>());
+        }
+        for(int[] edge : edges) {
+            neighbours.get(edge[0]).add(edge[1]);
+            neighbours.get(edge[1]).add(edge[0]);
+        }
+
+        //Track leaves
+        List<Integer> leaves = new ArrayList<>();
+        for(int i=0; i<n; i++) {
+            if(neighbours.get(i).size()==1) {
+                leaves.add(i);
+            }
+        }
+
+        //Run the loop until 1 or 2 nodes are left
+        while(n > 2) {
+            n = n - leaves.size();
+            List<Integer> nextLeaves = new ArrayList<>();
+            for(int leaf : leaves) {
+                //Remove the edge of leaf i.e. node
+                int node = neighbours.get(leaf).iterator().next();
+                neighbours.get(node).remove(leaf);
+                //Check if the node is now a leaf and if yes add to nextLeaves
+                if (neighbours.get(node).size() == 1) {
+                    nextLeaves.add(node);
+                }
+            }
+            leaves = nextLeaves;
+        }
+
+        return leaves;
+    }
+}

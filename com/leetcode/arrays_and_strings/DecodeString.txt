@@ -1,0 +1,47 @@
+package com.leetcode;
+
+
+import java.util.Stack;
+
+/**
+ * Algo:
+ * Iterate through string and track count and string
+ * On [ push curr string and count. Re-initialize curr string and count
+ * On ] pop previous result and append curr string as many times as count
+ */
+public class Program {
+
+    public static String decodeString(String s) {
+        Stack<Integer> intStack = new Stack<>();
+        Stack<StringBuilder> strStack = new Stack<>();
+        int count = 0;
+        StringBuilder result = new StringBuilder();
+
+        for(char c : s.toCharArray()) {
+            if(Character.isDigit(c)) {
+                count = count * 10 + c - '0';
+            } else if (c =='[') {
+                intStack.push(count);
+                strStack.push(result);
+                result = new StringBuilder();
+                count = 0;
+            } else if (c == ']') {
+                StringBuilder curr = result;
+                result = strStack.pop();
+                int k = intStack.pop();
+                while (k>0) {
+                    result.append(curr);
+                    k--;
+                }
+            } else {
+                result.append(c);
+            }
+        }
+
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        decodeString("3[a2[c]]");
+    }
+}

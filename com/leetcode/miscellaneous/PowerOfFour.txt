@@ -1,0 +1,16 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ */
+public class Program {
+
+    public static boolean isPowerOfFour(int num) {
+        //First two conditions is power of 2
+        return (num&(num-1))==0 && num>0 && (num-1)%3==0;
+    }
+
+    public static void main(String[] args) {
+        isPowerOfFour(27);
+    }
+}

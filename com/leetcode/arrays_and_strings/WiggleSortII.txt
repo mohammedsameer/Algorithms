@@ -1,0 +1,31 @@
+package com.leetcode;
+
+import java.util.Arrays;
+
+/**
+ */
+public class Program {
+
+    public static void wiggleSort(int[] nums) {
+        if(nums == null || nums.length == 0)
+            return;
+
+        int n = nums.length;
+        Arrays.sort(nums); //Sort so you can arrange elements up to mid and add large elements from right
+        int[] temp = Arrays.copyOf(nums, n); //Copy of sorted so you can use to override
+        int mid = n%2 == 0? n/2 - 1: n/2;
+
+        int index=0;
+        for(int i=0; i<=mid; i++) {
+            nums[index] = temp[mid-i];
+            if(index+1<n)
+                nums[index+1] = temp[n-i-1];
+            index += 2; //Move two because you have updated two indexes
+        }
+    }
+
+
+    public static void main(String[] args) {
+         wiggleSort(new int[]{1, 5, 1, 1, 6, 4});
+    }
+}
