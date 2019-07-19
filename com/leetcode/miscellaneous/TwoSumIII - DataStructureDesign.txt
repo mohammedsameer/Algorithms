@@ -1,0 +1,44 @@
+package com.leetcode;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Algo:
+ * Map of number and count (Note: Set is a not a good option because you cant have duplicates)
+ * Add: add to map & update count
+ * Find: lookup in map, (Note: If matching confirm the confirm the count is atleast 2)
+ */
+public class Program {
+
+    public class TwoSum {
+        Map<Integer, Integer> map;
+
+        public TwoSum() {
+            map = new HashMap<>();
+        }
+
+        public void add(int num) {
+            if(!map.containsKey(num)) {
+                map.put(num, 1);
+            } else {
+                map.put(num, map.get(num)+1);
+            }
+        }
+
+        public boolean find(int target) {
+            for (int num : map.keySet()) {
+                if(map.containsKey(target-num)) {
+                    //Matching num and target-num so we need at least two of them
+                    if(num == target-num && map.get(num) < 2)
+                        continue;
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+    }
+}

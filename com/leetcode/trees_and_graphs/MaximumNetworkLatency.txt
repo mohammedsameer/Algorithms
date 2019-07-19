@@ -1,0 +1,49 @@
+package com.leetcode;
+
+import java.util.*;
+
+/**
+ * Algo:
+ * 1. Map of source -> destinations (destinations ordered in reverse order of latency)
+ * 2. Loop through the graph from source till destination
+ * 3. Compute maximum path sum once you have traversed from source to destination
+ * (Note: Because your ordering reverse by latency a node once visited will have highest latency)
+ */
+public class Program {
+
+    public static int bfs(int[][] intervals, int source, int destination) {
+        Map<Integer, PriorityQueue<int[]>> map = new HashMap<>();
+
+        //Initialize map with source and destinations ordered by priority of higher latency
+        for(int[] interval : intervals) {
+            map.putIfAbsent(interval[0], new PriorityQueue<>((a, b) -> b[2] - a[2]));
+            map.get(interval[0]).add(interval);
+        }
+
+        //Iterate through graph from source until destination
+        Stack<int[]> stack = new Stack<>(); //Only holds path with highest latency from source to destination
+        int maxLatency = 0;
+        boolean isDestination = false;
+        stack.push(new int[] {0, source});
+        while (!stack.isEmpty()) {
+            int nextSource = stack.peek()[1];
+            isDestination = isDestination || nextSource == destination;
+
+
+            if (!isDestination && map.containsKey(nextSource) && !map.get(nextSource).isEmpty()) {
+                //Skip if we have already reached destination next source computation if destination already reached
+                int[] curr = map.get(nextSource).poll();
+                stack.push(new int[] {curr[2], curr[1]});
+            } else {
+                //Maximum latency
+                maxLatency += stack.pop()[0];
+            }
+        }
+
+        return maxLatency;
+    }
+
+    public static void main(String[] args) {
+        bfs(new int[][]{{1, 2, 10}, {2, 3, 20}, {1, 3, 40}}, 1, 3);
+    }
+}

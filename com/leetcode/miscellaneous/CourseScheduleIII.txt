@@ -1,0 +1,20 @@
+//Algo:
+//1.Sort on close date of course
+//2.Iterate through the array and add course to priority queue if the currDays < course's end day else remove it
+class Solution {
+    public int scheduleCourse(int[][] courses) {
+        Comparator<int[]> comparator = (a, b) ->  a[1] - b[1];
+        Arrays.sort(courses, comparator);
+        Queue<Integer> pq = new PriorityQueue<>((a, b) -> (b - a));
+        int currDays = 0;
+        for(int[] course : courses) {
+            currDays += course[0]; //Time for current course
+            pq.add(course[0]); //Add course to queue
+            if(currDays > course[1]) {
+                currDays -= pq.poll(); //Remove the course with most time instead of newly added
+            }
+        }
+
+        return pq.size();
+    }
+}

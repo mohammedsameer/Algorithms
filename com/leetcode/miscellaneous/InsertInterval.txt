@@ -3,6 +3,8 @@ package com.leetcode;
 
 import java.util.*;
 
+
+--Version-1
 /**
  * Algo:
  * 1. Loop through intervals and add the new interval at right index
@@ -67,5 +69,103 @@ public class Program {
         intervals.add(new Interval(17,18));
 
         insert(intervals, new Interval(3, 7));
+    }
+}
+
+--Version-2
+
+package com.leetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Algo:
+  */
+public class Program {
+    public static class Interval {
+        int start;
+        int end;
+
+        Interval(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+    public static List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        List<Interval> result = new ArrayList<>();
+        //Add all intervals ending before current interval
+        int i=0;
+        while (i<intervals.size() && intervals.get(i).end < newInterval.start) {
+            result.add(intervals.get(i));
+            i++;
+        }
+
+        //Merge intervals with new interval
+        while (i<intervals.size() && newInterval.end >= intervals.get(i).start) {
+            newInterval = new Interval(
+                    Math.min(intervals.get(i).start, newInterval.start),
+                    Math.max(intervals.get(i).end, newInterval.end));
+            i++;
+        }
+        result.add(newInterval);
+
+        //Add all remaining intervals
+        while (i<intervals.size()) {
+            result.add(intervals.get(i));
+            i++;
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        List<Interval> intervals = new ArrayList<>();
+        intervals.add(new Interval(1,1));
+        intervals.add(new Interval(2,5));
+        intervals.add(new Interval(6,9));
+        insert(intervals, new Interval(2, 4));
+    }
+}
+
+
+--Version-3 (Inplace)
+public class Program {
+    public static class Interval {
+        int start;
+        int end;
+
+        Interval(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+    public static List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        //Skip all intervals ending before current interval
+        int i=0;
+        while (i<intervals.size() && intervals.get(i).end < newInterval.start) {
+            i++;
+        }
+
+        //Merge intervals with new interval
+        while (i<intervals.size() && newInterval.end >= intervals.get(i).start) {
+            newInterval = new Interval(
+                    Math.min(intervals.get(i).start, newInterval.start),
+                    Math.max(intervals.get(i).end, newInterval.end));
+            intervals.remove(i); //This will automatically advance to next i
+        }
+        result.add(newInterval);
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        List<Interval> intervals = new ArrayList<>();
+        intervals.add(new Interval(1,1));
+        intervals.add(new Interval(2,5));
+        intervals.add(new Interval(6,9));
+        insert(intervals, new Interval(2, 4));
     }
 }

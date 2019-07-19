@@ -1,0 +1,23 @@
+//Algo:
+//1. Initialize result array with 1 candy for every child
+//2. Iterate through array L->R add/subtract left neighbour
+//3. Iterate through array R->L Math.max(curr, rightneighbour+1)
+//4. Add the result array
+class Solution {
+    public int candy(int[] ratings) {
+        int[] result = new int[ratings.length];
+        Arrays.fill(result, 1);
+
+        for(int i=1; i<ratings.length; i++) {
+            if(ratings[i] > ratings[i-1])
+                result[i] = result[i-1]+1;
+        }
+
+        for(int i=ratings.length-2; i>=0; i--) {
+            if(ratings[i] > ratings[i+1])
+                result[i] = Math.max(result[i+1]+1, result[i]);
+        }
+
+        return Arrays.stream(result).sum();
+    }
+}

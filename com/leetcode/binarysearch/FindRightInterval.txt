@@ -1,0 +1,51 @@
+//Algo:
+//Sort on start of interval
+//Store the map of start and interval index
+//Use binary search to locate first occurance of value that is >= x & then store the index
+class Solution {
+    public int[] findRightInterval(int[][] intervals) {
+        //Map of start -> index
+        Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
+        for(int i=0; i<intervals.length; i++) {
+            indexMap.put(intervals[i][0], i);
+        }
+
+        //Temp sorted intervals
+        int [][] sortedIntervals = new int[intervals.length][];
+        for(int i = 0; i < intervals.length; i++)
+            sortedIntervals[i] = intervals[i].clone();
+        Arrays.sort(sortedIntervals, (a, b) -> Integer.compare(a[0] , b[0]));
+
+
+        //Result
+        int[] result = new int[intervals.length];
+
+        //Binary search for each interval
+        for(int i=0; i<intervals.length; i++) {
+            int end = intervals[i][1];
+            int start = binarySearch(sortedIntervals, end); //Find first occurrence of value >= end
+            if(start < end)
+                result[i] = -1;
+            else
+                result[i] = indexMap.get(start);
+        }
+
+        return result;
+    }
+
+    public int binarySearch(int[][] sortedIntervals, int val) {
+        int start = 0;
+        int end = sortedIntervals.length-1;
+
+        while(start<end) {
+            int mid = (start+end)/2;
+            if(sortedIntervals[mid][0] < val)
+                start = mid+1;
+            else
+                end = mid; //This could be the number that either matches or is greater so include in boundary
+        }
+
+        //start that is greater than val
+        return sortedIntervals[start][0];
+    }
+}

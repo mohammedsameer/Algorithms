@@ -1,0 +1,31 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * 1. Compute number of chocolates you can buy with given money
+ * 2. Compute money you have based on chocolate wrappers and chocolate left over money
+ * 3. Continue until money>=price
+ */
+public class Program {
+   public static int chocoloateWrapperPuzzle(int money, int price, int wrapper) {
+       int totalChocolates = 0;
+       int currChocolates = 0;
+       int currWrapperMoney = 0;
+       while (money >= price) {
+           //Chocolate from current money
+           currChocolates = money/price;
+           //Money from selling chocolate wrapper
+           currWrapperMoney = (currChocolates/wrapper)*price;
+
+           //Money left from buying chocolate and selling wrapper
+           money = money%price + currWrapperMoney;
+
+           totalChocolates += currChocolates;
+       }
+       return totalChocolates;
+   }
+
+    public static void main(String[] args) {
+        chocoloateWrapperPuzzle(16, 2, 2);
+    }
+}

@@ -1,0 +1,64 @@
+package com.leetcode;
+
+
+/**
+ * Algo:
+ * 1. Compute the mid and check the number of elements less than or equal to middle aka count of elements on left
+ * 2. If count < k, then our k is on right side else its on left
+ */
+public class Program {
+
+    public static int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        int start = matrix[0][0], end = matrix[n - 1][n - 1];
+        while (start <= end) {
+            int mid = (start+end)/ 2;
+            int count = getLessEqual(matrix, mid);
+            //If count < k it implies the element i am interested is on the right i.e. if am interested in 4th element out of 5 elements, then our element
+            //will be on right
+            if(count == k)
+                return mid;
+            else if (count < k)
+                start = mid + 1;
+            else
+                end = mid - 1;
+        }
+        return -1;
+    }
+
+    //Matrix less than or equal
+    private static int getLessEqual(int[][] matrix, int val) {
+       int n = matrix.length;
+       int r = n-1;
+       int c = 0;
+       int count = 0;
+
+       while (r>=0 && c<=n-1) {
+           if(matrix[r][c] > val) {
+               r--;
+           } else {
+               count += r + 1;
+               c++;
+           }
+       }
+
+       return count;
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = new int[3][3];
+        matrix[0][0] = 1;
+        matrix[0][1] = 3;
+        matrix[0][2] = 5;
+
+        matrix[1][0] = 7;
+        matrix[1][1] = 9;
+        matrix[1][2] = 10;
+
+        matrix[2][0] = 11;
+        matrix[2][1] = 15;
+        matrix[2][2] = 17;
+
+        kthSmallest(matrix, 6);
+    }
+}

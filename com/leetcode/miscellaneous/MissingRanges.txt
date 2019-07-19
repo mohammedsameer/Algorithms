@@ -18,34 +18,33 @@ public class Program {
 
         //Handle first and lower boundary
         if(nums[0] > lower) {
-            ranges.add(getRange(lower-1, nums[0]));
+            ranges.add(getRange(lower, nums[0]-1));
         }
 
         //Handle elements in array
-        for(int i = 0; i < nums.length -1; i++) {
+        for(int i = 0; i < nums.length - 1; i++) {
             //Ensure we are above lower boundary and below upper boundary
             if(nums[i+1] - nums[i] != 1 && nums[i] >= lower && nums[i+1] <= upper) {
-                ranges.add(getRange(nums[i], nums[i+1]));
+                ranges.add(getRange(nums[i]+1, nums[i+1]-1));
             }
         }
 
         //Handle last & upper boundary
-         if(nums[nums.length -1] < upper) {
-            ranges.add(getRange(nums[nums.length-1], upper+1));
+        if(nums[nums.length -1] < upper) {
+            ranges.add(getRange(nums[nums.length-1]+1, upper));
         }
 
         return ranges;
     }
 
-    private static String getRange(int num1, int num2) {
-        if(num2 - num1 == 2) {
-            return num1 + (num2 - num1 - 1) + "";
-        } else {
-            return (num1 + 1) + "->" + (num2 - 1);
-        }
+    private static String getRange(int start, int end) {
+       if(start==end)
+           return start+"";
+       else
+           return start+"->"+end;
     }
 
     public static void main(String[] args) {
-            findMissingRanges(new int[] {0}, 0, 10);
+        findMissingRanges(new int[] {0, 2, 3}, 0, 10);
     }
 }

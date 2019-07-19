@@ -1,0 +1,56 @@
+package com.leetcode;
+
+
+import java.util.*;
+
+/**
+ * Algo:
+ * 1. Map of source to destinations (priority queue helps with sorting on lexicographical order)
+ * 2. Add source to stack
+ * 3. Iterate over stack until its empty and check if current source's destination is in the map & on
+ * Note: Once all nodes are visited pop out elements from stack and add to list
+ */
+public class Program {
+
+
+    public static List<String> findItinerary(List<List<String>> tickets) {
+        //Priority Queue stores elements ordered lexicographically
+        Map<String, PriorityQueue<String>> map = new HashMap<>();
+        LinkedList<String> list = new LinkedList<>();
+        Stack<String> stack = new Stack<>();
+
+        //Map source to destination
+        for(List<String> ticket : tickets) {
+            String source = ticket.get(0);
+            String destination = ticket.get(1);
+            if(!map.containsKey(source)) {
+                PriorityQueue<String> curr = new PriorityQueue<>();
+                curr.add(destination);
+                map.put(source, curr);
+            } else {
+                map.get(source).add(destination);
+            }
+        }
+
+        //Iterate
+        stack.push("JFK");
+        while (!stack.isEmpty()) {
+            //Aka we have the source
+            String nSource = stack.peek();
+            if(map.containsKey(nSource) && map.get(nSource).size()>0) {
+                //Add the source's destination into stack
+                stack.push(map.get(nSource).poll());
+            } else {
+                //Construct itinerary
+                list.addFirst(stack.pop());
+            }
+        }
+
+        return list;
+
+    }
+
+    public static void main(String[] args) {
+
+    }
+}

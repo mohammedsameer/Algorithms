@@ -31,7 +31,7 @@ class Program {
         //Nodes with no incoming edges aka zero indegree, add them to queue
         for (int i=0; i<outDegree.length; i++) {
             if(outDegree[i] == 0) {
-                queue.offer(i); //Adds to the end
+                queue.add(i); //Adds to the end
             }
         }
 
@@ -42,7 +42,7 @@ class Program {
                 if (prereq == prerequisites[i][1]) {
                     outDegree[prerequisites[i][0]]--;
                    if(outDegree[prerequisites[i][0]] == 0) {
-                       queue.offer(prerequisites[i][0]);
+                       queue.add(prerequisites[i][0]);
                    }
                 }
             }

@@ -1,0 +1,45 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * F[floor][egg] = Math.min(Math.max(F[total_floor - floor][egg], F[floor - 1][egg-1])+1)
+ * At every floor x, if egg breaks then you have x-1 floors and e-1 eggs
+ * At every floor x, if egg does not break then you have n-x floors and e eggs
+ * https://github.com/gkcs/Competitive-Programming/blob/master/src/main/java/main/java/videos/EggSolver.java
+ */
+public class Program {
+
+    public static int eggDropping(int n, int k) {
+        int[][] dp = new int[n+1][k+1];
+
+        //If you have 1 egg you have to try from every floor
+        for(int f=0; f<n+1; f++) {
+            dp[f][1] = f;
+        }
+
+        //If you have 1 floor then you have only 1 floor where egg breaks
+        for(int e=0; e<k+1; e++) {
+            dp[1][e] = 1;
+        }
+
+        for(int f=2; f<n+1; f++) {
+            for(int e=2; e<k+1; e++) {
+                dp[f][e] = Integer.MAX_VALUE;
+
+                //x is floor between 1...f
+                for(int x=1; x<f; x++) {
+                   int eggBreak = dp[x-1][e-1];
+                   int eggDoesNotBreak = dp[f-x][e];
+                   int result = Math.max(eggBreak, eggDoesNotBreak) + 1;
+                   dp[f][e] = Math.min(dp[f][e], result);
+                }
+            }
+        }
+
+        return dp[n-1][k-1];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(eggDropping(2, 1));
+    }
+}

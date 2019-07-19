@@ -1,0 +1,53 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+
+    public Node() {}
+
+    public Node(int _val,List<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+//Algo:
+//Iterate through every node in original graph and clone its version if one does not exist
+//Update the curr nodes clone each time you create a new cloned neighbour
+class Solution {
+    public Node cloneGraph(Node node) {
+
+        if(node == null)
+         return node;
+
+        //Maintain a map between old and new node to recognize if given old node already mapped
+        Node clonedHead = new Node(node.val, new ArrayList<>());
+        Map<Integer, Node> nodeMap = new HashMap<>();
+        nodeMap.put(node.val, clonedHead);
+
+        //Iterate through the graph
+        LinkedList<Node> queue = new LinkedList<>();
+        queue.add(node);
+
+        while(!queue.isEmpty())
+        {
+            //Retrieve curr node
+            Node curr = queue.pop();
+            //Check its neighbours
+            for(Node neighbor : curr.neighbors) {
+                //Add neighbours if they are missing the map
+                if(!nodeMap.containsKey(neighbor.val)) {
+                    //Cloned neighbor
+                    nodeMap.put(neighbor.val, new Node(neighbor.val, new ArrayList<>()));
+                    //Queued up neighbor for visit
+                    queue.add(neighbor);
+                }
+                //Add this cloned neighbour to curr's clone
+                nodeMap.get(curr.val).neighbors.add(nodeMap.get(neighbor.val));
+            }
+        }
+
+        return clonedHead;
+    }
+}

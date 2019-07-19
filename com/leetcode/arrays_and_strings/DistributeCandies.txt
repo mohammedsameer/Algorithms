@@ -1,0 +1,15 @@
+//Algo:
+//1. Sort candies
+//2. Loop through candies and count distinct candies provided count < candies.length/2
+class Solution {
+    public int distributeCandies(int[] candies) {
+        Arrays.sort(candies);
+        int count = 1;
+        for(int i=1; i<candies.length && count<candies.length/2; i++) {
+            if(candies[i] > candies[i-1])
+                count++;
+        }
+
+        return count;
+    }
+}

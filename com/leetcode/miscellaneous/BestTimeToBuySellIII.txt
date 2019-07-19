@@ -1,0 +1,24 @@
+//Algo:
+//Repeat best time to but twice, second time using profit from first sell
+class Solution {
+    public int maxProfit(int[] prices) {
+        int firstBuy = Integer.MAX_VALUE;
+        int secondBuy = Integer.MAX_VALUE;
+        int firstSell = 0;
+        int secondSell = 0;
+
+        for(int i=0; i<prices.length; i++) {
+            //Firt time: You buy and you sell
+            firstBuy = Math.min(firstBuy, prices[i]);
+            firstSell = Math.max(firstSell, prices[i] - firstBuy);
+
+            //Second time: You buy after first sell
+            //Note: You can buy the second time using the profits from first sell i.e. 1, 2, 3, 4
+            //Here you buy at 1, sell at 2. You make profit of 1, now you can use that profit and buy the stock of 2 for 1. Hence you eventually can sell at 4
+            secondBuy = Math.min(secondBuy, prices[i] - firstSell);
+            secondSell = Math.max(secondSell, prices[i] - secondBuy);
+        }
+
+        return secondSell;
+    }
+}

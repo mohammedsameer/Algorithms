@@ -1,0 +1,21 @@
+//Algo:
+//1. Sort the array for Binary Search
+//2. Compute mid and check if arr[mid] >= n-mid (aka if middle element is greater than atleast half the number of elements) if yes end = mid-1, aka we move to left and see the same else move start = mid+1
+class Solution {
+    public int hIndex(int[] citations) {
+        Arrays.sort(citations);
+        int n = citations.length;
+        int start = 0;
+        int end = n-1;
+
+        while(start<=end) {
+            int mid = (start+end)/2;
+            if(citations[mid] >= n-mid)
+                end = mid-1;
+            else
+                start = mid+1;
+        }
+
+        return n-start;
+    }
+}

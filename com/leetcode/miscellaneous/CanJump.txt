@@ -3,37 +3,33 @@ package com.leetcode;
 /**
  * Algorithm
  * 1. Steps keep track of current num[i]
- * 2. If num[i] + i > end i.e. can you jump from current to end then go ahead and jump, else decrease the step
+ * 2. If currJump > maxJump, reset maxJump. If you reach the currEnd then reset currEnd with maxJump
+ * 3. If currEnd is > nums.length then it implies we can reach the end
  */
 public class Program {
 
     public static boolean canJump(int[] nums) {
-        int maxJump=0;
-        int steps=0;
+        int currJump = 0;
+        int currEnd = 0;
+        int maxJump = Integer.MIN_VALUE;
 
-        for(int i=0; i<nums.length; i++) {
-            int currJump = i+nums[i];
-            //If current jump better than max jump
-            if(maxJump<currJump) {
-                maxJump=currJump;
-                steps=nums[i];
+        for(int i=0; i<nums.length-1; i++) {
+            currJump = i + nums[i];
+
+            if(maxJump < currJump) {
+                maxJump = currJump;
             }
 
-            //You have reached the end
-            if(maxJump>=nums.length-1)
-                return true;
-
-            //You cant jump any further because you have no steps left
-            if(steps<=0)
-                return false;
-
-            //Take next step
-            steps--;
+            //If i have managed another bigger jump before reaching currEnd then reset currEnd to maxJump
+            if(i==currEnd) {
+                currEnd = maxJump;
+            }
         }
-        return true;
+
+        return currEnd >= nums.length-1;
     }
 
     public static void main(String[] args) {
-        System.out.println(canJump(new int[]{2,3,1,1,4}));
+        System.out.println(canJump(new int[]{2,1,0,0,4,3}));
     }
 }

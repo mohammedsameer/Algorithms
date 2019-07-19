@@ -2,9 +2,7 @@ package com.leetcode;
 
 /**
  * Algorithm
- * 1. Compute the length of each of two lists
- * 2. Move the cursor of longer list to match the size of smaller list
- * 3. Move both the cursors in unison to find intersecting node
+ * One pass of list1 and list2 by both pointers yields intersection
  */
 public class Program {
 
@@ -18,53 +16,19 @@ public class Program {
     }
 
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-            ListNode result = null;
-            ListNode curr = null;
-            int aLen = 0;
-            int bLen = 0;
+            if(headA==null || headB==null)
+                        return null;
 
-            curr = headA;
-            while(curr != null) {
-                aLen++;
-                curr = curr.next;
-            }
-
-            curr = headB;
-            while(curr != null) {
-                bLen++;
-                curr = curr.next;
-            }
-
-            //Move the large list by aLen-bLen
             ListNode p = headA;
             ListNode q = headB;
-            if(aLen>bLen) {
-                int diff = aLen - bLen;
-                while(diff != 0) {
-                    p = p.next;
-                    diff--;
-                }
-            } else if(bLen>aLen) {
-                int diff = bLen - aLen;
-                while(diff != 0) {
-                    q = q.next;
-                    diff--;
-                }
-            } else {
-                //Do nothing as lists are same length
+
+            //One complete pass of list1 & list2 by both pointers yields the intersecting node
+            while(p != q) {
+                p = p == null? headB : p.next;
+                q = q == null? headA : q.next;
             }
 
-            //Iterate and find intersecting node
-            while(p != null && q != null) {
-                if(p == q) {
-                    result = p;
-                    break;
-                }
-                p = p.next;
-                q = q.next;
-            }
-
-            return result;
+            return p;
     }
 
     public static void main(String[] args) {

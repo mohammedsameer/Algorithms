@@ -1,0 +1,18 @@
+//Algo:
+//Greedily search s in t by using two pointers
+public boolean isSubsequence(String s, String t) {
+        //Greedy algorithm
+        int i=0;
+        int j=0;
+
+        while(i<s.length() && j<t.length()) {
+            if(s.charAt(i) == t.charAt(j)) {
+                i++;
+                j++;
+            } else {
+                j++;
+            }
+        }
+
+        return i==s.length(); //If s index reaches end of s
+}

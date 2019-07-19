@@ -1,0 +1,49 @@
+package com.leetcode;
+
+/**
+ * Algo:
+ * BinarySearchFirst: At middle check if the target is matching & target>a[mid-1]. Move end to start when equal
+ * BinarySearchLast: At middle check if the target is matching & target<a[mid+1]. Move start to end when equal
+ */
+public class Program {
+
+    public static int binarySearchFirst(int[] arr, int target) {
+        int start = 0;
+        int end = arr.length;
+
+        while (start<=end) {
+            int mid = (start + end)/2;
+            if((mid == 0 || target > arr[mid-1]) && target == arr[mid])
+                return mid;
+            else if (target > arr[mid])
+                start = mid + 1;
+            else//When target is equal we want to advance end so it comes to start
+                end = mid - 1;
+        }
+        return - 1;
+    }
+
+    public static int binarySearchLast(int[] arr, int target) {
+        int start = 0;
+        int end = arr.length;
+
+        while (start<=end) {
+            int mid = (start + end)/2;
+            if((mid == arr.length-1 || target < arr[mid+1]) && target == arr[mid])
+                return mid;
+            else if (target < arr[mid])
+                end = mid - 1;
+            else//When target is equal we want to advance start so it comes to end
+                start = mid + 1;
+        }
+        return - 1;
+    }
+
+
+    public static void main(String[] args) {
+        int resultFirst = binarySearchFirst(new int[] {1, 2, 3, 3, 3, 3, 4, 5}, 3);
+        int resultLast = binarySearchLast(new int[] {1, 2, 3, 3, 3, 3, 4, 5}, 3);
+        System.out.println("First: " + resultFirst);
+        System.out.println("Last: " + resultLast);
+    }
+}
