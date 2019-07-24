@@ -1,0 +1,63 @@
+package com.leetcode;
+
+import java.util.Stack;
+
+/**
+ * Algo:
+ * 1. Trim any white spaces
+ * 2. Key: Evaluate an expression every time you encounter a symbol, hence append + at the end
+ * 3. If c = num, track and continue
+ * 4. If c = symbol, evaluate up to now based on previous symbol
+ */
+public class Program {
+
+    public static int calculate(String s) {
+        if(s==null || s.isEmpty())
+            return 0;
+
+        Stack<Integer> stack = new Stack<>(); //Operand stack
+        s = s.trim().replaceAll(" ", "");
+        char op = '+'; //Additional operator to add at the end
+        s = s + op;
+        int total = 0;
+        int num = 0;
+
+        for(int i=0; i<s.length(); i++) {
+            char c = s.charAt(i);
+            if(c>='0' && c<='9') {
+                num = num * 10 + c - '0'; //Multiple for purposed for non-single digit
+            }
+
+            //op initialized with + to add the first number
+            switch (op) { //Always previous op
+                case '+':
+                    stack.push(+num);
+                    break;
+                case '-':
+                    stack.push(-num);
+                    break;
+                case '*':
+                    stack.push(stack.pop()*num);
+                    break;
+                case '/':
+                    stack.push(stack.pop()/num);
+                    break;
+            }
+
+            op = c;
+            num = 0;
+        }
+
+        //Evaluate sum/subtract of all nums on stack
+        while (!stack.isEmpty()) {
+            total += stack.pop();
+        }
+
+        return total;
+    }
+
+
+    public static void main(String[] args) {
+        calculate("3-2");
+    }
+}

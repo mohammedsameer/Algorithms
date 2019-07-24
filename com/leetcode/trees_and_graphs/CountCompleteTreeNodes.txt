@@ -23,7 +23,7 @@ class Solution {
 
         if(left==null) {
             //Both left and right same height so total nodes = 2h-1
-            return (1<<height)-1; //left shift 1 height times
+            return (1<<height)-1; //left shift 1 height times same as Math.pow(2, height) - 1
         }
 
         //Recursively call left and right childs

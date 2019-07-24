@@ -1,37 +1,35 @@
 package com.leetcode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Algo:
  */
 public class Program {
 
-    public class TreeNode {
-      int val;
-      TreeNode left;
-      TreeNode right;
-      TreeNode(int x) { val = x; }
-    }
+    public int longestConsecutive(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = Integer.MIN_VALUE;
 
-    public static List<Integer> rightSideView(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        rightSideViewHelper(root, result, 0);
-        return result;
-    }
+        for (int num : nums) {
+            if(!map.containsKey(num)) {
+                int left = map.getOrDefault(num-1, 0);
+                int right = map.getOrDefault(num+1, 0);
+                int sum = left + right + 1;
 
-    private static void rightSideViewHelper(TreeNode root, List<Integer> result, int currDepth) {
-        if(root == null)
-            return;
+                map.put(num, sum);
 
-        if(result.size() == currDepth)
-            result.add(root.val);
+                max = Math.max(max, sum);
 
-        rightSideViewHelper(root.right, result, currDepth+1);
-        rightSideViewHelper(root.left, result, currDepth+1);
+                map.put(num-left, sum);
+                map.put(num+right, sum);
+            }
+        }
+        return max;
     }
 
     public static void main(String[] args) {
     }
+
 }

@@ -1,0 +1,47 @@
+package com.leetcode;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Algo:
+ * 1. Maintain two iterators
+ * 2. Inner iterator iterates over inner list
+ * 3. Outer iterator iterates over outer list
+ */
+public class Program {
+
+    public class Vector2D {
+        Iterator<Integer> innerIterator;
+        Iterator<List<Integer>> outerIterator;
+
+
+        public Vector2D(List<List<Integer>> vec2d) {
+            innerIterator = Collections.emptyIterator();
+            outerIterator = vec2d.iterator();
+        }
+
+        public boolean hasNext() {
+            if(innerIterator.hasNext())
+                return true;
+
+            if(!outerIterator.hasNext())
+                return false;
+
+            //Since outer iterator hasNext in previous step
+            innerIterator = outerIterator.next().iterator();
+            return innerIterator.hasNext();
+        }
+
+        public int next() {
+            if (hasNext())
+                return innerIterator.next();
+            else
+                return -1;
+        }
+    }
+
+    public static void main(String[] args) {
+    }
+}

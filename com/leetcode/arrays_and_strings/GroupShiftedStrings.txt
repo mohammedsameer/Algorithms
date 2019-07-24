@@ -18,10 +18,12 @@ class Program {
         for(String s: strings) {
             char[] sArr = s.toCharArray();
             if(sArr.length > 0) {
+                //Shift the current string to left by 'a' character
                 int diff = sArr[0] - 'a'; //Difference with 0th index
                 for(int i=0; i<sArr.length; i++) {
                     //Store shifted strings
                     if(sArr[i] - diff < 'a') {
+                        //First character is larger than current character example za -> ab
                         sArr[i] = (char) (sArr[i] - diff + 26);
                     } else {
                         sArr[i] = (char) (sArr[i] - diff);

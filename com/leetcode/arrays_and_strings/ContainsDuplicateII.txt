@@ -4,8 +4,10 @@ class Solution {
         Set<Integer> set = new HashSet<>();
         //Note: difference between indices at most k
         for(int i=0; i<nums.length; i++) {
-            if(i>k) set.remove(nums[i-k-1]); //Move the window start by remove num
-            if(!set.add(nums[i])) return true; //We found matching nums[i]==nums[j] within the sliding window
+            if(i>k)
+            set.remove(nums[i-k-1]); //Move the window start by remove num
+            if(!set.add(nums[i]))
+            return true; //We found matching nums[i]==nums[j] within the sliding window
         }
         return false;
     }

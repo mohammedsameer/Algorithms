@@ -16,7 +16,8 @@ class Program {
 
     public static String fractionToDecimal(int numerator, int denominator) {
         StringBuilder result = new StringBuilder();
-        String sign = (numerator < 0 == denominator < 0 || numerator == 0) ? "" : "-";
+        //Note: false == false is true
+        String sign = (numerator > 0 == denominator > 0 || numerator == 0) ? "" : "-";
 
         //Integral part
         long num = Math.abs((long) numerator);
@@ -31,7 +32,7 @@ class Program {
 
         result.append(".");
         Map<Long, Integer> map = new HashMap<>();
-        //Note: You add result length to be afforded an opportunity to add () around recurring number
+        //Note: You add result length to be so we can add () around recurring number
         map.put(num, result.length());
         while (num != 0) {
             num = num * 10;

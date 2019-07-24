@@ -1,0 +1,31 @@
+//Algo:
+//Keep track of slow and fast nodes
+//Use head and tail aka start and end
+//Create a root and then link it to left or right based on Binary Search
+public class Solution {
+
+	public TreeNode sortedListToBST(ListNode head) {
+		if (head == null)
+			return null;
+
+		return BSTHelper(head, null);
+	}
+
+    public TreeNode BSTHelper(ListNode head, ListNode tail) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        if(head==tail)
+            return null;
+
+        while(fast != tail && fast.next != tail) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        TreeNode root = new TreeNode(slow.val);
+        root.left = BSTHelper(head, slow);
+        root.right = BSTHelper(slow.next, tail);
+        return root;
+    }
+}

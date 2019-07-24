@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 /**
  */
+//Algo:
+//1. Sort the array
+//2. Copy of sorted array for traversal
+//3. Iterate array and insert mid-i & n-i-1 into index & index+1, increment index by 2
 public class Program {
 
     public static void wiggleSort(int[] nums) {
