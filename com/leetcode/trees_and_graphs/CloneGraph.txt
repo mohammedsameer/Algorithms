@@ -23,8 +23,8 @@ class Solution {
 
         //Maintain a map between old and new node to recognize if given old node already mapped
         Node clonedHead = new Node(node.val, new ArrayList<>());
-        Map<Integer, Node> nodeMap = new HashMap<>();
-        nodeMap.put(node.val, clonedHead);
+        Map<Node, Node> nodeMap = new HashMap<>();
+        nodeMap.put(node, clonedHead);
 
         //Iterate through the graph
         LinkedList<Node> queue = new LinkedList<>();
@@ -37,14 +37,14 @@ class Solution {
             //Check its neighbours
             for(Node neighbor : curr.neighbors) {
                 //Add neighbours if they are missing the map
-                if(!nodeMap.containsKey(neighbor.val)) {
+                if(!nodeMap.containsKey(neighbor)) {
                     //Cloned neighbor
-                    nodeMap.put(neighbor.val, new Node(neighbor.val, new ArrayList<>()));
+                    nodeMap.put(neighbor, new Node(neighbor.val, new ArrayList<>()));
                     //Queued up neighbor for visit
                     queue.add(neighbor);
                 }
                 //Add this cloned neighbour to curr's clone
-                nodeMap.get(curr.val).neighbors.add(nodeMap.get(neighbor.val));
+                nodeMap.get(curr).neighbors.add(nodeMap.get(neighbor));
             }
         }
 
