@@ -1,32 +1,38 @@
 package com.leetcode;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Algo:
  */
 public class Program {
 
-    public int longestConsecutive(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-        int max = Integer.MIN_VALUE;
+    public static int bfs(int[][] intervals, int source, int destination) {
+        Map<Integer, PriorityQueue<int[]>> map = new HashMap<>();
 
-        for (int num : nums) {
-            if(!map.containsKey(num)) {
-                int left = map.getOrDefault(num-1, 0);
-                int right = map.getOrDefault(num+1, 0);
-                int sum = left + right + 1;
+        for (int[] interval : intervals) {
+            map.putIfAbsent(interval[0], new PriorityQueue<>((a, b) -> (b[2]-a[2])));
+            map.get(interval[0]).add(new int[] {interval[1], interval[2]});
+        }
 
-                map.put(num, sum);
+        Stack<int[]> stack = new Stack<>();
+        int maximumLatency = 0;
+        stack.push(new int[]{0, source});
 
-                max = Math.max(max, sum);
+        while (!stack.isEmpty()) {
+            int[] next = stack.peek();
+            boolean isDestination = (next[1] == destination);
 
-                map.put(num-left, sum);
-                map.put(num+right, sum);
+            if(!isDestination && map.containsKey(next[1]) && !map.get(next[1]).isEmpty()) {
+                int[] curr = map.get(next[1]).poll();
+                stack.push(new int[] {curr[1], curr[0]});
+            } else {
+                maximumLatency += stack.pop()[0];
             }
         }
-        return max;
+
+        return maximumLatency;
+
     }
 
     public static void main(String[] args) {

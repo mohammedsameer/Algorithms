@@ -18,7 +18,7 @@ public class Program {
             map.get(time[0]).put(time[1], time[2]);
         }
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0]-b[0]);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0]-b[0]); //Storing in ascending order means we process the farthest node last
         pq.add(new int[]{0, K}); //Add source
         boolean[] visited = new boolean[N+1];
         int result = 0;
