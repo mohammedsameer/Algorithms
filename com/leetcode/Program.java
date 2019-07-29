@@ -5,33 +5,29 @@ import java.util.*;
 //Algo:
 class Program {
 
-    public List<Integer> diffWaysToCompute(String input) {
-        List<Integer> result = new ArrayList<>();
+    class PeekingIterator implements Iterator<Integer> {
 
-        for(int i=0; i<input.length(); i++) {
-            char c = input.charAt(i);
-            if ( c == '+' || c == '-' || c == '*') {
-                List<Integer> left = diffWaysToCompute(input.substring(0, i));
-                List<Integer> right = diffWaysToCompute(input.substring(i+1));
-
-                for (int l : left) {
-                    for (int r : right) {
-                        switch (c) {
-                            case '+': result.add(l + r); break;
-                            case '-': result.add(l - r); break;
-                            case '*': result.add(l * r); break;
-                        }
-                    }
-                }
-            }
+        Iterator<Integer> myIterator;
+        Integer next;
+        public PeekingIterator(Iterator<Integer> iterator) {
+            myIterator = iterator;
+            next = myIterator.hasNext() ? myIterator.next() : null;
         }
 
-        if (result.isEmpty())
-            result.add(Integer.parseInt(input));
+        public Integer peek() {
+            return next;
+        }
 
-        return result;
+        public Integer next() {
+            Integer result = next;
+            next = myIterator.hasNext() ? myIterator.next() : null;
+            return result;
+        }
+
+        public boolean hasNext() {
+            return next!= null;
+        }
     }
-
 
     public static void main(String[] args) {
     }

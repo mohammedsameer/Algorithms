@@ -1,42 +1,35 @@
-import java.io.*;
+package com.leetcode;
+
 import java.util.*;
 
+//Algo:
+//Match: dp[r-1][c-1]+1
+//NoMatch: Max of dp[r-1][c] & dp[r][c-1]
+class Program {
 
-/*LCS*/
-class Solution {
-  
-  public static int lcs(String s1, String s2)
-  {
-    if(s1==null && s2==null)
-      return -1;
-    
-    if(s1.length()==0 || s2.length()==0)
-      return 0;
-    
-    int m = s1.length();
-    int n = s2.length();
-    int[][] result = new int[m+1][n+1];
-    
-    for(int r=0;r<m;r++)
+    public static int lcs(String s1, String s2)
     {
-      for(int c=0;c<n;c++)
-      {
-        if(s1.charAt(r)==s2.charAt(c))
-        {
-          result[r+1][c+1] = result[r][c]+1;
+        if(s1==null && s2==null)
+            return -1;
+
+        int rows = s1.length();
+        int cols = s2.length();
+
+        int[][] dp = new int[rows+1][cols+1];
+
+        for (int r=1; r<=rows; r++) {
+            for (int c=1; c<=cols; c++) {
+                if(s1.charAt(r-1) == s2.charAt(c-1))
+                    dp[r][c] = dp[r-1][c-1]+1;
+                else
+                    dp[r][c] = Math.max(dp[r-1][c], dp[r][c-1]);
+            }
         }
-        else
-        {
-          result[r+1][c+1] = result[r][c];
-        }
-      }
+
+        return dp[rows][cols];
     }
-    
-    return result[m][n];
-    
-  }
-  
-  public static void main(String[] args) {
-    System.out.println("Longest Common Subsequence of two strings is: "+ lcs("sameer","pamela"));
-  }
+
+    public static void main(String[] args) {
+        System.out.println("Longest Common Subsequence of two strings is: "+ lcs("abc","act"));
+    }
 }
