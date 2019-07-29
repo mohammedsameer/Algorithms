@@ -1,0 +1,40 @@
+//Algo:
+//1. Constructor: Compute the indexed sums of array
+//2. PickIndex: Randomly pick an index in range 0..w[len-1] & find its insert position in the weighted array
+class Solution {
+
+    int[] wSums;
+    Random random;
+    public Solution(int[] w) {
+        random = new Random();
+        //Compute weighted sum of array [1, 2, 3] -> [1, 3, 6]
+        for(int i=1; i<w.length; i++) {
+            w[i] += w[i-1];
+        }
+        this.wSums = w; //Note: I use another array
+    }
+
+    public int pickIndex() {
+        int len = wSums.length;
+        int start = 0;
+        int end = len-1;
+        int idx = random.nextInt(wSums[len-1]) + 1;
+        // search insert position for idx by comparing it with weight
+        while(start < end){
+            int mid = (start + end)/2;
+            if(wSums[mid] == idx)
+                return mid;
+            else if(wSums[mid] > idx)
+                 end = mid;
+            else
+                start = mid+1;
+        }
+        return start;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */

@@ -1,0 +1,60 @@
+//Algo:
+//Add: Use TrieData structure
+//Search: Use Trie search per character, if wild character then loop through all links
+class WordDictionary {
+
+    class TrieNode {
+        TrieNode[] children = new TrieNode[26];
+        boolean isEnd;
+    }
+
+    TrieNode root;
+
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        root = new TrieNode();
+    }
+
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        TrieNode curr = root;
+        for(char c : word.toCharArray()) {
+            if(curr.children[c-'a'] == null) {
+                curr.children[c-'a'] = new TrieNode();
+            }
+            curr = curr.children[c-'a'];
+        }
+        curr.isEnd=true;
+    }
+
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        TrieNode curr = root;
+        return searchWord(root, word, 0);
+    }
+
+    public boolean searchWord(TrieNode curr, String word, int index) {
+        if (index==word.length()) {
+            return curr.isEnd;
+        } else if (word.charAt(index) != '.') {
+            //Match character and check recurse next character
+            return curr.children[word.charAt(index)-'a'] != null
+                    && searchWord(curr.children[word.charAt(index)-'a'], word, index+1);
+        } else {
+            //Match wild card character by looping through all characters that can be visited from here
+            for(int i=0; i<curr.children.length; i++) {
+                if (curr.children[i] != null && searchWord(curr.children[i], word, index+1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */

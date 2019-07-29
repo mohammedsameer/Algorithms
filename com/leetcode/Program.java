@@ -2,40 +2,37 @@ package com.leetcode;
 
 import java.util.*;
 
-/**
- * Algo:
- */
-public class Program {
+//Algo:
+class Program {
 
-    public static int bfs(int[][] intervals, int source, int destination) {
-        Map<Integer, PriorityQueue<int[]>> map = new HashMap<>();
+    public List<Integer> diffWaysToCompute(String input) {
+        List<Integer> result = new ArrayList<>();
 
-        for (int[] interval : intervals) {
-            map.putIfAbsent(interval[0], new PriorityQueue<>((a, b) -> (b[2]-a[2])));
-            map.get(interval[0]).add(new int[] {interval[1], interval[2]});
-        }
+        for(int i=0; i<input.length(); i++) {
+            char c = input.charAt(i);
+            if ( c == '+' || c == '-' || c == '*') {
+                List<Integer> left = diffWaysToCompute(input.substring(0, i));
+                List<Integer> right = diffWaysToCompute(input.substring(i+1));
 
-        Stack<int[]> stack = new Stack<>();
-        int maximumLatency = 0;
-        stack.push(new int[]{0, source});
-
-        while (!stack.isEmpty()) {
-            int[] next = stack.peek();
-            boolean isDestination = (next[1] == destination);
-
-            if(!isDestination && map.containsKey(next[1]) && !map.get(next[1]).isEmpty()) {
-                int[] curr = map.get(next[1]).poll();
-                stack.push(new int[] {curr[1], curr[0]});
-            } else {
-                maximumLatency += stack.pop()[0];
+                for (int l : left) {
+                    for (int r : right) {
+                        switch (c) {
+                            case '+': result.add(l + r); break;
+                            case '-': result.add(l - r); break;
+                            case '*': result.add(l * r); break;
+                        }
+                    }
+                }
             }
         }
 
-        return maximumLatency;
+        if (result.isEmpty())
+            result.add(Integer.parseInt(input));
 
+        return result;
     }
+
 
     public static void main(String[] args) {
     }
-
 }

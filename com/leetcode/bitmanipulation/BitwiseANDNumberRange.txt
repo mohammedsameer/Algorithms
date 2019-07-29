@@ -2,26 +2,27 @@ package com.leetcode;
 
 
 //Algo:
-//1. Odd Number & Even Number = Result has last bit 0 (E.g: 2 & 3 = 2)
-//2. In an inclusive range say, [2,3] we always have an odd and an even number so last bit is 0
-//3. Move right m & n by 1 bit until match
-//4. Move left moving factor every iteration
-//5. Multiply m * moving factor
-//Note: If m==n only when m==0 and n==0, then result is 0 E.g: [2,5]
+//1. If any number in the range has a bit value zero for given index then result is zero
+//2. Idea:
+// a) Move m & n to the right untill they match i.e. when they dont match then we have atleast one zero in range between m & n,
+// thus keep track of zero counter
+// b) Move m or n by number of zero bits to left,
+
 class Program {
 
-    public static int rangeBitwiseAnd(int m, int n) {
-        if(m == 0){
-            return 0;
+     public static int rangeBitwiseAnd(int m, int n) {
+            if(m == 0 || n == 0){
+                return 0;
+            }
+
+            int countZeroBits = 0;
+            while(m != n){
+                m >>= 1;
+                n >>= 1;
+                countZeroBits++;
+            }
+            return m << countZeroBits;
         }
-        int moveFactor = 1;
-        while(m != n){
-            m >>= 1;
-            n >>= 1;
-            moveFactor <<= 1;
-        }
-        return m * moveFactor;
-    }
 
     public static void main(String[] nums) {
         rangeBitwiseAnd(5, 7);
