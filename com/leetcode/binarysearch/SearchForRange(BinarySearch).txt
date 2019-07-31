@@ -1,0 +1,47 @@
+//Algo
+//First and Last Occurrence Binary Search
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length==0)
+            return new int[] {-1, -1};
+
+        int firstIndex = binarySearchFirstIndex(nums, target);
+        int lastIndex = binarySearchLastIndex(nums, target);
+
+        return new int[] {firstIndex, lastIndex};
+    }
+
+    public int binarySearchFirstIndex(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length-1;
+
+        while(start<=end) {
+           int mid = (start+end)/2;
+            //Note: if target==nums[mid], because we know target==nums[mid-1] so move end=mid-1 as if criteria did not meet
+            if((mid==0||target>nums[mid-1]) && target==nums[mid])
+                return mid;
+            else if (target > nums[mid])
+                start = mid+1;
+            else
+                end = mid-1;
+        }
+        return -1;
+    }
+
+    public int binarySearchLastIndex(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length-1;
+
+       while(start<=end) {
+            int mid = (start+end)/2;
+            //Note: if target==nums[mid], because we know target==nums[mid+1] so move start=mid+1 as if criteria did not meet
+            if((mid==nums.length-1 || target < nums[mid+1]) && target==nums[mid])
+                return mid;
+            else if (target < nums[mid])
+                end = mid-1;
+            else
+                start = mid+1;
+        }
+        return -1;
+    }
+}

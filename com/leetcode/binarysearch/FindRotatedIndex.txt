@@ -14,7 +14,7 @@ class Program {
             else
                 end = mid;
         }
-        return nums[start];
+        return start;
     }
 
     public static void main(String[] args) {

@@ -1,0 +1,49 @@
+//Algo:
+//1. Find minIndex
+//2. Check if target at minIndex
+//3. start = mindIndex (if target <= num[len-1]) else 0
+//4. end = minIndex (if target > num[len-1]) else len-1
+//5. Usual binary search
+class Solution {
+    public int search(int[] nums, int target) {
+        if(nums.length==0)
+            return -1;
+
+        int minIdx = findMinIdx(nums);
+        //Target at rotated index
+        if (target == nums[minIdx])
+            return minIdx;
+
+        int len = nums.length;
+//If target <= num[len-1], it implies it has to be after minIndex aka num[0] will be larger than num[len-1]
+        int start = (target <= nums[len - 1]) ? minIdx : 0;
+//If target > num[len-1], it implies its in the first half thus end = minIndex
+        int end = (target > nums[len - 1]) ? minIdx : len - 1;
+
+        //Regular binary search
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            if (nums[mid] == target)
+                return mid;
+            else if (target > nums[mid])
+                start = mid + 1;
+            else
+                end = mid - 1;
+        }
+        return -1;
+    }
+
+      public int findMinIdx(int[] nums) {
+        int start = 0;
+        int end = nums.length-1;
+
+        while (start<end) {
+            int mid = (start+end)/2;
+            if(nums[mid]>nums[end])
+                start = mid+1;
+            else
+                end = mid;
+        }
+        return start;
+    }
+}

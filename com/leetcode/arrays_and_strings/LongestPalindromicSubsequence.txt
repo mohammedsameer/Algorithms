@@ -1,0 +1,30 @@
+//Algo:
+//Similar to LCS, instead here you compare string and its reverse
+class Solution {
+
+    public int longestPalindromeSubseq(String s)
+    {
+        if(s==null)
+            return -1;
+
+        StringBuilder sb = new StringBuilder(s);
+        String s1 = new String(s);
+        String s2 = sb.reverse().toString();
+
+        int rows = s1.length();
+        int cols = s2.length();
+
+        int[][] dp = new int[rows+1][cols+1];
+
+        for (int r=1; r<=rows; r++) {
+            for (int c=1; c<=cols; c++) {
+                if(s1.charAt(r-1) == s2.charAt(c-1))
+                    dp[r][c] = dp[r-1][c-1]+1;
+                else
+                    dp[r][c] = Math.max(dp[r-1][c], dp[r][c-1]);
+            }
+        }
+
+        return dp[rows][cols];
+    }
+}
