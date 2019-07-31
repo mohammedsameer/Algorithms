@@ -14,11 +14,8 @@ public class Program {
         int maxJump = Integer.MIN_VALUE;
 
         for(int i=0; i<nums.length-1; i++) {
-            currJump = i + nums[i];
-
-            if(maxJump < currJump) {
-                maxJump = currJump;
-            }
+             currJump = i + nums[i];
+             maxJump = Math.max(maxJump, currJump);
 
             //If i have managed another bigger jump before reaching currEnd then reset currEnd to maxJump
             if(i==currEnd) {

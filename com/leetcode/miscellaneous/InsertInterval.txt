@@ -156,9 +156,9 @@ public class Program {
                     Math.max(intervals.get(i).end, newInterval.end));
             intervals.remove(i); //This will automatically advance to next i
         }
-        result.add(newInterval);
+       intervals.add(i,newInterval)
 
-        return result;
+       return intervals;
     }
 
     public static void main(String[] args) {
