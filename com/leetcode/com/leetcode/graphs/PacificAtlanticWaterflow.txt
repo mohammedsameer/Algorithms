@@ -1,0 +1,60 @@
+class Solution {
+    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+    public List<List<Integer>> pacificAtlantic(int[][] matrix) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (matrix == null || matrix.length == 0)
+            return result;
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        char[][] visited = new char[rows][cols];
+
+
+        //Iterate through the board col0 & row0 for pacific
+        for(int c=0; c<cols; c++) {
+            dfs(matrix, rows, cols, 0, c, visited, 'P', result);
+        }
+
+        for(int r=0; r<rows; r++) {
+            dfs(matrix, rows, cols, r, 0, visited, 'P', result);
+        }
+
+        //Iterate through the board coln-1 & rowm-1 for atlantic
+        for(int r=0; r<rows; r++) {
+             dfs(matrix, rows, cols, r, cols-1, visited, 'A', result);
+        }
+
+        for(int c=0; c<cols; c++) {
+             dfs(matrix, rows, cols, rows-1, c, visited, 'A', result);
+        }
+
+        return result;
+    }
+
+    public void dfs(int[][] matrix, int rows, int cols, int r, int c,
+                    char[][] visited, char ch, List<List<Integer>> result) {
+        if(visited[r][c] == 'P' && ch == 'A') {
+            List<Integer> curr = new ArrayList<>();
+            curr.add(r);
+            curr.add(c);
+            result.add(curr);
+        }
+
+         //Mark as visited with character
+        visited[r][c] = ch;
+
+        //Move in all four directions
+        for(int[] direction : directions) {
+            int x = r + direction[0];
+            int y = c + direction[1];
+
+            if(x<0 || x>=rows || y<0 || y>=cols || matrix[r][c] > matrix[x][y] || visited[x][y] == ch)
+                continue;
+
+            dfs(matrix, rows, cols, x, y, visited, ch, result);
+        }
+
+    }
+
+}

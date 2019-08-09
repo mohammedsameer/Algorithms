@@ -1,0 +1,70 @@
+package com.leetcode;
+
+import java.util.Stack;
+
+//Algo:
+//Maintain primary and minStack
+class Program {
+
+    Stack<Integer> pStack;
+    Stack<Integer> mStack;
+
+    /** initialize your data structure here. */
+    public Program() {
+        pStack = new Stack<>();
+        mStack = new Stack<>();
+    }
+
+    public void push(int x) {
+        if(mStack.isEmpty() || mStack.peek() <= x) {
+            mStack.push(x);
+        }
+        pStack.push(x);
+    }
+
+    public void pop() {
+        if(!pStack.isEmpty()) {
+            int x = pStack.pop();
+            if(mStack.peek() == x)
+                mStack.pop();
+        }
+    }
+
+    public void popMax() {
+        if(!mStack.isEmpty()) {
+            int x = mStack.pop();
+            Stack<Integer> tStack = new Stack<>();
+            while (!pStack.isEmpty() && pStack.peek() !=  x) {
+                tStack.push(pStack.pop());
+            }
+            pStack.pop();
+            while (!tStack.isEmpty()) {
+                pStack.push(tStack.pop());
+            }
+        }
+    }
+
+    public int top() {
+        return pStack.peek();
+    }
+
+    public int peekMax() {
+        return mStack.peek();
+    }
+
+    public static void main(String[] args) {
+        //["MinStack","push","push","push","push","pop","getMin","pop","getMin","pop","getMin"]
+        //[[],[512],[-1024],[-1024],[512],[],[],[],[],[],[]]
+        Program obj = new Program();
+        obj.push(5);
+        obj.push(1);
+        obj.push(5);
+        obj.top(); //-> 5
+        obj.popMax();// -> 5
+        obj.top(); //-> 1
+        obj.peekMax(); //-> 5
+        obj.pop(); //-> 1
+        obj.top(); //-> 5
+    }
+
+}

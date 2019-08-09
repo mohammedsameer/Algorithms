@@ -1,11 +1,4 @@
 /**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
  */
 //Algo: PreOrder traversal to serialize and deserialize
 public class Codec {
@@ -32,6 +25,7 @@ public class Codec {
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
+        //Add all data into queue
         Queue<String> queue = new LinkedList<>(Arrays.asList(data.split(SPLITTER)));
         return deserialize(queue);
     }

@@ -32,7 +32,7 @@ public class Program {
             if(visited[currNode]) continue;
             visited[currNode] = true;
             N--;
-            result = currTime;
+            result = currTime; //Last result is the network time delay
 
             if(map.containsKey(currNode)) {
                 for(Integer next : map.get(currNode).keySet()) {

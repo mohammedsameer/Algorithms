@@ -4,55 +4,36 @@ import java.util.*;
 
 /**
  * Algorithm
- * 1. From every word perform
- * a) Change character at every position and see
- * if it matches end or -> return current distance + 1
- * if present in dictionary -> remove the word from dictionary to avoid duplication
- * Repeat above until the word queue is empty
  */
 public class Program {
 
     public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        if(beginWord.equals(endWord))
-            return 0;
-
-        if(wordList.isEmpty())
-            return -1;
-
-        LinkedList<String> wordQueue = new LinkedList<>();
-        LinkedList<Integer> distanceQueue = new LinkedList<>();
-
-        wordQueue.add(beginWord);
-        distanceQueue.add(1);
-
-        while (!wordQueue.isEmpty()) {
-            String currWord = wordQueue.pop();
-            Integer currDistance = distanceQueue.pop();
-
-            if(currWord.equals(endWord))
-                return currDistance;
-
-            for(int i = 0; i < currWord.length(); i++) {
-                char[] currWordArr = currWord.toCharArray();
-                for (char c = 'a'; c <= 'z'; c++) {
-                    //Create a new word by replacing the character at i
-                    currWordArr[i] = c;
-
-                    String nWord = new String(currWordArr);
-                    //Remove the nWord from dictionary and add the nWord to word queue/distance queue
-                    if(wordList.contains(nWord)) {
-                        //The end word is expected to be in dictionary
-                        if(nWord.equals(endWord))
-                            return currDistance + 1;
-                        wordList.remove(nWord);
-                        wordQueue.add(nWord);
-                        distanceQueue.add(currDistance + 1);
-                    }
-                }
-            }
-        }
-        return -1;
-    }
+           Set<String> wordSet=new HashSet<>(wordList);
+           Set<String> reached=new HashSet<>();
+           reached.add(beginWord);
+           wordSet.remove(beginWord);
+           int level=1;
+           while(!reached.isEmpty()) {
+               Set<String> reachedNext=new HashSet<>();
+               for(String s:reached) {
+                   for(int i=0;i<s.length();i++) {
+                       char[] c=s.toCharArray();
+                       for(char j='a';j<='z';j++) {
+                           c[i]=j;
+                           String newS=new String(c);
+                           if(wordSet.remove(newS)) {
+                               reachedNext.add(newS);
+                               if(endWord.equals(newS))
+                                   return level+1;
+                           }
+                       }
+                   }
+               }
+               reached=reachedNext;
+               level++;
+           }
+           return 0;
+       }
 
     public static void main(String[] args) {
         String[] strArr = new String[] {"hot","dot","dog","lot","log","cog"});

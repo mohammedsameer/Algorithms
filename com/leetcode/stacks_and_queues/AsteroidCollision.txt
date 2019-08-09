@@ -1,0 +1,38 @@
+package com.leetcode;
+
+import java.util.Stack;
+
+//Algo:
+//Maintain stack of elements
+//Add if next element is positive
+//Remove (While) if next element is negative and bigger than previous element
+class Program {
+
+    public static int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack<>();
+
+        for(int a : asteroids) {
+            if(a > 0) {
+                stack.push(a);
+            } else {
+                while(!stack.isEmpty() && stack.peek() > 0 && stack.peek() < -a) {
+                    //If last element positive and smaller than current element
+                    stack.pop();
+                }
+                if(!stack.isEmpty() && stack.peek() == -a) {
+                    //Same size asteroids both destroyed
+                    stack.pop();
+                } else if (stack.isEmpty() || stack.peek() < 0)
+                    //Add the current -ve asteroid as it has either crushed all asteroids moving in opposite
+                    //direction or has another neighbouring -ve asteroid
+                    stack.push(a);
+            }
+        }
+        return stack.stream().mapToInt(a->a).toArray();
+    }
+
+    public static void main(String[] args) {
+        asteroidCollision(new int[] {5,10,-5});
+    }
+
+}

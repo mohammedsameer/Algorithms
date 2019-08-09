@@ -31,7 +31,7 @@ class Program {
                 }
 
                 //Check if the shifted string key is already present
-                String str = new String(cArr);
+                String str = new String(sArr);
                 map.putIfAbsent(str, new ArrayList<>());
                 map.get(str).add(s);
             }

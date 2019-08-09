@@ -1,0 +1,92 @@
+class LFUCache {
+
+    Map<Integer, Integer> values;
+    Map<Integer, Integer> counts;
+    Map<Integer, LinkedHashSet<Integer>> list;
+    int cap;
+    int min;
+
+    public LFUCache(int capacity) {
+        values = new HashMap<>();
+        counts = new HashMap<>();
+        list = new HashMap<>();
+        cap = capacity;
+        min = 0;
+    }
+
+    public int get(int key) {
+        if(!values.containsKey(key))
+            return -1;
+
+        //Update counts
+        update(key);
+        //Return result
+        return values.get(key);
+    }
+
+    private void update (int key) {
+        //Get current value as we need to update its count
+        int count = counts.get(key);
+        //Update count
+        counts.put(key, count + 1);
+        //Remove old count value from list
+        list.get(count).remove(key);
+
+        //Add new count to list
+        addToList(count + 1, key);
+
+        //Check if count is minCount & if we dont have anymore elements with minCount then bump up minCount
+        if(count == min && list.get(count).size() == 0)
+            min++;
+    }
+
+    private void addToList(int count, int key) {
+        //Add new count key to list if not already present
+        if(!list.containsKey(count))
+            list.put(count, new LinkedHashSet<>());
+
+        list.get(count).add(key);
+    }
+
+    private void evict () {
+        //Get the least frequently used element
+        int key = list.get(min).iterator().next();
+        //Remove the element from frequency list, count list and vals list
+        list.get(min).remove(key);
+        values.remove(key);
+        counts.remove(key);
+    }
+
+    public void put(int key, int value) {
+        //Check if we have zero capacity
+        if (cap <= 0)
+            return;
+
+        //Check if already preset
+        if (values.containsKey(key)) {
+            //Update the value
+            values.put(key, value);
+            //Update the key aka counts, countValueList & min
+            update(key);
+            return;
+        }
+
+        //Check if we are over capacity
+        if (values.size() >= cap)
+            //Evict
+            evict();
+
+        //New element add to values, counts and frequency list and set the min=1
+        values.put(key, value);
+        counts.put(key, 1);
+        addToList(1, key);
+        min = 1;
+}
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

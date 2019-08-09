@@ -1,7 +1,6 @@
 package com.leetcode;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * Algo:
@@ -11,40 +10,32 @@ import java.util.Map.Entry;
  */
 public class Program {
 
-    public static List<Integer> topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> numCountMap = new HashMap<>();
-        TreeMap<Integer, List<Integer>> frequencyMap = new TreeMap<>();
+     public static List<Integer> topKFrequent(int[] nums, int k) {
+           Map<Integer, Integer> numMap = new HashMap<>();
+           TreeMap<Integer, List<Integer>> freqMap = new TreeMap<>();
 
-        //Add elements to num count map
-        for(int num: nums) {
-            numCountMap.put(num, numCountMap.getOrDefault(num, 0) + 1);
-        }
+           for (int num : nums) {
+               numMap.put(num, numMap.getOrDefault(num, 0)+1);
+           }
 
-        //Add elements to frequency map using frequency
-        for(Entry<Integer, Integer> entry : numCountMap.entrySet()) {
-            int num = entry.getKey();
-            int freq = entry.getValue();
+           for(Map.Entry<Integer, Integer> entry : numMap.entrySet()) {
+               int n = entry.getKey();
+               int f = entry.getValue();
 
-            List<Integer> list;
-            if(!frequencyMap.containsKey(freq)) {
-                list = new ArrayList<>();
-            } else {
-                list = frequencyMap.get(freq);
-            }
-            list.add(num);
-            frequencyMap.put(freq, list);
-        }
+              if(!freqMap.containsKey(f)) {
+               freqMap.put(f, new ArrayList<>());
+               }
+              freqMap.get(f).add(n);
+           }
 
-        //Add elements to result
-        List<Integer> resultList = new ArrayList<>();
-        while (resultList.size() < k) {
-            //Returns the element with largest key
-            Entry<Integer, List<Integer>> entry = frequencyMap.pollLastEntry();
-            resultList.addAll(entry.getValue());
-        }
+           List<Integer> result = new ArrayList<>();
+           while(result.size()<k) {
+               Map.Entry<Integer, List<Integer>> entry = freqMap.pollLastEntry();
+               result.addAll(entry.getValue());
+           }
 
-        return resultList;
-    }
+           return result;
+       }
 
     public static void main(String[] args) {
         System.out.println(topKFrequent(new int[]{1,1,1,2,2,3}, 2));

@@ -12,35 +12,37 @@ import java.util.*;
 public class Program {
 
     public static int bfs(int[][] intervals, int source, int destination) {
-        Map<Integer, PriorityQueue<int[]>> map = new HashMap<>();
+        Map<Integer, Map<Integer, Integer>> map = new HashMap<>();
 
         //Initialize map with source and destinations ordered by priority of higher latency
         for(int[] interval : intervals) {
-            map.putIfAbsent(interval[0], new PriorityQueue<>((a, b) -> b[2] - a[2]));
-            map.get(interval[0]).add(interval);
+            map.putIfAbsent(interval[0], new HashMap<>());
+            map.get(interval[0]).put(interval[1], interval[2]);
         }
 
         //Iterate through graph from source until destination
-        Stack<int[]> stack = new Stack<>(); //Only holds path with highest latency from source to destination
-        int maxLatency = 0;
-        boolean isDestination = false;
-        stack.push(new int[] {0, source});
-        while (!stack.isEmpty()) {
-            int nextSource = stack.peek()[1];
-            isDestination = isDestination || nextSource == destination;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[0]-a[0]); //Storing in ascending order means we process the farthest node last
+        pq.add(new int[] {0, source});
 
+        while (!pq.isEmpty()) {
+            int[] next = pq.poll();
+            int cDelay = next[0];
+            int cSource = next[1];
 
-            if (!isDestination && map.containsKey(nextSource) && !map.get(nextSource).isEmpty()) {
-                //Skip if we have already reached destination next source computation if destination already reached
-                int[] curr = map.get(nextSource).poll();
-                stack.push(new int[] {curr[2], curr[1]});
-            } else {
-                //Maximum latency
-                maxLatency += stack.pop()[0];
+            if(cSource == destination)
+                return cDelay;
+
+            if(map.containsKey(cSource)) {
+                Map<Integer, Integer> nextMap = map.get(cSource);
+                for (int k : nextMap.keySet()) {
+                    //Update time
+                    int nDelay = nextMap.get(k);
+                    pq.add(new int[] {cDelay + nDelay, k});
+                }
             }
         }
 
-        return maxLatency;
+        return -1;
     }
 
     public static void main(String[] args) {
