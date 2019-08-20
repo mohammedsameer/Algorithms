@@ -26,7 +26,7 @@ public class Program {
         TreeNode curr = root;
 
         //Only time curr is null when root is null
-        while(!stack.isEmpty() || curr!=null) {
+        while(curr!=null) {
             //Add right node on stack
             if(curr.right != null) {
                 stack.push(curr.right);

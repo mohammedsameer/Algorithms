@@ -15,7 +15,6 @@ class Solution {
         PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> (b-a));
         pq.addAll(map.values());
 
-
         int cycles = n + 1; //1 for task & n is the cooling period
         int taskCount;
         int totalTime = 0;
@@ -24,13 +23,14 @@ class Solution {
             List<Integer> currTasks = new ArrayList<>();
             //Run this n+1, because we cant run same task again
             for(int i=0; i<cycles; i++) {
+                //Note: If pq has fewer elements it will be cooling period
                 if(!pq.isEmpty()) {
                     currTasks.add(pq.poll());
                     taskCount++;
                 }
             }
 
-            //Check if task is complete aka --task
+            //Check if task is complete aka --task if not add back to queue
             for(int task : currTasks) {
                 if(--task > 0) {
                     pq.add(task);

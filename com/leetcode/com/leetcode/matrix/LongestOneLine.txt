@@ -1,0 +1,65 @@
+
+package com.leetcode;
+
+/**
+ * Algo:
+ * Move every row
+ * Move every col
+ * Move diagonally and anti-diagonally
+ */
+public class Program {
+
+    public static int longestLine(int[][] M) {
+        if (M.length == 0)
+            return 0;
+        int rows = M.length;
+        int cols = M[0].length;
+        int len = 0;
+
+
+        //Move right in every row
+        for (int r = 0; r < rows; r++) {
+            len = Math.max(len, check(M, r, 0, new int[]{0, 1}));
+        }
+
+
+        //Move down in every column
+        for (int c = 0; c < cols; c++) {
+            len = Math.max(len, check(M, 0, c, new int[]{1, 0}));
+        }
+
+        //Move diagonally and anti-diagonally
+        for (int r = 0; r < rows; r++) {
+            //diagonally
+            len = Math.max(len, check(M, r, 0, new int[]{1, 1}));
+            //anti-diagonally
+            len = Math.max(len, check(M, r, cols - 1, new int[]{1, -1}));
+        }
+
+
+        return len;
+    }
+
+    private static int check(int[][] matrix, int r, int c, int[] dir) {
+        int len = 0;
+        int count = 0;
+
+        while (r>=0 && r<matrix.length && c>=0 && c<matrix[0].length) {
+            r += dir[0];
+            c += dir[1];
+
+            if(matrix[r][c] == 1) {
+                count++;
+                len = Math.max(count, len);
+            } else {
+                count=0;
+            }
+        }
+
+        return len;
+    }
+
+    public static void main(String[] args) {
+
+    }
+}

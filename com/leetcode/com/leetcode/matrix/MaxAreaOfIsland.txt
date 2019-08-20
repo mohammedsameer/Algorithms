@@ -1,0 +1,33 @@
+//Algo: Iterate all 4 directions
+class Solution {
+    boolean[][] visited;
+    public int maxAreaOfIsland(int[][] grid) {
+        if(grid==null || grid.length==0)
+            return 0;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+        visited = new boolean[rows][cols];
+        int max = Integer.MIN_VALUE;
+
+        for (int r=0; r<rows; r++) {
+            for (int c=0; c<cols; c++) {
+                max = Math.max(max, maxAreaOfIslandHelper(grid, visited, r, c));
+            }
+        }
+
+        return max;
+    }
+
+    public int maxAreaOfIslandHelper(int[][] grid, boolean[][] visited, int r, int c) {
+        if(r<0 || c<0 || r>=grid.length || c>=grid[0].length || grid[r][c] == 0 || visited[r][c]) {
+            return 0;
+        }
+
+        visited[r][c] = true;
+        return 1 + maxAreaOfIslandHelper(grid, visited, r+1, c)
+                + maxAreaOfIslandHelper(grid, visited, r-1, c)
+                + maxAreaOfIslandHelper(grid, visited, r, c+1)
+                + maxAreaOfIslandHelper(grid, visited, r, c-1);
+    }
+}
