@@ -7,105 +7,59 @@ import java.util.*;
  */
 public class Program {
 
-    public class AutocompleteSystem {
+    static Map<Integer, Boolean> dp = new HashMap<>();
 
-        //Special data structure
-        class Node {
-            int count;
-            String sentence;
-            Node(String s, int c) {
-                sentence = s;
-                count = c;
+    private static boolean solve(String[] passwords, String loginAttempt, int index, List<String> usedSoFar) {
+
+        if (loginAttempt.length() == index)
+            return true;
+
+
+        if (dp.containsKey(index))
+            return false;
+
+
+        for (String password : passwords) {
+            if (loginAttempt.startsWith(password, index)) {
+                usedSoFar.add(password);
+
+                if (solve(passwords, loginAttempt, index + password.length(), usedSoFar))
+                    return true;
+
+                usedSoFar.remove(usedSoFar.size() - 1);
             }
         }
 
-
-        class Trie {
-            int count;
-            Trie[] branches = new Trie[27];
-        }
-
-
-        //Insert word into trie structure
-        public void insert(Trie curr, String s, int times) {
-            for (char c : s.toCharArray()) {
-                if(curr.branches[c - 'a'] == null) {
-                    curr.branches[c - 'a'] = new Trie();
-                }
-                curr = curr.branches[c - 'a'];
-            }
-            //Track number of times the word is inserted
-            curr.count += times;
-        }
-
-        //Lookup word in a trie
-        public List<Node> lookup(Trie curr, String s) {
-            //Iterate through the trie to find the node
-            List<Node> list = new ArrayList<>();
-            for (char c : s.toCharArray()) {
-                if (curr.branches[c - 'a'] == null) {
-                    return new ArrayList<>();
-                }
-                curr = curr.branches[c - 'a'];
-            }
-
-            //Traverse the current node for all sentences
-            traverse(s, curr, list);
-            return list;
-        }
-
-
-        //Traverse a node for all sentences
-        public void traverse(String s, Trie curr, List<Node> list) {
-            //If current nodes count is non-zero consider it in the list
-            if (curr.count > 0) {
-                list.add(new Node(s, curr.count));
-            }
-
-            //Recursively traverse all nodes from current node
-            for (char i = 'a'; i <= 'z'; i++) {
-                if (curr.branches[i - 'a'] != null) {
-                    //Add current character and continue search
-                    traverse(s + i, curr.branches[i - 'a'], list);
-                }
-            }
-
-            //???
-            if (curr.branches[26] != null)
-                traverse(s + ' ', curr.branches[26], list);
-        }
-
-
-        Trie root;
-
-        public AutocompleteSystem(String[] sentences, int[] times) {
-            root = new Trie();
-            for (int i = 0; i < sentences.length; i++) {
-                insert(root, sentences[i], times[i]);
-            }
-        }
-
-        String cur_sent = "";
-
-        public List <String> input(char c) {
-            List<String> result = new ArrayList<>();
-            if (c == '#') {
-                insert(root, cur_sent, 1);
-                cur_sent = "";
-            } else {
-                cur_sent += c;
-                //lookup all branches from current node
-                List<Node> list = lookup(root, cur_sent);
-                //Sort all the sentences based on reverse order of size
-                Collections.sort(list, (a, b) -> a.count == b.count ? a.sentence.compareTo(b.sentence) : b.count - a.count);
-                //Add top three sentences
-                for (int i = 0; i < Math.min(3, list.size()); i++)
-                    result.add(list.get(i).sentence);
-            }
-            return result;
-        }
+        dp.put(index, false);
+        return false;
     }
 
     public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+
+        int cases = scn.nextInt();
+        for (int ccase = 0; ccase < cases; ccase++) {
+            dp = new HashMap<>();
+            int numberOfPasswords = scn.nextInt();
+            String[] passwords = new String[numberOfPasswords];
+
+            for (int password = 0; password < numberOfPasswords; password++) {
+                passwords[password] = scn.next();
+            }
+
+            String loginAttempt = scn.next();
+            List<String> solution = new ArrayList<>();
+
+            if (solve(passwords, loginAttempt, 0, solution)) {
+                for (String word : solution) {
+                    System.out.print(word + " ");
+                }
+                System.out.println();
+            } else {
+                System.out.println("WRONG PASSWORD");
+            }
+        }
+
+        scn.close();
     }
 }
