@@ -40,7 +40,7 @@ class ZigzagIterator {
     }
 
     public boolean hasNext() {
-        return v1Index < v1.size() && v2Index < v2.size();
+        return v1Index < v1.size() || v2Index < v2.size();
     }
 }
 
