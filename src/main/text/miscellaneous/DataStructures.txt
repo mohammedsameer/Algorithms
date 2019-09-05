@@ -1,0 +1,87 @@
+package com.leetcode;
+
+import java.util.*;
+
+/**
+ * Algo:
+ */
+public class Program {
+
+    public static void main(String[] args) {
+
+        //String
+        String s = new String();
+        s.startsWith("1");
+        s.indexOf('1');
+        s.split(" ");
+
+        //Array
+        int[] arr = {1, 3, 5, 0, 2};
+//        Arrays.sort(arr, Collections.reverseOrder());
+        Arrays.stream(arr).sum();
+        Arrays.fill(arr, 1);
+        Arrays.copyOfRange(arr, 0, 2);
+
+        //Map
+        Map<String, Integer> map = new HashMap<>();
+        map.getOrDefault("s", 0);
+        map.putIfAbsent("s", 1);
+        map.keySet();
+        map.values();
+        map.remove("s");
+        for(Map.Entry<String, Integer> entry : map.entrySet()) {
+            entry.getKey();
+            entry.getValue();
+        }
+
+        TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+        treeMap.put(1, 1);
+        treeMap.pollFirstEntry();
+        treeMap.pollLastEntry();
+        treeMap.floorKey(1);
+        treeMap.ceilingKey(1);
+
+        Hashtable<String, String> hashtable = new Hashtable<>();
+        hashtable.put("1", "1");
+        hashtable.get("1");
+
+        //Set
+        Set<Integer> set = new HashSet<>();
+        set.add(1);
+        set.remove(1);
+
+        //List
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        Collections.sort(list, (a, b) -> (b-a));
+
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        linkedList.addFirst(1);
+        linkedList.addLast(2);
+
+        //Stack
+        Stack<Integer> stack = new Stack<>();
+        stack.push(1);
+        stack.peek();
+        stack.pop();
+
+        //Queue
+        Queue<Integer> queue = new PriorityQueue<>((a, b) -> (b - a));
+        queue.add(1);
+        queue.add(2);
+        queue.poll();
+        queue.poll();
+
+        //Comparator
+        int[][] darr = {{1, 2}, {2, 9}, {7, 6}};
+        Comparator<int[]> comparator = (a, b) -> (a[1] - b[1]);
+        Arrays.sort(darr, comparator);
+
+        //Iterator
+        Iterator<Integer> iterator = list.iterator();
+        iterator.hasNext();
+        iterator.next();
+        Collections.emptyIterator();
+        Collections.singletonList(0);
+    }
+}

@@ -1,6 +1,8 @@
 package com.leetcode;
 
-
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -8,118 +10,70 @@ import java.util.*;
  */
 public class Program {
 
+    private static Set<Integer> dp = new HashSet<>();
 
-    public class CardUtilities {
-        List<Card> cards;
-        Set<String> cardSet;
-        Set<String> cardPrefixSet;
-        Map<String, Set<String>> cardPrefixMap;
+    private static boolean solve(String[] passwords, String loginAttempt, int index, List<String> currResult) {
+        //We have reached the end of login attempt string
+        if (loginAttempt.length() == index)
+            return true;
 
-        public CardUtilities(List<Card> cards) {
-            this.cards = cards;
-            this.cardSet = new HashSet<>();
-            this.cardPrefixSet = new HashSet<>();
-            this.cardPrefixMap = new HashMap<>();
-        }
-    }
+        //We are revisiting
+        if (dp.contains(index))
+            return false;
 
-    public interface CardEvaluate {
-        public String evaluate(CardUtilities cardUtilities);
-    }
+        //Note: Similar to combination
+        //For every password check if login attempt starts with given password
+        for (String password : passwords) {
+            if (loginAttempt.startsWith(password, index)) {
 
-    public class Card {
-        String value;
-        Card(String value) {
-            this.value = value;
-        }
-    }
+                //If yes, add to curr result
+                currResult.add(password);
 
-    class CardUniqueMatching implements CardEvaluate {
-        @Override
-        public String evaluate(CardUtilities cardUtilities) {
-            return cardUtilities.cards.size() == cardUtilities.cardSet.size() ? "Unique Cards" : null;
-        }
-    }
+                //Recurse the remaining substring
+                if (solve(passwords, loginAttempt, index + password.length(), currResult))
+                    return true;
 
-    class CardDuplicateMatching implements CardEvaluate {
-        @Override
-        public String evaluate(CardUtilities cardUtilities) {
-            return cardUtilities.cardSet.size() == 1 ? "Duplicate Cards" : null;
-        }
-    }
-
-    class CardPrefixMatching implements CardEvaluate {
-        @Override
-        public String evaluate(CardUtilities cardUtilities) {
-            return cardUtilities.cardPrefixSet.size() == 1 ?  "Prefix Match": null;
-        }
-    }
-
-    class CardPrefixSizeMatching implements CardEvaluate {
-        @Override
-        public String evaluate(CardUtilities cardUtilities) {
-            int count = 0;
-            for(Set<String> cardPrefix : cardUtilities.cardPrefixMap.values()) {
-                if(count == 0) {
-                    count = cardPrefix.size();
-                } else if (count != cardPrefix.size()) {
-                    return null;
-                }
+                //Remove the recent addition if not successful to reach end
+                currResult.remove(currResult.size() - 1);
             }
-
-            return "Card Prefix Size Match";
         }
+
+        //If you have exhausted all password starts with for current index simply include in set
+        dp.add(index);
+        return false;
     }
-
-    public void claimHand(List<Card> cards) {
-        CardUtilities cardUtilities = new CardUtilities(cards);
-
-        //initialize
-        initialize(cardUtilities);
-
-        //compute winner
-        String result = computeWinner(cardUtilities);
-
-        if(result != null)
-            System.out.println(result);
-        else
-            System.out.println("Winner Not Found");
-    }
-
-    private void initialize(CardUtilities cardUtilities) {
-        for (Card card : cardUtilities.cards) {
-            cardUtilities.cardSet.add(card.value);
-            cardUtilities.cardPrefixSet.add(card.value.substring(0,1));
-            cardUtilities.cardPrefixMap.putIfAbsent(card.value.substring(0,1), new HashSet<>());
-            cardUtilities.cardPrefixMap.get(card.value.substring(0,1)).add(card.value);
-        }
-    }
-
-    private String computeWinner(CardUtilities cardUtilities) {
-        //Card Unique Matching
-        String cardUniqueMatching = new CardUniqueMatching().evaluate(cardUtilities);
-        if(cardUniqueMatching != null)
-            return cardUniqueMatching;
-
-        //Card Duplicate Matching
-        String cardDuplicateMatching = new CardDuplicateMatching().evaluate(cardUtilities);
-        if(cardDuplicateMatching != null)
-            return cardDuplicateMatching;
-
-        //Card Prefix Matching
-        String cardPrefixMatching = new CardPrefixMatching().evaluate(cardUtilities);
-        if(cardPrefixMatching != null)
-            return cardPrefixMatching;
-
-        //Card Prefix Size Matching
-        String cardPrefixSizeMatching = new CardPrefixSizeMatching().evaluate(cardUtilities);
-        if(cardPrefixSizeMatching != null)
-            return cardPrefixSizeMatching;
-
-        return null;
-    }
-
 
     public static void main(String[] args) {
+        //InputStream source = System.in;
+        try (InputStream source = new FileInputStream("/Users/mohammedsameer/Projects/lyft/src/main/resources/input.txt")) {
+            Scanner scn = new Scanner(source);
+            int cases = scn.nextInt();
+            for (int index = 0; index < cases; index++) {
+                dp = new HashSet<>();
+
+                //Iterate and store all spaced passwords
+                int numberOfPasswords = scn.nextInt();
+                String[] passwords = new String[numberOfPasswords];
+                for (int password = 0; password < numberOfPasswords; password++) {
+                    passwords[password] = scn.next();
+                }
+
+                //Login attempt
+                String loginAttempt = scn.next();
+                List<String> solution = new ArrayList<>();
+                if (solve(passwords, loginAttempt, 0, solution)) {
+                    for (String word : solution) {
+                        System.out.print(word + " ");
+                    }
+                    //New line
+                    System.out.println();
+                } else {
+                    System.out.println("WRONG PASSWORD");
+                }
+            }
+            scn.close();
+        } catch (IOException  e) {
+
+        }
     }
 }
