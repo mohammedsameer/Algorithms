@@ -1,79 +1,12 @@
 package com.leetcode;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
 /**
  * Algo:
  */
 public class Program {
 
-    private static Set<Integer> dp = new HashSet<>();
-
-    private static boolean solve(String[] passwords, String loginAttempt, int index, List<String> currResult) {
-        //We have reached the end of login attempt string
-        if (loginAttempt.length() == index)
-            return true;
-
-        //We are revisiting
-        if (dp.contains(index))
-            return false;
-
-        //Note: Similar to combination
-        //For every password check if login attempt starts with given password
-        for (String password : passwords) {
-            if (loginAttempt.startsWith(password, index)) {
-
-                //If yes, add to curr result
-                currResult.add(password);
-
-                //Recurse the remaining substring
-                if (solve(passwords, loginAttempt, index + password.length(), currResult))
-                    return true;
-
-                //Remove the recent addition if not successful to reach end
-                currResult.remove(currResult.size() - 1);
-            }
-        }
-
-        //If you have exhausted all password starts with for current index simply include in set
-        dp.add(index);
-        return false;
-    }
-
     public static void main(String[] args) {
-        //InputStream source = System.in;
-        try (InputStream source = new FileInputStream("/Users/mohammedsameer/Projects/lyft/src/main/resources/input.txt")) {
-            Scanner scn = new Scanner(source);
-            int cases = scn.nextInt();
-            for (int index = 0; index < cases; index++) {
-                dp = new HashSet<>();
-
-                //Iterate and store all spaced passwords
-                int numberOfPasswords = scn.nextInt();
-                String[] passwords = new String[numberOfPasswords];
-                for (int password = 0; password < numberOfPasswords; password++) {
-                    passwords[password] = scn.next();
-                }
-
-                //Login attempt
-                String loginAttempt = scn.next();
-                List<String> solution = new ArrayList<>();
-                if (solve(passwords, loginAttempt, 0, solution)) {
-                    for (String word : solution) {
-                        System.out.print(word + " ");
-                    }
-                    //New line
-                    System.out.println();
-                } else {
-                    System.out.println("WRONG PASSWORD");
-                }
-            }
-            scn.close();
-        } catch (IOException  e) {
-
-        }
+        System.out.print("Hello");
+        
     }
 }
